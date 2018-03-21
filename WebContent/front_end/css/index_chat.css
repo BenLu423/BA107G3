@@ -1,0 +1,82 @@
+#index-chat:hover {
+box-shadow: 0px 0px 43px -1px rgba(0,0,0,0.75);
+}
+
+#index-chat {
+float:right;
+position:fixed;
+height: 50%; 
+width:15%; 
+right:-15%;
+bottom:100px;
+z-index:20;
+border:2px solid #9B7711;
+background-color:#9B7711;
+border-radius: 10px;
+}
+
+.index-chat-title{
+	height: 7%;
+	border-radius: 5px;
+	margin-top: 1%;
+	background-color: #FFF;
+	color:#9B7711;
+}
+
+.index-chat-title p{
+	font-size: 1.5em;
+	text-align: center;
+}
+
+.index-chat-person{
+	height: 33%;
+	border-radius: 5px;
+	margin-top: 1%;
+	background-color: #FFF;
+	color:#9B7711;	
+}
+
+.index-chat-person p{
+	font-size: 1em;
+	text-align: left;
+	padding-top: 0px;
+}
+
+.index-chat-message{
+	height: 58%;
+	border-radius: 5px;
+	margin-top: 1%;
+	background-color: #FFF;
+	color:#9B7711;
+}
+
+.index-chat-message input{
+	background-color: #BBB;
+	border: 0px;
+	width: 90%;
+}
+
+.index-chat-message .fa{
+	font-size:19px;
+}
+
+#chatSwitchOpen{
+	border-right: 5px;
+	color: rgb(29,130,178);
+	border:0px;
+	background-color: transparent;
+	position: absolute;
+	bottom:0px;
+	left:-70px;
+}
+
+#chatSwitchClose{
+	display: none;
+	border-radius: 5px;
+	color: rgb(29,130,178);
+	border:0px;
+	background-color: transparent;
+	position: absolute;
+	bottom:0px;
+	left:-70px;
+}

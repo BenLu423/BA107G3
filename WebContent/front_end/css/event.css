@@ -1,0 +1,53 @@
+
+.wrab{
+    border-width:10px;
+    border-style:double;
+    border-style:outset;
+    background-color:#FFDD23;
+    padding:7px;
+    margin-bottom:15px;
+    text-align:justify;
+    margin-bottom:10px;
+    border-radius:25px;
+    margin-top:15px ;
+    border-bottom-color: cornflowerblue;
+}
+.tabD{
+    border-width:7px;
+    border-style::double;
+    border-color:#D17E47;
+    background-color:#F89C49;
+    
+    border-style:double;
+    margin-bottom:25px;
+    margin-top:15px;
+    line-height:50px; 
+}
+
+.tabE{
+    line-height:40px
+    width: 150%;
+   
+   
+}
+
+.divS{
+    font-size:20px;
+    margin-left: 10px;
+    line-height:40px;
+}
+
+.eventlist{
+    border-width:10px;
+   
+    border-style:double;
+    border-style:outset;
+    background-color:#FFDD23;
+    padding:7px;
+    margin-bottom:15px;
+    text-align:justify;
+    margin-bottom:10px;
+    border-radius:25px;
+    margin-top:15px ;
+    border-bottom-color: cornflowerblue;
+}
