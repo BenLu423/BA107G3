@@ -59,7 +59,7 @@
         </div>
 
       <div class="gotop ons" id="gototop">
-          <a href="#"><img src="res/img/footer/upload.png"></a>
+          <a href="#"><img src="<%=request.getContextPath()%>/front_end/res/img/footer/upload.png"></a>
       </div>
     </div>
 <!-- FOOTER END-->

@@ -35,7 +35,7 @@
      <div class="col-xs-12 col-sm-2">
 		<div class="logo">
              <a href="index.html">
-             <img src="res/img/logo/Logo.gif">
+             <img src="<%=request.getContextPath()%>/front_end/res/img/logo/Logo.gif">
              </a>
          </div>
      </div>
