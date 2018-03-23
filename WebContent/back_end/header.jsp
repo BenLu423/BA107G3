@@ -7,7 +7,8 @@
 <title>back_header</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/back_end/css/back.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/back_end/css/back.css">
 
 </head>
 <body>
@@ -40,10 +41,14 @@
 					style="margin-top: 10px;">
 					<thead class="index-thead">
 						<tr>
-							<th><span class="glyphicon glyphicon-list-alt"></span> 帳號管理</th>
+							<th><span class="glyphicon glyphicon-list-alt"></span>
+								後台員工管理</th>
 						</tr>
 					</thead>
 					<tbody>
+						<tr>
+							<td><a href="#">員工資料管理</a></td>
+						</tr>
 						<tr>
 							<td><a href="#">新增帳號</a></td>
 						</tr>
@@ -149,37 +154,36 @@ glyphicon glyphicon-heart"></span> 活動管理</th>
 				</table>
 
 			</div>
-		
-	<script src="https://code.jquery.com/jquery.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script>
-		var i = 0;
-		function showTime() {
-			var today = new Date();
-			document.getElementById("timePanel").innerHTML = today
-					.getFullYear()
-					+ "年"
-					+ (today.getMonth() + 1)
-					+ "月"
-					+ today.getDate()
-					+ "日  "
-					+ today.getHours()
-					+ " : "
-					+ today.getMinutes()
-					+ " : " + today.getSeconds();
-			i++;
-			console.log(i);
-		}
 
-		function init() {
-			showTime();
-			setInterval(showTime, 1000);
-		}
+			<script src="https://code.jquery.com/jquery.js"></script>
+			<script
+				src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+			<script>
+				var i = 0;
+				function showTime() {
+					var today = new Date();
+					document.getElementById("timePanel").innerHTML = today
+							.getFullYear()
+							+ "年"
+							+ (today.getMonth() + 1)
+							+ "月"
+							+ today.getDate()
+							+ "日  "
+							+ today.getHours()
+							+ " : "
+							+ today.getMinutes()
+							+ " : "
+							+ today.getSeconds();
+					i++;
+					console.log(i);
+				}
 
-		window.onload = init;
-	</script>
+				function init() {
+					showTime();
+					setInterval(showTime, 1000);
+				}
 
-
+				window.onload = init;
+			</script>
 </body>
 </html>
