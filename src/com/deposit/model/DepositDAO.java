@@ -8,11 +8,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 public class DepositDAO implements DepositDAO_interface {
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "Toast";
-	String passwd = "Toast";
+
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String INSERT_DEPOSIT = "INSERT INTO DEPOSIT(DEPO_NO, DEPO_NAME, DEPO_VALUE, DEPO_PERCENT) VALUES ('D'||LPAD(to_char(DEPOSIT_SEQ.NEXTVAL),3,'0'),?,?,?)";
 	private static final String UPDATE_DEPOSIT = "UPDATE DEPOSIT SET DEPO_NAME=?,DEPO_VALUE=?,DEPO_PERCENT=? WHERE DEPO_NO=?";
@@ -23,8 +34,7 @@ public class DepositDAO implements DepositDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_DEPOSIT);
 			con.setAutoCommit(false);
 
@@ -35,8 +45,6 @@ public class DepositDAO implements DepositDAO_interface {
 			pstmt.executeUpdate();
 			con.commit();
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			try {
 				con.rollback();
@@ -68,8 +76,7 @@ public class DepositDAO implements DepositDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE_DEPOSIT);
 			con.setAutoCommit(false);
 
@@ -81,8 +88,6 @@ public class DepositDAO implements DepositDAO_interface {
 			pstmt.executeUpdate();
 			con.commit();
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			try {
 				con.rollback();
@@ -117,8 +122,7 @@ public class DepositDAO implements DepositDAO_interface {
 		List<DepositVO> list = new ArrayList<>();
 		DepositVO depositVO = null;
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -130,8 +134,6 @@ public class DepositDAO implements DepositDAO_interface {
 				list.add(depositVO);
 			}
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
@@ -161,32 +163,32 @@ public class DepositDAO implements DepositDAO_interface {
 		return list;
 	}
 	
-	public static void main(String[] args) {
-		DepositDAO depositDAO = new DepositDAO();
-		
-//		穝糤
-		DepositVO depositVO1 = new DepositVO();
-		depositVO1.setDepo_name("1000");
-		depositVO1.setDepo_value(1000);
-		depositVO1.setDepo_percent(0.4);
-		depositDAO.insert(depositVO1);
-		
-//		э敼
-		DepositVO depositVO2 = new DepositVO();
-		depositVO2.setDepo_no("D005");
-		depositVO2.setDepo_name("1000");
-		depositVO2.setDepo_value(1000);
-		depositVO2.setDepo_percent(0.3);
-		depositDAO.update(depositVO2);
-		
-//		琩高场
-		List<DepositVO> list = depositDAO.getAll();
-		for (DepositVO depositVO : list) {
-			System.out.print(depositVO.getDepo_no() + ",");
-			System.out.print(depositVO.getDepo_name() + ",");
-			System.out.print(depositVO.getDepo_value() + ",");
-			System.out.println(depositVO.getDepo_percent());
-			System.out.println("--------------------");
-		}
-	}
+//	public static void main(String[] args) {
+//		DepositDAO depositDAO = new DepositDAO();
+//		
+////		穝糤
+//		DepositVO depositVO1 = new DepositVO();
+//		depositVO1.setDepo_name("1000");
+//		depositVO1.setDepo_value(1000);
+//		depositVO1.setDepo_percent(0.4);
+//		depositDAO.insert(depositVO1);
+//		
+////		э敼
+//		DepositVO depositVO2 = new DepositVO();
+//		depositVO2.setDepo_no("D005");
+//		depositVO2.setDepo_name("1000");
+//		depositVO2.setDepo_value(1000);
+//		depositVO2.setDepo_percent(0.3);
+//		depositDAO.update(depositVO2);
+//		
+////		琩高场
+//		List<DepositVO> list = depositDAO.getAll();
+//		for (DepositVO depositVO : list) {
+//			System.out.print(depositVO.getDepo_no() + ",");
+//			System.out.print(depositVO.getDepo_name() + ",");
+//			System.out.print(depositVO.getDepo_value() + ",");
+//			System.out.println(depositVO.getDepo_percent());
+//			System.out.println("--------------------");
+//		}
+//	}
 }
