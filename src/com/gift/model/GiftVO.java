@@ -12,7 +12,7 @@ public class GiftVO implements Serializable {
 	private String gift_is_on;
 
 	public GiftVO() {
-
+		super();
 	}
 
 	public String getGift_no() {
