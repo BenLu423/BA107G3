@@ -90,10 +90,10 @@ public class DepositDetailDAO implements DepositDetail_interface {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				depositDetailVO = new DepositDetailVO();
+				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
 				depositDetailVO.setDepod_no(rs.getString("DEPOD_NO"));
 				depositDetailVO.setMem_no(rs.getString("MEM_NO"));
 				depositDetailVO.setDepo_no(rs.getString("DEPO_NO"));
-				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
 				list.add(depositDetailVO);
 			}
 		} catch (SQLException se) {
@@ -138,10 +138,10 @@ public class DepositDetailDAO implements DepositDetail_interface {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				depositDetailVO = new DepositDetailVO();
+				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
 				depositDetailVO.setDepod_no(rs.getString("DEPOD_NO"));
 				depositDetailVO.setMem_no(rs.getString("MEM_NO"));
 				depositDetailVO.setDepo_no(rs.getString("DEPO_NO"));
-				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
 				list.add(depositDetailVO);
 			}
 		} catch (SQLException se) {
