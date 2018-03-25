@@ -2,12 +2,13 @@ package com.deposit_detail.model;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 public class DepositDetailVO implements Serializable {
 	private String depod_no;
 	private String mem_no;
 	private String depo_no;
-	private Time depod_time;
+	private Timestamp depod_time;
 	
 	public String getDepod_no() {
 		return depod_no;
@@ -27,10 +28,10 @@ public class DepositDetailVO implements Serializable {
 	public void setDepo_no(String depo_no) {
 		this.depo_no = depo_no;
 	}
-	public Time getDepod_time() {
+	public Timestamp getDepod_time() {
 		return depod_time;
 	}
-	public void setDepod_time(Time depod_time) {
+	public void setDepod_time(Timestamp depod_time) {
 		this.depod_time = depod_time;
 	}
 }

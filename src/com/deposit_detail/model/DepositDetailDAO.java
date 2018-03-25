@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
 
 import com.deposit.model.DepositVO;
 
@@ -91,7 +93,7 @@ public class DepositDetailDAO implements DepositDetail_interface {
 				depositDetailVO.setDepod_no(rs.getString("DEPOD_NO"));
 				depositDetailVO.setMem_no(rs.getString("MEM_NO"));
 				depositDetailVO.setDepo_no(rs.getString("DEPO_NO"));
-				depositDetailVO.setDepod_time(rs.getTime("DEPOD_TIME"));
+				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
 				list.add(depositDetailVO);
 			}
 		} catch (SQLException se) {
@@ -139,7 +141,7 @@ public class DepositDetailDAO implements DepositDetail_interface {
 				depositDetailVO.setDepod_no(rs.getString("DEPOD_NO"));
 				depositDetailVO.setMem_no(rs.getString("MEM_NO"));
 				depositDetailVO.setDepo_no(rs.getString("DEPO_NO"));
-				depositDetailVO.setDepod_time(rs.getTime("DEPOD_TIME"));
+				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
 				list.add(depositDetailVO);
 			}
 		} catch (SQLException se) {
