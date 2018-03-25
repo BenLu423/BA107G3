@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
     <script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/index_chat.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/chat.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/chat.js" charset="UTF-8"></script>
 
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/header.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/index.css">

@@ -22,12 +22,12 @@
 						<span class="sr-only">選單切換</span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="backIndex.html">Toast後台管理</a>
+					<a class="navbar-brand" href="index.jsp">Toast後台管理</a>
 				</div>
 				<div class="collapse navbar-collapse navbar-ex1">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">XXX 您好</a></li>
-						<li><a href="#">登出</a></li>
+						<li><a href="#">${admin.adm_name} 您好</a></li>
+						<li><a href="back_login.jsp">登出</a></li>
 						<li><a href="#" id="timePanel"></a></li>
 					</ul>
 				</div>

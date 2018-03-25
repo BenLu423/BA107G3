@@ -1,0 +1,52 @@
+@CHARSET "BIG5";
+
+html,body{
+	height: 100%;
+	font-family: "·L³n¥¿¶ÂÅé";
+	font-color:#2D3033;
+}
+
+.dbody{
+	height: 100%;
+	background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+	background-color: #FBEDA6;
+}
+
+.dbody .loginbar{
+	position: absolute;
+	height: 400px;
+	width: 700px;
+	background-color: #FBEDA6; 
+	top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    margin:auto;
+    border-radius:20px;
+	border: 2px solid ;
+	background-image: url('../res/img/login.jpg');
+	background-repeat: no-repeat;
+	background-position: bottom left;
+	background-size: 150px;
+	text-align: center;
+
+}
+
+.form-group{
+	font-size: 30px;
+	width: 600px;
+}
+
+.form-inline .form-control{
+	width:400px;
+}
+
+#login{
+	font-size: 20px;
+	margin-left: 200px;
+}
+
+.control-label{
+
+	padding: 0px;
+}
