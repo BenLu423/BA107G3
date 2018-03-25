@@ -8,12 +8,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 
 public class CouponsRecordDAO implements CouponsRecordDAO_interface {
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "Toast";
-	String passwd = "Toast";
+	
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private static final String UPDATE_COUPONSRECORD = "UPDATE COUPONS_RECORD SET COUPR_IS_USE=? WHERE MEM_NO=? AND COUP_NO=?";
 	private static final String GET_ONEMEM = "SELECT MEM_NO,COUP_NO,COUPR_IS_USE FROM COUPONS_RECORD WHERE MEM_NO=?";
@@ -57,8 +68,7 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE_COUPONSRECORD);
 			con.setAutoCommit(false);
 
@@ -68,8 +78,6 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 			pstmt.executeUpdate();
 			con.commit();
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			try {
 				con.rollback();
@@ -104,8 +112,7 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 		CouponsRecordVO couponsRecordVO = null;
 		List<CouponsRecordVO> list = new ArrayList<>();
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONEMEM);
 			pstmt.setString(1, mem_no);
 			rs = pstmt.executeQuery();
@@ -116,8 +123,6 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 				couponsRecordVO.setCoupr_is_use(rs.getString("COUPR_IS_USE"));
 				list.add(couponsRecordVO);
 			}
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
@@ -155,8 +160,7 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 		CouponsRecordVO couponsRecordVO = null;
 		List<CouponsRecordVO> list = new ArrayList<>();
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALLMEM);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -166,8 +170,6 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 				couponsRecordVO.setCoupr_is_use(rs.getString("COUPR_IS_USE"));
 				list.add(couponsRecordVO);
 			}
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
@@ -197,32 +199,32 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 		return list;
 	}
 	
-	public static void main(String[] args) {
-		CouponsRecordDAO couponsRecordDAO = new CouponsRecordDAO();
-		
-//		э敼
-		CouponsRecordVO couponsRecordVO = new CouponsRecordVO();
-		couponsRecordVO.setCoup_no("C001");
-		couponsRecordVO.setMem_no("M001");
-		couponsRecordVO.setCoupr_is_use("ㄏノ");
-		couponsRecordDAO.update(couponsRecordVO);
-		
-//		琩高琘穦ч基ㄩ魁
-		List<CouponsRecordVO> list1 = couponsRecordDAO.findByMem("M003");
-		for (CouponsRecordVO couponsRecordVO2 : list1) {
-			System.out.print(couponsRecordVO2.getMem_no()+ ",");
-			System.out.print(couponsRecordVO2.getCoup_no() + ",");
-			System.out.println(couponsRecordVO2.getCoupr_is_use());
-			System.out.println("--------------");
-		}
-		
-//		琩高┮Τ穦ч基ㄩ魁
-		List<CouponsRecordVO> list2 = couponsRecordDAO.getAll();
-		for (CouponsRecordVO couponsRecordVO3 : list2) {
-			System.out.print(couponsRecordVO3.getMem_no()+ ",");
-			System.out.print(couponsRecordVO3.getCoup_no() + ",");
-			System.out.println(couponsRecordVO3.getCoupr_is_use());
-			System.out.println("--------------");
-		}
-	}
+//	public static void main(String[] args) {
+//		CouponsRecordDAO couponsRecordDAO = new CouponsRecordDAO();
+//		
+////		э敼
+//		CouponsRecordVO couponsRecordVO = new CouponsRecordVO();
+//		couponsRecordVO.setCoup_no("C001");
+//		couponsRecordVO.setMem_no("M001");
+//		couponsRecordVO.setCoupr_is_use("ㄏノ");
+//		couponsRecordDAO.update(couponsRecordVO);
+//		
+////		琩高琘穦ч基ㄩ魁
+//		List<CouponsRecordVO> list1 = couponsRecordDAO.findByMem("M003");
+//		for (CouponsRecordVO couponsRecordVO2 : list1) {
+//			System.out.print(couponsRecordVO2.getMem_no()+ ",");
+//			System.out.print(couponsRecordVO2.getCoup_no() + ",");
+//			System.out.println(couponsRecordVO2.getCoupr_is_use());
+//			System.out.println("--------------");
+//		}
+//		
+////		琩高┮Τ穦ч基ㄩ魁
+//		List<CouponsRecordVO> list2 = couponsRecordDAO.getAll();
+//		for (CouponsRecordVO couponsRecordVO3 : list2) {
+//			System.out.print(couponsRecordVO3.getMem_no()+ ",");
+//			System.out.print(couponsRecordVO3.getCoup_no() + ",");
+//			System.out.println(couponsRecordVO3.getCoupr_is_use());
+//			System.out.println("--------------");
+//		}
+//	}
 }

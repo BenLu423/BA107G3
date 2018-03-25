@@ -9,17 +9,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import com.coupons_record.model.CouponsRecordDAO;
 
 public class CouponsDAO implements CouponsDAO_interface {
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "Toast";
-	String passwd = "Toast";
+
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String INSERT_COUPONS = "INSERT INTO COUPONS (COUP_NO, COUP_NAME, COUP_SERIAL, COUP_VALUE, COUP_THR, COUP_START, COUP_END) VALUES ('C'||LPAD(to_char(COUPONS_SEQ.NEXTVAL),3,'0'),?,?,?,?,?,?)";
 	private static final String UPDATE_COUPOUS = "UPDATE COUPONS SET COUP_NAME=?,COUP_SERIAL=?,COUP_VALUE=?, COUP_THR=?, COUP_START=?, COUP_END=? WHERE COUP_NO=?";
-	private static final String FINDBYDATE = "SELECT COUP_NO, COUP_NAME, COUP_SERIAL, COUP_VALUE, COUP_THR, COUP_START, COUP_END FROM COUPONS WHERE COUP_END > ?";
+	private static final String FINDBYDATE = "SELECT * FROM COUPONS WHERE COUP_END > ?";
 	private static final String GET_ALL = "SELECT * FROM COUPONS ORDER BY COUP_NO DESC";
 
 	@Override
@@ -30,8 +41,7 @@ public class CouponsDAO implements CouponsDAO_interface {
 		ResultSet rs = null;
 		String nextCoup_NO = null;
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			String[] s = { "COUP_NO" };
 			pstmt = con.prepareStatement(INSERT_COUPONS, s);
 			con.setAutoCommit(false);
@@ -50,8 +60,6 @@ public class CouponsDAO implements CouponsDAO_interface {
 			couponsRecordDAO.insert(con, nextCoup_NO);
 			con.commit();
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			try {
 				con.rollback();
@@ -84,8 +92,7 @@ public class CouponsDAO implements CouponsDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE_COUPOUS);
 			con.setAutoCommit(false);
 
@@ -100,8 +107,6 @@ public class CouponsDAO implements CouponsDAO_interface {
 			pstmt.executeUpdate();
 			con.commit();
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			try {
 				con.rollback();
@@ -136,8 +141,7 @@ public class CouponsDAO implements CouponsDAO_interface {
 		CouponsVO couponsVO = null;
 		List<CouponsVO> list = new ArrayList<>();
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(FINDBYDATE);
 			pstmt.setDate(1, date);
 			rs = pstmt.executeQuery();
@@ -154,8 +158,6 @@ public class CouponsDAO implements CouponsDAO_interface {
 				list.add(couponsVO);
 			}
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
@@ -193,8 +195,7 @@ public class CouponsDAO implements CouponsDAO_interface {
 		CouponsVO couponsVO = null;
 		List<CouponsVO> list = new ArrayList<>();
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL);
 			rs = pstmt.executeQuery();
 
@@ -211,8 +212,6 @@ public class CouponsDAO implements CouponsDAO_interface {
 				break;
 			}
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
@@ -241,55 +240,55 @@ public class CouponsDAO implements CouponsDAO_interface {
 		return list;
 	}
 	
-	public static void main(String[] args) {
-		CouponsDAO couponsDAO = new CouponsDAO();
-
-//		穝糤
-		CouponsVO couponsVO1 = new CouponsVO();
-		couponsVO1.setCoup_name("骸κч");
-		couponsVO1.setCoup_serial("A010");
-		couponsVO1.setCoup_value(10);
-		couponsVO1.setCoup_thr(100);
-		couponsVO1.setCoup_start(Date.valueOf("2018-03-03"));
-		couponsVO1.setCoup_end(Date.valueOf("2018-03-04"));
-		couponsDAO.insert(couponsVO1);
-
-//		э
-		CouponsVO couponsVO2 = new CouponsVO();
-		couponsVO2.setCoup_no("C012");
-		couponsVO2.setCoup_name("骸κч");
-		couponsVO2.setCoup_serial("A009");
-		couponsVO2.setCoup_value(10);
-		couponsVO2.setCoup_thr(100);
-		couponsVO2.setCoup_start(Date.valueOf("2018-03-10"));
-		couponsVO2.setCoup_end(Date.valueOf("2018-03-20"));
-		couponsDAO.update(couponsVO2);
-
-//		ノら戳琩高
-		List<CouponsVO> list1 = couponsDAO.findByDate(Date.valueOf("2018-01-01"));
-		for (CouponsVO couponsVO : list1) {
-			System.out.print(couponsVO.getCoup_no() + ",");
-			System.out.print(couponsVO.getCoup_name() + ",");
-			System.out.print(couponsVO.getCoup_serial() + ",");
-			System.out.print(couponsVO.getCoup_value() + ",");
-			System.out.print(couponsVO.getCoup_thr() + ",");
-			System.out.print(couponsVO.getCoup_start() + ",");
-			System.out.println(couponsVO.getCoup_end());
-			System.out.println("----------------------------------------------------");
-
-		}
-
-//		琩高场
-		List<CouponsVO> list2 = couponsDAO.getAll();
-		for (CouponsVO couponsVO : list2) {
-			System.out.print(couponsVO.getCoup_no() + ",");
-			System.out.print(couponsVO.getCoup_name() + ",");
-			System.out.print(couponsVO.getCoup_serial() + ",");
-			System.out.print(couponsVO.getCoup_value() + ",");
-			System.out.print(couponsVO.getCoup_thr() + ",");
-			System.out.print(couponsVO.getCoup_start() + ",");
-			System.out.println(couponsVO.getCoup_end());
-			System.out.println("----------------------------------------------------");
-		}
-	}
+//	public static void main(String[] args) {
+//		CouponsDAO couponsDAO = new CouponsDAO();
+//
+////		穝糤
+//		CouponsVO couponsVO1 = new CouponsVO();
+//		couponsVO1.setCoup_name("骸κч");
+//		couponsVO1.setCoup_serial("A010");
+//		couponsVO1.setCoup_value(10);
+//		couponsVO1.setCoup_thr(100);
+//		couponsVO1.setCoup_start(Date.valueOf("2018-03-03"));
+//		couponsVO1.setCoup_end(Date.valueOf("2018-03-04"));
+//		couponsDAO.insert(couponsVO1);
+//
+////		э
+//		CouponsVO couponsVO2 = new CouponsVO();
+//		couponsVO2.setCoup_no("C012");
+//		couponsVO2.setCoup_name("骸κч");
+//		couponsVO2.setCoup_serial("A009");
+//		couponsVO2.setCoup_value(10);
+//		couponsVO2.setCoup_thr(100);
+//		couponsVO2.setCoup_start(Date.valueOf("2018-03-10"));
+//		couponsVO2.setCoup_end(Date.valueOf("2018-03-20"));
+//		couponsDAO.update(couponsVO2);
+//
+////		ノら戳琩高
+//		List<CouponsVO> list1 = couponsDAO.findByDate(Date.valueOf("2018-01-01"));
+//		for (CouponsVO couponsVO : list1) {
+//			System.out.print(couponsVO.getCoup_no() + ",");
+//			System.out.print(couponsVO.getCoup_name() + ",");
+//			System.out.print(couponsVO.getCoup_serial() + ",");
+//			System.out.print(couponsVO.getCoup_value() + ",");
+//			System.out.print(couponsVO.getCoup_thr() + ",");
+//			System.out.print(couponsVO.getCoup_start() + ",");
+//			System.out.println(couponsVO.getCoup_end());
+//			System.out.println("----------------------------------------------------");
+//
+//		}
+//
+////		琩高场
+//		List<CouponsVO> list2 = couponsDAO.getAll();
+//		for (CouponsVO couponsVO : list2) {
+//			System.out.print(couponsVO.getCoup_no() + ",");
+//			System.out.print(couponsVO.getCoup_name() + ",");
+//			System.out.print(couponsVO.getCoup_serial() + ",");
+//			System.out.print(couponsVO.getCoup_value() + ",");
+//			System.out.print(couponsVO.getCoup_thr() + ",");
+//			System.out.print(couponsVO.getCoup_start() + ",");
+//			System.out.println(couponsVO.getCoup_end());
+//			System.out.println("----------------------------------------------------");
+//		}
+//	}
 }
