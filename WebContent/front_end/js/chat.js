@@ -6,7 +6,7 @@ $(document).ready(function(){
     var count = $("#area tr").size()+$("#sports tr").size()+$("#casual tr").size();
     $("#total").append("共"+count+"間");//全部
 
-    $("#allType").append($("#area tr")).append($("#sports tr")).append($("#casual tr"));
+//    $("#allType").append($("#area tr")).append($("#sports tr")).append($("#casual tr"));
 
 
 });
