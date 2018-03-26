@@ -26,6 +26,7 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 		}
 	}
 	
+	
 	private static final String UPDATE_COUPONSRECORD = "UPDATE COUPONS_RECORD SET COUPR_IS_USE=? WHERE MEM_NO=? AND COUP_NO=?";
 	private static final String GET_ONEMEM = "SELECT MEM_NO,COUP_NO,COUPR_IS_USE FROM COUPONS_RECORD WHERE MEM_NO=?";
 	private static final String GET_ALLMEM = "SELECT * FROM COUPONS_RECORD ORDER BY MEM_NO";

@@ -2,6 +2,7 @@ package com.coupons_record.model;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class CouponsRecordVO implements Serializable{
 	private String mem_no;
 	private String coup_no;
