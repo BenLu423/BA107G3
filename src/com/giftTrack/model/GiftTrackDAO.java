@@ -192,7 +192,7 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 	}
 
 	@Override
-	public List<GiftTrackVO> getByMemNo(String mem_no) {
+	public List<GiftTrackVO> getListByMemNo(String mem_no) {
 		List<GiftTrackVO> list = new ArrayList<>();
 		GiftTrackVO giftTrackVO = null;
 		Connection con = null;
@@ -241,7 +241,7 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 	}
 
 	@Override
-	public List<GiftTrackVO> getByGiftNo(String gift_no) {
+	public List<GiftTrackVO> getListByGiftNo(String gift_no) {
 		List<GiftTrackVO> list = new ArrayList<>();
 		GiftTrackVO giftTrackVO = null;
 		Connection con = null;

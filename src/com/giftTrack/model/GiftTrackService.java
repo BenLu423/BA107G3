@@ -26,10 +26,10 @@ public class GiftTrackService {
 	}
 	
 	public List<GiftTrackVO> getListByMemNo(String mem_no){
-		return dao.getByMemNo(mem_no);
+		return dao.getListByMemNo(mem_no);
 	}
 	
 	public List<GiftTrackVO> getListByGiftNo(String gift_no){
-		return dao.getByGiftNo(gift_no);
+		return dao.getListByGiftNo(gift_no);
 	}
 }

@@ -10,7 +10,7 @@ public interface GiftTrackDAO_interface {
 	public GiftTrackVO getByPrimaryKey(String mem_no, String gift_no);
 	public List<GiftTrackVO> getAll();
 
-	public List<GiftTrackVO> getByMemNo(String mem_no);
-	public List<GiftTrackVO> getByGiftNo(String gift_no);
+	public List<GiftTrackVO> getListByMemNo(String mem_no);
+	public List<GiftTrackVO> getListByGiftNo(String gift_no);
 	
 }
