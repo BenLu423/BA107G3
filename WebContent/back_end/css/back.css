@@ -1,7 +1,7 @@
 body{
-	font-family: "·L³n¥¿¶ÂÅé";
+	font-family: "å¾®è»Ÿæ­£é»‘é«”";
 	font-color:#2D3033;
-	background-image: url('../res/img/toast.png');
+	background-image: url('../imgs/toast.png');
 	background-repeat: repeat;
 	background-color: #EDE9B9;
 }
@@ -10,7 +10,7 @@ body{
 	margin-bottom: 0px;
 }
 
-.sidenav{
+#sidenav{
 	
 	height: 800px;
 	margin-top: 0px;
@@ -36,7 +36,7 @@ body{
 
 
 
-.sidenav table{
+#sidenav table{
 	border-style: solid;
 	border-collapse:separate;
 	border-spacing: 0;
@@ -44,36 +44,36 @@ body{
 	font-size: 20px;
 }
 
-.table-bordered{
+#sidenav .table-bordered{
 	border:1px solid rgba(0,0,0,.0001);
 }
 
-.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{
+#sidenav .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{
 	border-color: #111; 
 }
 
-.table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th{
+#sidenav .table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th{
 	border-top:1px;
 	border-top-width: 1px;
     border-top-style: solid;
 }
-th{
+#sidenav th{
 	border-top-left-radius: 20px;
 	border-top-right-radius: 20px;
 	background-color:deepskyblue;
 	text-align: center;
 }
 
-td{
+#sidenav td{
 	background-color: #fff;
 }
 
-tr:last-child td:last-child{
+#sidenav tr:last-child td:last-child{
 	border-bottom-left-radius: 20px;
 	border-bottom-right-radius: 20px;
 }
 
-.sidenav tr a{
+#sidenav tr a{
 	text-decoration:underline;
 }
 

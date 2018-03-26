@@ -9,6 +9,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/back_end/css/back.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/back_end/css/adminInsert.css">
 
 </head>
 <body>
@@ -35,7 +37,7 @@
 			</nav>
 
 
-			<div class="col-xs-12 col-sm-2 sidenav">
+			<div class="col-xs-12 col-sm-2" id="sidenav">
 
 				<table class="table table-bordered account"
 					style="margin-top: 10px;">
@@ -78,7 +80,7 @@
 				<table class="table table-bordered gift" style="margin-top: 10px;">
 					<thead class="index-thead">
 						<tr>
-							<th><span class="glyphicon glyphicon-gift"></span> 禮物管理</th>
+							<th><span class="glyphicon glyphicon-gift"></span> 商城管理</th>
 						</tr>
 					</thead>
 					<tbody>

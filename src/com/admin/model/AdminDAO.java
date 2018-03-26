@@ -25,7 +25,7 @@ public class AdminDAO implements AdminDAO_interface{
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/BA107G3");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
