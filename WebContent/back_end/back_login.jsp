@@ -35,6 +35,7 @@
 
 				<button type="submit" class="btn btn-default" id="login">µn¤J</button><br>
 				<div class="errorMsgs" style="color:red">${errorMsgs}</div>
+				<input type="hidden" name="action" value="backlogin">
 			</form>
 
 		</div>
