@@ -24,11 +24,14 @@ public class GiftDAO implements GiftDAO_interface{
 		}
 	}	
 	
-	private static final String INSERT_STMT = "INSERT INTO GIFT(GIFT_NO,GIFT_NAME,GIFT_CNT,GIFT_PRICE,GIFT_PIC,GIFT_IS_ON) VALUES('G'||LPAD(to_char(GIFT_SEQ.NEXTVAL),3,'0'), ?, ?, ?, ?, ?)";
-	private static final String UPDATE_STMT = "UPDATE GIFT SET GIFT_NAME=?, GIFT_CNT=?, GIFT_PRICE=?, GIFT_PIC=?, GIFT_IS_ON=? WHERE GIFT_NO=?";
+	private static final String INSERT_STMT = "INSERT INTO GIFT(GIFT_NO,GIFT_NAME,GIFT_CNT,GIFT_PRICE,GIFT_PIC) VALUES('G'||LPAD(to_char(GIFT_SEQ.NEXTVAL),3,'0'), ?, ?, ?, ?)";
+	private static final String UPDATE_STMT = "UPDATE GIFT SET GIFT_NAME=?, GIFT_CNT=?, GIFT_PRICE=?, GIFT_PIC=?, GIFT_IS_ON=?, GIFT_TRACK_QTY=?, GIFT_BUY_QTY=? WHERE GIFT_NO=?";
+	private static final String UPDATE_TRACK_QTY_STMT = "UPDATE GIFT SET GIFT_TRACK_QTY=? WHERE GIFT_NO=?";
+	private static final String UPDATE_BUY_QTY_STMT = "UPDATE GIFT SET GIFT_BUY_QTY=? WHERE GIFT_NO=?";
 	private static final String DELETE_STMT = "DELETE FROM GIFT WHERE GIFT_NO=?";
 	private static final String FIND_BY_PK_STMT = "SELECT * FROM GIFT WHERE GIFT_NO=?";
-	private static final String GET_ALL_STMT    = "SELECT * FROM GIFT ORDER BY GIFT_NO";
+	private static final String GET_ALL_STMT = "SELECT * FROM GIFT ORDER BY GIFT_NO";
+	private static final String GET_PIC_STMT = "SELECT GIFT_PIC FROM　GIFT WHERE GIFT_NO=?";
 	
 	@Override
 	public void insert(GiftVO giftVO, List<GiftLabelDetailVO> giftLabelDetailList) {
@@ -41,6 +44,7 @@ public class GiftDAO implements GiftDAO_interface{
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		String giftNoSeq = null;
 		
 		try {
@@ -54,14 +58,12 @@ public class GiftDAO implements GiftDAO_interface{
 			pstmt.setString(2, giftVO.getGift_cnt());
 			pstmt.setInt(3, giftVO.getGift_price());
 			pstmt.setBytes(4, giftVO.getGift_pic());
-			pstmt.setString(5, giftVO.getGift_is_on());
 			pstmt.executeUpdate();
 			
-			ResultSet rs = pstmt.getGeneratedKeys();
+			rs = pstmt.getGeneratedKeys();
 			if(rs.next()){
 			giftNoSeq = rs.getString(1);
 			}
-			rs.close();
 			
 			//2. 新增禮物標籤明細[GIFT_LABEL_LIST]
 			if(giftLabelDetailList != null){
@@ -92,6 +94,13 @@ public class GiftDAO implements GiftDAO_interface{
 					pstmt.close();
 				} catch (SQLException se) {
 					se.printStackTrace(System.err);
+				}
+			}
+			if (rs != null){
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
 				}
 			}
 			if (con != null) {
@@ -125,7 +134,9 @@ public class GiftDAO implements GiftDAO_interface{
 			pstmt.setInt(3, giftVO.getGift_price());
 			pstmt.setBytes(4, giftVO.getGift_pic());
 			pstmt.setString(5, giftVO.getGift_is_on());
-			pstmt.setString(6, giftVO.getGift_no());
+			pstmt.setInt(6, giftVO.getGift_track_qty());
+			pstmt.setInt(7, giftVO.getGift_buy_qty());
+			pstmt.setString(8, giftVO.getGift_no());
 			pstmt.executeUpdate();
 			/* 2. 修改禮物標籤明細[GIFT_LABEL_LIST] */
 			GiftLabelDetailService giftLabelDetailSvc = new GiftLabelDetailService();
@@ -226,6 +237,70 @@ public class GiftDAO implements GiftDAO_interface{
 	}
 
 	@Override
+	public void updateTrackQty(String gift_no, Integer gift_track_qty, Connection con) {
+		GiftVO giftVO = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			giftVO = getByPrimaryKey(gift_no);
+			pstmt = con.prepareStatement(UPDATE_TRACK_QTY_STMT);
+			pstmt.setInt(1, giftVO.getGift_track_qty() + gift_track_qty);
+			pstmt.setString(2, gift_no);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			if(con != null){
+				try {
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-GiftDAO updateTrackQty時");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally {
+			if(pstmt != null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void updateBuyQty(GiftVO giftVO, Integer gift_buy_qty, Connection con) {
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = con.prepareStatement(UPDATE_BUY_QTY_STMT);
+			pstmt.setInt(1, gift_buy_qty);
+			pstmt.setString(2, giftVO.getGift_no());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			if(con != null){
+				try {
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-GiftDAO updateTrackQty時");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally {
+			if(pstmt != null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+
+	@Override
 	public void delete(String gift_no) {
 		/* * * * * * * * * * * * * * * * * * * * * * *
 		 * 僅提供[從未上架]的禮物進行刪除						 *
@@ -304,6 +379,8 @@ public class GiftDAO implements GiftDAO_interface{
 			giftVO.setGift_price(rs.getInt("gift_price"));
 			giftVO.setGift_pic(rs.getBytes("gift_pic"));
 			giftVO.setGift_is_on(rs.getString("gift_is_on"));
+			giftVO.setGift_track_qty(rs.getInt("gift_track_qty"));
+			giftVO.setGift_buy_qty(rs.getInt("gift_buy_qty"));
 		} catch (SQLException e) {
 			throw new RuntimeException("A database error occured. " + e.getMessage());
 		} finally{
@@ -355,6 +432,8 @@ public class GiftDAO implements GiftDAO_interface{
 				giftVO.setGift_price(rs.getInt("gift_price"));
 				giftVO.setGift_pic(rs.getBytes("gift_pic"));
 				giftVO.setGift_is_on(rs.getString("gift_is_on"));
+				giftVO.setGift_track_qty(rs.getInt("gift_track_qty"));
+				giftVO.setGift_buy_qty(rs.getInt("gift_buy_qty"));
 				list.add(giftVO);
 			}
 			
@@ -384,6 +463,50 @@ public class GiftDAO implements GiftDAO_interface{
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public byte[] getPic(String gift_no) {
+		byte[] pic = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_PIC_STMT);
+			pstmt.setString(1, gift_no);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			pic  = rs.getBytes("gift_pic");
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally{
+			if(rs != null){
+				try {
+						rs.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				};
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return pic;
 	}
 
 

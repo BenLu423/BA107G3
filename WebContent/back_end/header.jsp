@@ -179,7 +179,7 @@ glyphicon glyphicon-heart"></span> 活動管理</th>
 							+ " : "
 							+ today.getSeconds();
 					i++;
-					console.log(i);
+// 					console.log(i);
 				}
 
 				function init() {

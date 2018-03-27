@@ -3,12 +3,14 @@ package com.gift.model;
 import java.io.*;
 import java.util.*;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.giftLabel.model.GiftLabelVO;
 import com.giftLabelDetail.model.GiftLabelDetailService;
 import com.giftLabelDetail.model.GiftLabelDetailVO;
 
@@ -21,7 +23,7 @@ public class TestGiftService extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		GiftService giftSvc = new GiftService();
 		
-//		byte[] picTest = new byte[1024];
+		byte[] picTest = new byte[1024];
 ////測試增加一筆禮物 與 數筆禮物標籤
 //		out.println("=============測試增加一筆禮物 與 數筆禮物標籤===================");
 //		GiftVO giftNew = new GiftVO();
@@ -29,7 +31,6 @@ public class TestGiftService extends HttpServlet {
 //		giftNew.setGift_cnt("測試內容");
 //		giftNew.setGift_price(888);
 //		giftNew.setGift_pic(picTest);
-//		giftNew.setGift_is_on("從未");
 //		
 //		List<GiftLabelDetailVO> giftLabelDetailList = new ArrayList<>();
 //		GiftLabelDetailVO gldVO1 = new GiftLabelDetailVO();
@@ -46,7 +47,7 @@ public class TestGiftService extends HttpServlet {
 //		out.println("===================================================================");
 		
 		
-//測試更新一筆禮物 與 數筆禮物標籤
+////測試更新一筆禮物 與 數筆禮物標籤
 //		out.println("=============測試更新一筆禮物 與 數筆禮物標籤=================================");
 //		GiftVO giftVOUp = null;
 //		
@@ -114,26 +115,59 @@ public class TestGiftService extends HttpServlet {
 //		out.println(giftOne.getGift_price());
 //		out.println(giftOne.getGift_pic());
 //		out.println(giftOne.getGift_is_on());
+//		out.println(giftOne.getGift_track_qty());
+//		out.println(giftOne.getGift_buy_qty());
 //		out.println("===================================================================");
 //		giftOne = null;
 //		
 //		
 ////測試取得所有giftVO
 //		out.println("=============測試取得所有giftVO===================");
-//		List<GiftVO> giftAll = null;
-//		giftAll = giftSvc.getAll();
-//		for(GiftVO giftVO: giftAll){
+//		List<GiftVO> all = null;
+//		all = giftSvc.getAll();
+//		for(GiftVO giftVO: all){
 //			out.println(giftVO.getGift_no());
 //			out.println(giftVO.getGift_name());
 //			out.println(giftVO.getGift_cnt());
 //			out.println(giftVO.getGift_price());
 //			out.println(giftVO.getGift_pic());
-//			out.println(giftVO.getGift_is_on());		
+//			out.println(giftVO.getGift_is_on());
+//			out.println(giftVO.getGift_track_qty());
+//			out.println(giftVO.getGift_buy_qty());		
 //			out.println();
 //		}
 //		out.println("===================================================================");
-//		giftAll = null;
+//		all = null;
 		
+		
+//測試取得所有giftVO與其對應的giftLabelVO
+			out.println("===============測試取得所有giftVO與其對應的giftLabelVO===================");
+			Map<GiftVO, List<GiftLabelVO>> giftAll = null;
+			List<GiftLabelVO> labelList = null;
+			giftAll = giftSvc.getGiftAll();
+			Set<GiftVO> giftList = giftAll.keySet();
+			for(GiftVO giftVO: giftList){
+				out.println("gift_no       :" + giftVO.getGift_no());
+				out.println("gift_name     :" + giftVO.getGift_name());
+				out.println("gift_cnt      :" + giftVO.getGift_cnt());
+				out.println("gift_price    :" + giftVO.getGift_price());
+				out.println("gift_pic      :" + giftVO.getGift_pic());
+				out.println("gift_is_on    :" + giftVO.getGift_is_on());
+				out.println("gift_track_qty:" + giftVO.getGift_track_qty());
+				out.println("gift_buy_qty  :" + giftVO.getGift_buy_qty());		
+				labelList = giftAll.get(giftVO);
+					for(GiftLabelVO giftLabelVO: labelList){
+						out.print("giftl_no:" + giftLabelVO.getGiftl_no() + "    ");
+						out.println("giftl_name:" + giftLabelVO.getGiftl_name());
+						
+					}
+				out.println("-------------------------------------------");
+			}
+			out.println("===================================================================");
+			giftAll = null;		
+			labelList= null;
+			
+			
 	}
 
 }

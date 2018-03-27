@@ -10,6 +10,8 @@ public class GiftVO implements Serializable {
 	private Integer gift_price;
 	private byte[] gift_pic;
 	private String gift_is_on;
+	private Integer gift_track_qty;
+	private Integer gift_buy_qty;
 
 	public GiftVO() {
 		super();
@@ -61,6 +63,22 @@ public class GiftVO implements Serializable {
 
 	public void setGift_is_on(String gift_is_on) {
 		this.gift_is_on = gift_is_on;
+	}
+
+	public Integer getGift_track_qty() {
+		return gift_track_qty;
+	}
+
+	public void setGift_track_qty(Integer gift_track_qty) {
+		this.gift_track_qty = gift_track_qty;
+	}
+
+	public Integer getGift_buy_qty() {
+		return gift_buy_qty;
+	}
+
+	public void setGift_buy_qty(Integer gift_buy_qty) {
+		this.gift_buy_qty = gift_buy_qty;
 	}
 	
 }

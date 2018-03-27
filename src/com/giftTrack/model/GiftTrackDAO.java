@@ -12,6 +12,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.gift.model.GiftService;
+
 public class GiftTrackDAO implements GiftTrackDAO_interface{
 	
 	private static DataSource ds = null;
@@ -34,15 +36,32 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 	
 	@Override
 	public void insert(GiftTrackVO giftTrackVO) {
+		/* * * * * * * * * * * * * * * * * * * * * * *
+		 * 此新增追蹤會依以下順序進行，若有失敗則rollback		 * 
+		 * ------------------------------------------* 
+		 * 1. 新增追蹤明細[GIFT_TRACK]					 * 
+		 * 2. 新增禮物追蹤數量[GIFT]						 * 
+		 * * * * * * * * * * * * * * * * * * * * * * */		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			con = ds.getConnection();
+			con.setAutoCommit(false);
+
+			//1. 新增追蹤明細[GIFT_TRACK]
 			pstmt = con.prepareStatement(INSERT_STMT);
 			pstmt.setString(1, giftTrackVO.getMem_no());
 			pstmt.setString(2, giftTrackVO.getGift_no());
 			pstmt.executeUpdate();
+			
+			//2. 新增禮物追蹤數量[GIFT]
+			GiftService giftSvc = new GiftService();
+			giftSvc.updateGiftTrack(giftTrackVO.getGift_no(), 1, con);
+			
+			con.commit();
+			con.setAutoCommit(true);
+			
 		} catch (SQLException e) {
 			throw new RuntimeException("A database error occured." + e.getMessage());
 		} finally{
@@ -65,15 +84,31 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 
 	@Override
 	public void delete(String mem_no, String gift_no) {
+		/* * * * * * * * * * * * * * * * * * * * * * *
+		 * 此刪除追蹤會依以下順序進行，若有失敗則rollback		 * 
+		 * ------------------------------------------* 
+		 * 1. 刪除追蹤明細[GIFT_TRACK]					 * 
+		 * 2. 刪除禮物追蹤數量[GIFT]						 * 
+		 * * * * * * * * * * * * * * * * * * * * * * */	
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			con = ds.getConnection();
+			con.setAutoCommit(false);
+			
+			//1. 刪除追蹤明細[GIFT_TRACK]
 			pstmt = con.prepareStatement(DELETE_STMT);
 			pstmt.setString(1, mem_no);
 			pstmt.setString(2, gift_no);
 			pstmt.executeUpdate();
+			
+			//2. 刪除禮物追蹤數量[GIFT]
+			GiftService giftSvc = new GiftService();
+			giftSvc.updateGiftTrack(gift_no, -1, con);
+			
+			con.commit();
+			con.setAutoCommit(true);
 		} catch (SQLException e) {
 			throw new RuntimeException("A database error occured." + e.getMessage());
 		} finally{

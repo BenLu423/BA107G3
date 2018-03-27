@@ -23,8 +23,8 @@ public class TestGiftTrackService extends HttpServlet {
 ////測試插入一個giftTrackVO物件
 //			out.println("===========測試插入一個giftTrackVO物件==========================");
 //			GiftTrackVO giftTrackInsert = new GiftTrackVO();
-//			giftTrackInsert.setMem_no("M005");
-//			giftTrackInsert.setGift_no("G013");
+//			giftTrackInsert.setMem_no("M006");
+//			giftTrackInsert.setGift_no("G019");
 //			gTSvc.addGiftTrack(giftTrackInsert);
 //			out.println("插入成功");
 //			out.println("===========================================================");
