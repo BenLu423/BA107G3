@@ -10,7 +10,9 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/back_end/css/back.css">
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>/back_end/css/adminInsert.css">
+href="<%=request.getContextPath()%>/back_end/css/adminInsert.css">
+<link rel="stylesheet"
+href="<%=request.getContextPath()%>/back_end/css/adminList.css">
 
 </head>
 <body>
@@ -28,7 +30,7 @@
 				</div>
 				<div class="collapse navbar-collapse navbar-ex1">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">${admin.adm_name} 您好</a></li>
+						<li><a href="#">${sessionScope.admin.adm_name} 您好</a></li>
 						<li><a href="back_login.jsp">登出</a></li>
 						<li><a href="#" id="timePanel"></a></li>
 					</ul>
@@ -80,7 +82,7 @@
 				<table class="table table-bordered gift" style="margin-top: 10px;">
 					<thead class="index-thead">
 						<tr>
-							<th><span class="glyphicon glyphicon-gift"></span> 商城管理</th>
+							<th><span class="glyphicon glyphicon-gift"></span> 禮物管理</th>
 						</tr>
 					</thead>
 					<tbody>

@@ -91,11 +91,13 @@ public class AdminServlet extends HttpServlet {
 			
 			try{
 				//接收請求參數，檢查格式
+				req.setCharacterEncoding("Big5");
 				String adminName = req.getParameter("adminName");
+				String adminName2 = new String(adminName.getBytes("ISO-8859-1"),"Big5");
 				String nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9)]{2,10}$";
-				if(adminName==null || adminName.trim().length()==0){
+				if(adminName2==null || adminName2.trim().length()==0){
 					errorMsgs.add("員工姓名：請勿空白");
-				}else if(!adminName.trim().matches(nameReg)){
+				}else if(!adminName2.trim().matches(nameReg)){
 					errorMsgs.add("員工姓名：只能是中、英字母和數字，且長度於2到10之間");
 				}
 				
@@ -123,7 +125,7 @@ public class AdminServlet extends HttpServlet {
 				
 				AdminVO adminVO = new AdminVO();
 				adminVO.setAdm_acct(account);
-				adminVO.setAdm_name(adminName);
+				adminVO.setAdm_name(adminName2);
 				
 				//傳回錯誤訊息以及含有鎘是錯誤的adminVO物件
 				if(!errorMsgs.isEmpty()){
@@ -136,7 +138,7 @@ public class AdminServlet extends HttpServlet {
 				
 				//開始新增資料
 				/*1.新增員工*/
-				adminSvc.addAdmin(account, pwd, adminName);
+				adminSvc.addAdmin(account, pwd, adminName2);
 				/*2.取得新員工資料，加入權限*/
 				AdminVO admin = adminSvc.getOneAdmin(account, pwd);
 				AuthService authSvc = new AuthService();
