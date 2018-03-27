@@ -82,7 +82,7 @@ href="<%=request.getContextPath()%>/back_end/css/adminList.css">
 				<table class="table table-bordered gift" style="margin-top: 10px;">
 					<thead class="index-thead">
 						<tr>
-							<th><span class="glyphicon glyphicon-gift"></span> 禮物管理</th>
+							<th><span class="glyphicon glyphicon-gift"></span> 商城管理</th>
 						</tr>
 					</thead>
 					<tbody>
