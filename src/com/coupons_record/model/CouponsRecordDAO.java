@@ -50,8 +50,8 @@ public class CouponsRecordDAO implements CouponsRecordDAO_interface {
 				pstmt.setString(3, "¥¼¨Ï¥Î");
 				pstmt.executeUpdate();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
 			if (pstmt != null) {
 				try {
