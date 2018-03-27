@@ -53,31 +53,31 @@ public class MemberMain {
 		/*查詢*/
 		List<MemberVO> list = new ArrayList<>();
 		list = mdao.getAll();
-//		for(int x=0;x<list.size();x++){
-//			System.out.println(list.get(x).getMemNo());
-//			System.out.println(list.get(x).getMemAccount());
-//			System.out.println(list.get(x).getMemPassword());
-//			System.out.println(list.get(x).getMemJoinTime());
-//			System.out.println(list.get(x).getMemName());	
-//		}
-//		for(MemberVO mvo4 : list){
-//			System.out.println(mvo4.getMemAccount());
-//			System.out.println(mvo4.getMemPassword());
-//		
-//		}
-		try{
-			Scanner scn = new Scanner(System.in);
-			String user = scn.nextLine();
-			String pass = scn.nextLine();
-			MemberVO memvo = new MemberVO();
-			memvo = mdao.checkLogin(user, pass);
-		
-					System.out.println("登入成功!!");
-					System.out.println(memvo.getMemAccount());
-					System.out.println(memvo.getMemPassword());
-			
-		}catch(NullPointerException e){
-			System.out.println("輸入錯誤");
+		for(int x=0;x<list.size();x++){
+			System.out.println(list.get(x).getMem_no());
+			System.out.println(list.get(x).getMem_account());
+			System.out.println(list.get(x).getMem_password());
+			System.out.println(list.get(x).getMem_join_time());
+			System.out.println(list.get(x).getMem_name());	
 		}
+		for(MemberVO mvo4 : list){
+			System.out.println(mvo4.getMem_account());
+			System.out.println(mvo4.getMem_password());
+		
+		}
+//		try{
+//			Scanner scn = new Scanner(System.in);
+//			String user = scn.nextLine();
+//			String pass = scn.nextLine();
+//			MemberVO memvo = new MemberVO();
+//			memvo = mdao.checkLogin(user, pass);
+//		
+//					System.out.println("登入成功!!");
+//					System.out.println(memvo.getMemAccount());
+//					System.out.println(memvo.getMemPassword());
+//			
+//		}catch(NullPointerException e){
+//			System.out.println("輸入錯誤");
+//		}
 	}
 }

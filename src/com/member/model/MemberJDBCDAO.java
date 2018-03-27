@@ -1,13 +1,8 @@
 package com.member.model;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,9 +18,7 @@ import javax.sql.DataSource;
 
 import org.apache.catalina.ssi.ByteArrayServletOutputStream;
 
-import sun.awt.image.ByteArrayImageSource;
-
-public class MemberDAO implements MemberDAO_interface{
+public class MemberJDBCDAO implements MemberDAO_interface{
 	private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private static final String USER = "BA107G3";
@@ -42,12 +35,12 @@ public class MemberDAO implements MemberDAO_interface{
 	
 	static final String CHECKLOGIN = "SELECT * FROM MEMBER WHERE MEM_ACCOUNT = ? AND MEM_PASSWORD = ?";
 	/*驅動載入*/									
-	private static DataSource ds = null;
-	static {
-		try{
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/BA107G3");
-		}catch(NamingException e){
+	static{
+		try {
+			Class.forName(DRIVER);
+			System.out.println("載入成功!!");
+		} catch (ClassNotFoundException e) {
+			
 			e.printStackTrace();
 		}
 	}
@@ -59,7 +52,7 @@ public class MemberDAO implements MemberDAO_interface{
 		PreparedStatement ps = null;
 		
 		try {
-			con = ds.getConnection();
+			con = DriverManager.getConnection(URL,USER,PASS);
 			ps = con.prepareStatement(INSERT);
 			System.out.println("新增");
 			ps.setString(1, member.getMem_account());
@@ -143,7 +136,7 @@ public class MemberDAO implements MemberDAO_interface{
 		PreparedStatement ps = null;
 		
 		try {
-			con = ds.getConnection();
+			con = DriverManager.getConnection(URL,USER,PASS);
 			ps = con.prepareStatement(UPDATE);
 			System.out.println("修改");
 			ps.setString(1, member.getMem_account());
@@ -186,7 +179,7 @@ public class MemberDAO implements MemberDAO_interface{
 		MemberVO mvos = null;
 		
 		try {
-			con = ds.getConnection();
+			con = DriverManager.getConnection(URL,USER,PASS);
 			ps = con.prepareStatement(SINGLE_SEARCH);
 			ps.setString(1, name);
 			
@@ -236,7 +229,7 @@ public class MemberDAO implements MemberDAO_interface{
 		ResultSet rs = null;
 		MemberVO mvos = null;
 		try {
-			con = ds.getConnection();
+			con = DriverManager.getConnection(URL,USER,PASS);
 			ps = con.prepareStatement(GETALL);
 			rs = ps.executeQuery();
 			while(rs.next()){
@@ -307,7 +300,7 @@ public class MemberDAO implements MemberDAO_interface{
 		boolean checkmem = false;
 		MemberVO mem = null;
 		try{
-			con = ds.getConnection();
+			con = DriverManager.getConnection(URL,USER,PASS);
 			ps = con.prepareStatement(CHECKLOGIN);
 			ps.setString(1, account);
 			ps.setString(2, password);

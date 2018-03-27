@@ -4,242 +4,242 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class MemberVO implements Serializable {
-	private String memNo;
-	private String memAccount;
-	private String memPassword;
-	private Date memJoinTime;
-	private String memName;
-	private String memGender;
-	private Date memBirthday;
-	private String memCounty;
-	private Integer memDeposit;
-	private String memContact;
-	private String memEmotion;
-	private Integer memBonus;
-	private String memBloodType;
-	private Integer memHeight;
-	private Integer memWeight;
-	private String memInterest;
-	private String memIntro;
-	private String memOnline;
-	private Double memLongitude;
-	private Double memLatitude;
-	private String memPhone;
-	private String memMail;
-	private byte[] memPhoto;
-	private String memProhibit;
-	private String memSetNotify;
-	private Date memTimeNotify;
+	private String mem_no;
+	private String mem_account;
+	private String mem_password;
+	private Date mem_join_time;
+	private String mem_name;
+	private String mem_gender;
+	private Date mem_birthday;
+	private String mem_county;
+	private Integer mem_deposit;
+	private String mem_contact;
+	private String mem_emotion;
+	private Integer mem_bonus;
+	private String mem_bloodtype;
+	private Integer mem_height;
+	private Integer mem_weight;
+	private String mem_interest;
+	private String mem_intro;
+	private String mem_online;
+	private Double mem_longitude;
+	private Double mem_latitude;
+	private String mem_phone;
+	private String mem_mail;
+	private byte[] mem_photo;
+	private String mem_prohibit;
+	private String mem_set_notify;
+	private Date mem_time_notify;
 	
-	MemberVO(){
+	public MemberVO(){
 	}
 
-	public String getMemNo() {
-		return memNo;
+	public String getMem_no() {
+		return mem_no;
 	}
 
-	public void setMemNo(String memNo) {
-		this.memNo = memNo;
+	public void setMem_no(String mem_no) {
+		this.mem_no = mem_no;
 	}
 
-	public String getMemAccount() {
-		return memAccount;
+	public String getMem_account() {
+		return mem_account;
 	}
 
-	public void setMemAccount(String memAccount) {
-		this.memAccount = memAccount;
+	public void setMem_account(String mem_account) {
+		this.mem_account = mem_account;
 	}
 
-	public String getMemPassword() {
-		return memPassword;
+	public String getMem_password() {
+		return mem_password;
 	}
 
-	public void setMemPassword(String memPassword) {
-		this.memPassword = memPassword;
+	public void setMem_password(String mem_password) {
+		this.mem_password = mem_password;
 	}
 
-	public Date getMemJoinTime() {
-		return memJoinTime;
+	public Date getMem_join_time() {
+		return mem_join_time;
 	}
 
-	public void setMemJoinTime(Date memJoinTime) {
-		this.memJoinTime = memJoinTime;
+	public void setMem_join_time(Date mem_join_time) {
+		this.mem_join_time = mem_join_time;
 	}
 
-	public String getMemName() {
-		return memName;
+	public String getMem_name() {
+		return mem_name;
 	}
 
-	public void setMemName(String memName) {
-		this.memName = memName;
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
 	}
 
-	public String getMemGender() {
-		return memGender;
+	public String getMem_gender() {
+		return mem_gender;
 	}
 
-	public void setMemGender(String memGender) {
-		this.memGender = memGender;
+	public void setMem_gender(String mem_gender) {
+		this.mem_gender = mem_gender;
 	}
 
-	public Date getMemBirthday() {
-		return memBirthday;
+	public Date getMem_birthday() {
+		return mem_birthday;
 	}
 
-	public void setMemBirthday(Date memBirthday) {
-		this.memBirthday = memBirthday;
+	public void setMem_birthday(Date mem_birthday) {
+		this.mem_birthday = mem_birthday;
 	}
 
-	public String getMemCounty() {
-		return memCounty;
+	public String getMem_county() {
+		return mem_county;
 	}
 
-	public void setMemCounty(String memCounty) {
-		this.memCounty = memCounty;
+	public void setMem_county(String mem_county) {
+		this.mem_county = mem_county;
 	}
 
-	public Integer getMemDeposit() {
-		return memDeposit;
+	public Integer getMem_deposit() {
+		return mem_deposit;
 	}
 
-	public void setMemDeposit(Integer memDeposit) {
-		this.memDeposit = memDeposit;
+	public void setMem_deposit(Integer mem_deposit) {
+		this.mem_deposit = mem_deposit;
 	}
 
-	public String getMemContact() {
-		return memContact;
+	public String getMem_contact() {
+		return mem_contact;
 	}
 
-	public void setMemContact(String memContact) {
-		this.memContact = memContact;
+	public void setMem_contact(String mem_contact) {
+		this.mem_contact = mem_contact;
 	}
 
-	public String getMemEmotion() {
-		return memEmotion;
+	public String getMem_emotion() {
+		return mem_emotion;
 	}
 
-	public void setMemEmotion(String memEmotion) {
-		this.memEmotion = memEmotion;
+	public void setMem_emotion(String mem_emotion) {
+		this.mem_emotion = mem_emotion;
 	}
 
-	public Integer getMemBonus() {
-		return memBonus;
+	public Integer getMem_bonus() {
+		return mem_bonus;
 	}
 
-	public void setMemBonus(Integer memBonus) {
-		this.memBonus = memBonus;
+	public void setMem_bonus(Integer mem_bonus) {
+		this.mem_bonus = mem_bonus;
 	}
 
-	public String getMemBloodType() {
-		return memBloodType;
+	public String getMem_bloodtype() {
+		return mem_bloodtype;
 	}
 
-	public void setMemBloodType(String memBloodType) {
-		this.memBloodType = memBloodType;
+	public void setMem_bloodtype(String mem_bloodtype) {
+		this.mem_bloodtype = mem_bloodtype;
 	}
 
-	public Integer getMemHeight() {
-		return memHeight;
+	public Integer getMem_height() {
+		return mem_height;
 	}
 
-	public void setMemHeight(Integer memHeight) {
-		this.memHeight = memHeight;
+	public void setMem_height(Integer mem_height) {
+		this.mem_height = mem_height;
 	}
 
-	public Integer getMemWeight() {
-		return memWeight;
+	public Integer getMem_weight() {
+		return mem_weight;
 	}
 
-	public void setMemWeight(Integer memWeight) {
-		this.memWeight = memWeight;
+	public void setMem_weight(Integer mem_weight) {
+		this.mem_weight = mem_weight;
 	}
 
-	public String getMemInterest() {
-		return memInterest;
+	public String getMem_interest() {
+		return mem_interest;
 	}
 
-	public void setMemInterest(String memInterest) {
-		this.memInterest = memInterest;
+	public void setMem_interest(String mem_interest) {
+		this.mem_interest = mem_interest;
 	}
 
-	public String getMemIntro() {
-		return memIntro;
+	public String getMem_intro() {
+		return mem_intro;
 	}
 
-	public void setMemIntro(String memIntro) {
-		this.memIntro = memIntro;
+	public void setMem_intro(String mem_intro) {
+		this.mem_intro = mem_intro;
 	}
 
-	public String getMemOnline() {
-		return memOnline;
+	public String getMem_online() {
+		return mem_online;
 	}
 
-	public void setMemOnline(String memOnline) {
-		this.memOnline = memOnline;
+	public void setMem_online(String mem_online) {
+		this.mem_online = mem_online;
 	}
 
-	public Double getMemLongitude() {
-		return memLongitude;
+	public Double getMem_longitude() {
+		return mem_longitude;
 	}
 
-	public void setMemLongitude(Double memLongitude) {
-		this.memLongitude = memLongitude;
+	public void setMem_longitude(Double mem_longitude) {
+		this.mem_longitude = mem_longitude;
 	}
 
-	public Double getMemLatitude() {
-		return memLatitude;
+	public Double getMem_latitude() {
+		return mem_latitude;
 	}
 
-	public void setMemLatitude(Double memLatitude) {
-		this.memLatitude = memLatitude;
+	public void setMem_latitude(Double mem_latitude) {
+		this.mem_latitude = mem_latitude;
 	}
 
-	public String getMemPhone() {
-		return memPhone;
+	public String getMem_phone() {
+		return mem_phone;
 	}
 
-	public void setMemPhone(String memPhone) {
-		this.memPhone = memPhone;
+	public void setMem_phone(String mem_phone) {
+		this.mem_phone = mem_phone;
 	}
 
-	public String getMemMail() {
-		return memMail;
+	public String getMem_mail() {
+		return mem_mail;
 	}
 
-	public void setMemMail(String memMail) {
-		this.memMail = memMail;
+	public void setMem_mail(String mem_mail) {
+		this.mem_mail = mem_mail;
 	}
 
-	public byte[] getMemPhoto() {
-		return memPhoto;
+	public byte[] getMem_photo() {
+		return mem_photo;
 	}
 
-	public void setMemPhoto(byte[] memPhoto) {
-		this.memPhoto = memPhoto;
+	public void setMem_photo(byte[] mem_photo) {
+		this.mem_photo = mem_photo;
 	}
 
-	public String getMemProhibit() {
-		return memProhibit;
+	public String getMem_prohibit() {
+		return mem_prohibit;
 	}
 
-	public void setMemProhibit(String memProhibit) {
-		this.memProhibit = memProhibit;
+	public void setMem_prohibit(String mem_prohibit) {
+		this.mem_prohibit = mem_prohibit;
 	}
 
-	public String getMemSetNotify() {
-		return memSetNotify;
+	public String getMem_set_notify() {
+		return mem_set_notify;
 	}
 
-	public void setMemSetNotify(String memSetNotify) {
-		this.memSetNotify = memSetNotify;
+	public void setMem_set_notify(String mem_set_notify) {
+		this.mem_set_notify = mem_set_notify;
 	}
 
-	public Date getMemTimeNotify() {
-		return memTimeNotify;
+	public Date getMem_time_notify() {
+		return mem_time_notify;
 	}
 
-	public void setMemTimeNotify(Date memTimeNotify) {
-		this.memTimeNotify = memTimeNotify;
+	public void setMem_time_notify(Date mem_time_notify) {
+		this.mem_time_notify = mem_time_notify;
 	};
 	
 	
