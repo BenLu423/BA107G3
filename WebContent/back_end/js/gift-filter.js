@@ -9,11 +9,11 @@ $(document).ready(function () {
       }
     });
 
-  $('.gift-status .never button').on('click',
-    function(){
-      $(this).next().show();
-      $(this).next().next().show();
-      $(this).css('background-color','#DDD');
-    });
+//  $('.gift-status .never button').on('click',
+//    function(){
+//      $(this).next().show();
+//      $(this).next().next().show();
+//      $(this).css('background-color','#DDD');
+//    });
 
  });

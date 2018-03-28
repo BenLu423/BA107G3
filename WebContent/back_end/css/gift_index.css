@@ -1,23 +1,16 @@
-.gift-search, .gift-menu{
-    padding-top: 12px;
-    padding-bottom: 28px;
+#giftAdd h3{
+	margin: 10px;
+}
+
+.gift-search{
+    padding: 0px;
+    width: 100%;
+}
+
+.gift-menu{
+    padding-top: 0px;
+    padding-bottom: 20px;
     width: 40%;
-}
-
-.gift-search input{
-	margin:0px;
-	padding:0px;
-}
-
-.gift-search input,
-.gift-serach button{
-	height:100%;
-}
-
-.gift-search input{
-	width: 400px;
-	size:30px;
-	
 }
 
 .gift-management>tbody>tr>td{
@@ -58,7 +51,8 @@
 }
 
 .gift-pic img{
-	max-width: 7.5em;
+	height: 120px;
+	width: 120px;
 }
 
 .gift-no{
@@ -146,30 +140,51 @@
 	max-width: 70px;
 }
 
-/* button[id=never]{ */
-/* 	background-color: #FFF; */
-/* 	color: #000; */
-/* 	border: 1px solid black; */
-/* 	font-weight: bolder; */
-/* } */
+button[data-target=never]{
+	background-color: #FFF;
+	color: blue;
+	font-weight: bolder;
+}
 
-/* button[id=added]{ */
-/* 	background-color: #FFF; */
-/* 	color: green; */
-/* 	font-weight: bolder; */
-/* } */
-/* button[id=off]{ */
-/* 	background-color: #FFF; */
-/* 	color: red; */
-/* 	font-weight: bolder; */
-/* } */
-/* button[id=all]{ */
-/* 	background-color: #FFF; */
-/* 	color: black; */
-/* 	border: 1px solid black; */
-/* } */
+button[data-target=added]{
+	background-color: #FFF;
+	color: green;
+	font-weight: bolder;
+}
 
-/* button[id=all]:hover{ */
-/* 	background-color: #000; */
-/* 	color: white; */
-/* } */
+button[data-target=off]{
+	background-color: #FFF;
+	color: red;
+	font-weight: bolder;
+}
+
+button[data-target=all]{
+	background-color: #FFF;
+	color: black;
+	border: 1px solid black;
+}
+
+button[data-target=all]:hover{
+	background-color: #000;
+	color: white;
+	
+}
+
+.form-inline{
+	font-size:0px;
+	border-radius: 0px;
+	
+}
+
+.form-control{
+	border-radius: 0px;
+}
+
+.form-group input{
+	margin: 10px 0px 10px 0px;
+
+}
+
+#searchContext{
+	width:500px;	
+}

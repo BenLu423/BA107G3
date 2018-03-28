@@ -46,13 +46,13 @@ public class GiftService {
 	}
 	
 	public Map<GiftVO, List<GiftLabelVO>> getGiftAll(){
-		Map<GiftVO, List<GiftLabelVO>> map = new TreeMap<>(
+		Map<GiftVO, List<GiftLabelVO>> giftsMap = new TreeMap<>(
 				new Comparator<GiftVO>() {
 					@Override
 					public int compare(GiftVO o1, GiftVO o2) {
 						String str1 = o1.getGift_no();
 						String str2 = o2.getGift_no();
-						return str1.compareTo(str2);
+						return str2.compareTo(str1);
 					}
 				}
 		);
@@ -73,10 +73,45 @@ public class GiftService {
 				giftLabelVO = labelDao.getByPrimaryKey(detailVO.getGiftl_no());
 				labelList.add(giftLabelVO);
 			}
-			map.put(giftVO, labelList);
+			giftsMap.put(giftVO, labelList);
 		}
-		return map;
+		return giftsMap;
 	}
+
+	
+	public Map<GiftVO, List<GiftLabelVO>> getGiftAll(Map<String, String[]> map){
+		Map<GiftVO, List<GiftLabelVO>> giftsMap = new TreeMap<>(
+				new Comparator<GiftVO>() {
+					@Override
+					public int compare(GiftVO o1, GiftVO o2) {
+						String str1 = o1.getGift_no();
+						String str2 = o2.getGift_no();
+						return str2.compareTo(str1);
+					}
+				}
+		);
+		List<GiftLabelVO> labelList = null;
+		GiftLabelVO giftLabelVO = null;
+		List<GiftLabelDetailVO> detailList = null;
+//		List<GiftVO> list = dao.getAll();
+		List<GiftVO> list = dao.getAll(map);
+		for(GiftVO giftVO: list){
+			/* * * * * * * * * * * * * * * * * * * * * * * * 
+			 * 透過禮物編號(gift_no)							* 
+			 * 來取得該擁有的標籤明細物件們(List<GiftLabelDetailVO>) 	*  
+			 * 並逐一找出對應的標籤物件(giftLabelVO)放入集合中			*
+			 * 再加入Map中回傳給[gift_index.jsp]使用				*
+			 * * * * * * * * * * * * * * * * * * * * * * * */
+			labelList = new ArrayList<>();
+			detailList = detailDao.getByGiftNo(giftVO.getGift_no());
+			for(GiftLabelDetailVO detailVO: detailList){
+				giftLabelVO = labelDao.getByPrimaryKey(detailVO.getGiftl_no());
+				labelList.add(giftLabelVO);
+			}
+			giftsMap.put(giftVO, labelList);
+		}
+		return giftsMap;
+	}	
 	
 	public byte[] getPic(String gift_no){
 		return dao.getPic(gift_no);

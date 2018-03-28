@@ -465,6 +465,62 @@ public class GiftDAO implements GiftDAO_interface{
 		return list;
 	}
 
+
+	@Override
+	public List<GiftVO> getAll(Map<String, String[]> map) {
+		List<GiftVO> list = new ArrayList<GiftVO>();
+		GiftVO giftVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			String finalSQL = Gift_CompositeQuery.get_WhereCondition(map);
+			pstmt = con.prepareStatement(finalSQL);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				giftVO = new GiftVO();
+				giftVO.setGift_no(rs.getString("gift_no"));
+				giftVO.setGift_name(rs.getString("gift_name"));
+				giftVO.setGift_cnt(rs.getString("gift_cnt"));
+				giftVO.setGift_price(rs.getInt("gift_price"));
+				giftVO.setGift_pic(rs.getBytes("gift_pic"));
+				giftVO.setGift_is_on(rs.getString("gift_is_on"));
+				giftVO.setGift_track_qty(rs.getInt("gift_track_qty"));
+				giftVO.setGift_buy_qty(rs.getInt("gift_buy_qty"));
+				list.add(giftVO);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally{
+			if(rs != null){
+				try {
+						rs.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				};
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
 	@Override
 	public byte[] getPic(String gift_no) {
 		byte[] pic = null;

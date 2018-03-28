@@ -2,7 +2,7 @@ package com.gift.model;
 
 import java.sql.Connection;
 import java.util.List;
-
+import java.util.Map;
 import com.giftLabelDetail.model.GiftLabelDetailVO;
 
 public interface GiftDAO_interface {
@@ -13,6 +13,7 @@ public interface GiftDAO_interface {
 	public void delete(String gift_no);
 	public GiftVO getByPrimaryKey(String gift_no);
 	public List<GiftVO> getAll();
+	public List<GiftVO> getAll(Map<String, String[]> map); 
 	public byte[] getPic(String gift_no);
 	
 //	//查詢某標籤的禮物(一對多)(回傳 Set)

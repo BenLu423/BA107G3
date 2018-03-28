@@ -1,4 +1,9 @@
 $(document).ready(function () {
+	 $("#selectWord").change(function(){
+		 var word =  $("#selectWord").val();
+		 $('#searchContext').attr("name",word);
+	 });
+	
 	
     $('.btn-filter').on('click', function () {
       var $target = $(this).data('target');
