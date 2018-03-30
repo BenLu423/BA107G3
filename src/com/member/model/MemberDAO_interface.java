@@ -5,7 +5,9 @@ import java.util.List;
 public interface MemberDAO_interface {
 	void memberAdd(MemberVO member);
 	void memberUpdate(MemberVO member);
-	MemberVO memberSelect(String name);
+	MemberVO memberSelect(String mem_account);
 	List<MemberVO> getAll();
-	MemberVO checkLogin(String account,String password);
+	MemberVO checkLogin(String mem_account,String mem_password);
+	void memberRegister(MemberVO member);
+	boolean isMember(String mem_account);
 }

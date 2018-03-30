@@ -327,5 +327,17 @@ public class MemberJDBCDAO implements MemberDAO_interface{
 		
 		return mem;
 	}
+
+	@Override
+	public void memberRegister(MemberVO member) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isMember(String mem_account) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

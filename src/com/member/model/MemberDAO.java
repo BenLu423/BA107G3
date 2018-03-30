@@ -23,24 +23,30 @@ import javax.sql.DataSource;
 
 import org.apache.catalina.ssi.ByteArrayServletOutputStream;
 
-import sun.awt.image.ByteArrayImageSource;
+
 
 public class MemberDAO implements MemberDAO_interface{
-	private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-	private static final String USER = "BA107G3";
-	private static final String PASS = "BA107G3";
+
 	
 	static final String INSERT = "INSERT INTO MEMBER(MEM_NO, MEM_ACCOUNT, MEM_PASSWORD, MEM_JOIN_TIME, MEM_NAME, MEM_GENDER, MEM_BIRTHDAY, MEM_COUNTY, MEM_DEPOSIT, MEM_CONTACT, MEM_EMOTION, MEM_BONUS, MEM_BLOODTYPE, MEM_HEIGHT, MEM_WEIGHT, MEM_INTEREST, MEM_INTRO, MEM_ONLINE, MEM_LONGITUDE, MEM_LATITUDE, MEM_PHONE, MEM_MAIL, MEM_PHOTO, MEM_PROHIBIT, MEM_SETNOTIFY, MEM_TIMENOTIFY) "
 			+ "VALUES ('M'||LPAD(to_char(MEMBER_SEQ.NEXTVAL),3,'0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	static final String UPDATE = "UPDATE MEMBER SET MEM_ACCOUNT = ?, MEM_PASSWORD = ? WHERE MEM_NO = ?";
 	
-	static final String SINGLE_SEARCH = "SELECT MEM_NAME,MEM_PASSWORD FROM MEMBER WHERE MEM_NO = ?";
+	/*查詢帳號是否存在*/
+	static final String SINGLE_SEARCH = "SELECT MEM_ACCOUNT FROM MEMBER WHERE MEM_ACCOUNT = ?";
 	
 	static final String GETALL = "SELECT * FROM MEMBER";
 	
+	/*會員登入*/
 	static final String CHECKLOGIN = "SELECT * FROM MEMBER WHERE MEM_ACCOUNT = ? AND MEM_PASSWORD = ?";
+	/*會員註冊*/
+	static final String REGISTER = "INSERT INTO MEMBER(MEM_NO, MEM_ACCOUNT, MEM_PASSWORD, MEM_NAME, MEM_GENDER, MEM_BIRTHDAY, MEM_COUNTY, MEM_CONTACT, MEM_EMOTION, MEM_BLOODTYPE, MEM_HEIGHT, MEM_WEIGHT)"
+			+ "VALUES ('M'||LPAD(to_char(MEMBER_SEQ.NEXTVAL),3,'0'),? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
+	
+	
+	
+	
 	/*驅動載入*/									
 	private static DataSource ds = null;
 	static {
@@ -179,7 +185,7 @@ public class MemberDAO implements MemberDAO_interface{
 	}
 	/*單筆查詢*/
 	@Override
-	public MemberVO memberSelect(String name) {
+	public MemberVO memberSelect(String mem_account) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -188,13 +194,12 @@ public class MemberDAO implements MemberDAO_interface{
 		try {
 			con = ds.getConnection();
 			ps = con.prepareStatement(SINGLE_SEARCH);
-			ps.setString(1, name);
+			ps.setString(1, mem_account);
 			
 			rs = ps.executeQuery();
 			while(rs.next()){
 				mvos = new MemberVO();
 				mvos.setMem_account(rs.getString("MEM_NAME"));
-				mvos.setMem_password(rs.getString("MEM_PASSWORD"));
 			}
 			
 		} catch (SQLException e) {
@@ -300,22 +305,46 @@ public class MemberDAO implements MemberDAO_interface{
 		}
 		return memberList;
 	}
-	public MemberVO checkLogin(String account,String password){
+	/*確認登入*/
+	public MemberVO checkLogin(String mem_account,String mem_password){
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		boolean checkmem = false;
 		MemberVO mem = null;
 		try{
 			con = ds.getConnection();
 			ps = con.prepareStatement(CHECKLOGIN);
-			ps.setString(1, account);
-			ps.setString(2, password);
+			ps.setString(1, mem_account);
+			ps.setString(2, mem_password);
 			rs = ps.executeQuery();
 			while(rs.next()){
 				mem = new MemberVO();
+				mem.setMem_no(rs.getString("MEM_NO"));
 				mem.setMem_account(rs.getString("MEM_ACCOUNT"));
 				mem.setMem_password(rs.getString("MEM_PASSWORD"));
+				mem.setMem_join_time(rs.getDate("MEM_JOIN_TIME"));
+				mem.setMem_name(rs.getString("MEM_NAME"));
+				mem.setMem_gender(rs.getString("MEM_GENDER"));
+				mem.setMem_birthday(rs.getDate("MEM_BIRTHDAY"));
+				mem.setMem_county(rs.getString("MEM_COUNTY"));
+				mem.setMem_deposit(rs.getInt("MEM_DEPOSIT"));
+				mem.setMem_contact(rs.getString("MEM_CONTACT"));
+				mem.setMem_emotion(rs.getString("MEM_EMOTION"));
+				mem.setMem_bonus(rs.getInt("MEM_BONUS"));
+				mem.setMem_bloodtype(rs.getString("MEM_BLOODTYPE"));
+				mem.setMem_height(rs.getInt("MEM_HEIGHT"));
+				mem.setMem_weight(rs.getInt("MEM_WEIGHT"));
+				mem.setMem_interest(rs.getString("MEM_INTEREST"));
+				mem.setMem_intro(rs.getString("MEM_INTRO"));
+				mem.setMem_online(rs.getString("MEM_ONLINE"));
+				mem.setMem_longitude(rs.getDouble("MEM_LONGITUDE"));
+				mem.setMem_latitude(rs.getDouble("MEM_LATITUDE"));
+				mem.setMem_phone(rs.getString("MEM_PHONE"));
+				mem.setMem_mail(rs.getString("MEM_MAIL"));
+				mem.setMem_photo(rs.getBytes("MEM_PHOTO"));
+				mem.setMem_prohibit(rs.getString("MEM_PROHIBIT"));
+				mem.setMem_set_notify(rs.getString("MEM_SETNOTIFY"));
+				mem.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));;	
 			}
 			
 		}catch(SQLException e){
@@ -334,5 +363,74 @@ public class MemberDAO implements MemberDAO_interface{
 		
 		return mem;
 	}
+	/*會員註冊*/
+	public void memberRegister(MemberVO member){
+		Connection con = null;
+		PreparedStatement ps = null;
+		try{
+			con = ds.getConnection();
+//			con.setAutoCommit(false);
+			ps = con.prepareStatement(REGISTER);
+			ps.setString(1, member.getMem_account());
+			ps.setString(2, member.getMem_password());
+			ps.setString(3, member.getMem_name());
+			ps.setString(4, member.getMem_gender());
+			ps.setDate(5, member.getMem_birthday());
+			ps.setString(6, member.getMem_county());
+			ps.setString(7, member.getMem_contact());
+			ps.setString(8, member.getMem_emotion());
+			ps.setString(9, member.getMem_bloodtype());
+			ps.setInt(10, member.getMem_height());
+			ps.setInt(11, member.getMem_weight());
+			ps.executeUpdate();
+//			con.commit();
+//			con.setAutoCommit(true);	
+		}catch(SQLException e){
+//			try {
+//				con.rollback();
+//			} catch (SQLException e1) {
+//				e1.printStackTrace();
+//			}
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public boolean isMember(String mem_account){
+		boolean ismem = false;
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(SINGLE_SEARCH);
+			ps.setString(1, mem_account);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				
+				ismem = true;
+			}	
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}			
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return ismem;
+	}
+	
+	
 	
 }
