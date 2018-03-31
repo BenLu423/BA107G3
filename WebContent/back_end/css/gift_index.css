@@ -1,3 +1,65 @@
+nav .pagination{
+	margin:0px;
+}
+
+#giftAdd{
+	background-color: transparent;
+    color: white;
+    border: 0px;
+}
+
+button#giftAdd:focus{
+	outline:0;
+}
+
+input[type="file"] {
+  color: transparent;
+}
+
+.gift-cont{
+	margin-top:20px;	
+}
+
+textarea {
+  resize : none;
+}
+
+.gift-add-card{
+	position:relative;	
+}
+
+.gift-add-close{
+	position:absolute;
+ 	top: -10px;
+ 	right: 0px;	
+}
+
+.gift-add-close p{
+	font-size: 50px;
+	margin: 0px;
+}
+
+.gift-add-card .modal-dialog{
+	margin-top:0px;	
+}
+
+.gift-add-body .form-group input{
+	margin: 0px;
+}
+
+.gift-add-submit:hover,
+.gift-add-reset:hover{
+	background-color: black;
+	color: white;
+}
+
+#addPage,
+#addGift,
+#backPage{
+	width:80px;
+	margin-bottom: 20px;
+}
+
 #giftAdd h3{
 	margin: 10px;
 }
@@ -11,6 +73,10 @@
     padding-top: 0px;
     padding-bottom: 20px;
     width: 40%;
+}
+
+.gift-management{
+	margin-bottom: 0px;
 }
 
 .gift-management>tbody>tr>td{
@@ -45,6 +111,10 @@
 	margin:5px;
 }
 
+.gift-edit p{
+	margin: 0px;
+}
+
  .gift-pic{
 	min-width: 120px;
 	max-width: 120px;
@@ -58,6 +128,17 @@
 .gift-no{
 	min-width: 125px;
 	max-width: 125px;
+}
+
+.gift-no p{
+	text-align: center;
+	font-size: 30px;
+	margin: 0px;
+}
+
+.gift-no input{
+	text-align: center;
+	font-size: 20px;
 }
 
 .gift-no h2{
@@ -83,7 +164,8 @@
 	max-width: 400px;
 }
 
-.gift-contents p{
+.gift-contents p,
+.gift-contents textarea{
 	font-size: 18px;
 }
 
@@ -93,7 +175,8 @@
 }
 
 
-.gift-price p{
+.gift-price p,
+.gift-price input{
 	font-size: 2em;
 	text-align: center;
 }

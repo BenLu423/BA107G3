@@ -5,7 +5,6 @@
 <%@ page import="com.giftLabel.model.*"%>
 <%@ page import="java.util.*" %>
 
-<jsp:useBean id="giftSvc" scope="page" class="com.gift.model.GiftService"/>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
@@ -17,20 +16,15 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/gift_index.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/css/gift_index.css"> 
 
-    
-<div class="col-xs-12 col-sm-10 cont">
+<div class="col-xs-12 col-sm-10 cont gift-cont">
 	<div class="row">
-<!-- 	<div class="col-xs-12 col-sm-10 col-sm-offset-1"> -->
-<!-- 		<div class="page-header"> -->
-<%-- 			<a href="<%=request.getContextPath()%>/back_end/gift/gift_add.jsp"> --%>
-<!-- 				<button type="button" class="btn btn-default" id="giftAdd"><h3>新增禮物 </h3></button> -->
-<!-- 			</a> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+		<div class="col-xs-12 col-sm-12">
 		<div class="panel panel-default">
     		<div class="panel-body">
     			<div class="col-xs-12 col-sm-8 gift-search">
+    				<%-- Exception資訊 --%>
+    				${errorMsgs.Exception}
 					<form method="post" action="<%=request.getContextPath()%>/gift/gift.do" class="form-inline">
 						<div class="form-group">
 							<select class="form-control" id="selectWord">
@@ -51,12 +45,12 @@
     			</div>
     			
 		        <div class="col-xs-12 col-sm-6 pull-right gift-menu">
-		            <div class="btn-group pull-right">
-		                <button type="button" class="btn btn-primary btn-filter" data-target="never">尚未上架</button>
-		                <button type="button" class="btn btn-success btn-filter" data-target="added">上架中</button>
-		                <button type="button" class="btn btn-danger btn-filter" data-target="off" default>已下架</button>
-		                <button type="button" class="btn btn-default btn-filter" data-target="all">所有禮物</button>
-		            </div>
+<!-- 		            <div class="btn-group pull-right"> -->
+<!-- 		                <button type="button" class="btn btn-primary btn-filter" data-target="never">尚未上架</button> -->
+<!-- 		                <button type="button" class="btn btn-success btn-filter" data-target="added">上架中</button> -->
+<!-- 		                <button type="button" class="btn btn-danger btn-filter" data-target="off" default>已下架</button> -->
+<!-- 		                <button type="button" class="btn btn-default btn-filter" data-target="all">所有禮物</button> -->
+<!-- 		            </div> -->
 		        </div>
 				<div class="table-container giftAll gift-metadata">
         			<table>
@@ -76,16 +70,26 @@
                 	</tbody>
         			</table>
         		</div>
-        		<c:if test="${giftQuery==null}">
-        			<jsp:forward page="/gift/gift.do">
-        				<jsp:param name="action" value="searchGifts" />
-        				<jsp:param name="requestURL" value="<%=request.getServletPath()%>" />
-        			</jsp:forward>
+<%--         		<c:if test="${empty gifts}"> --%>
+<%--         			<jsp:forward page="/gift/gift.do"> --%>
+<%--         				<jsp:param name="action" value="searchGifts" /> --%>
+<%--         			</jsp:forward> --%>
+<%-- 				</c:if> --%>
+				<c:if test="${giftEdits != null}">
+				<jsp:include page="gift_listEdit.jsp"></jsp:include>
 				</c:if>
+				<hr style="width: 100%; height: 2px; background-color: black; margin: 10px 0px 0px 0px;">
 				<jsp:include page="gift_list.jsp"></jsp:include>
-				
+				目前筆數:${gifts.size()}
+				修改筆數:${giftEdits.size()}
     		</div>
-		</div>								
+		</div>	
+		</div>							
+	</div>
+	<div class="col-xs-12 col-sm-1">
+		<a href="<%=request.getContextPath()%>/gift/gift.do?action=gift_add&requestURL=<%=request.getServletPath()%>">
+			<img src="<%=request.getContextPath()%>/back_end/res/img/gift/addPage.ico" alt="Add" id="addPage">
+		</a>
 	</div>
 	</div>
 </div>	

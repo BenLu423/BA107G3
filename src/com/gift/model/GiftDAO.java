@@ -411,6 +411,17 @@ public class GiftDAO implements GiftDAO_interface{
 	}
 
 	@Override
+	public List<GiftVO> getSome(List<String> giftNoList) {
+		List<GiftVO> list = new ArrayList<GiftVO>();
+		GiftVO giftVO = null;
+		for(String gift_no: giftNoList){
+			giftVO = getByPrimaryKey(gift_no);
+			list.add(giftVO);
+		}
+		return list;
+	}
+
+	@Override
 	public List<GiftVO> getAll() {
 		List<GiftVO> list = new ArrayList<>();
 		GiftVO giftVO = null;

@@ -18,7 +18,7 @@ public class DBGifReader4 extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 //		req.setCharacterEncoding("BIG5");
-		res.setContentType("image/png");
+		res.setContentType("image/jpeg");
 		ServletOutputStream out = res.getOutputStream();
 		byte[] pic = null;
 		try{

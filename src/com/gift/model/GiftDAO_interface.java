@@ -12,6 +12,7 @@ public interface GiftDAO_interface {
 	public void updateBuyQty(GiftVO giftVO, Integer gift_buy_qty, Connection con);
 	public void delete(String gift_no);
 	public GiftVO getByPrimaryKey(String gift_no);
+	public List<GiftVO> getSome(List<String> giftNoList);
 	public List<GiftVO> getAll();
 	public List<GiftVO> getAll(Map<String, String[]> map); 
 	public byte[] getPic(String gift_no);

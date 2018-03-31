@@ -43,6 +43,11 @@
          <div class="row">
              <div class="col-xs-12 col-sm-3 col-sm-offset-9 login">
                      <div class="btn-group btn-group-justified mymenu-icon">
+                     	 <div class="btn-group">
+                             <button type="button" class="btn btn-default mybutton-icon">
+                                 	登出登出登出
+                             </button>
+                         </div>
                          <div class="btn-group">
                              <button type="button" class="btn btn-default mybutton-icon">
                                  	登出

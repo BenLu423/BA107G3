@@ -8,15 +8,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>gift_list.jsp</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/css/gift_index.css"> 
 </head>
 <body>
 	<div class="table-container giftAll">
+		<%@ include file="giftPage1.file" %>
 		<table class="table table-filter gift-management">
 			<tbody>
-				<%@ include file="giftPage1.file" %>
-
 				
 				<c:forEach var="gift" items="${gifts}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 					<c:choose>
@@ -32,17 +30,25 @@
 					</c:choose>
 					<td class="gift-edit">
 						<div>
-							<a class='btn btn-info btn-xs' href="#"><span
-								class="glyphicon glyphicon-edit"></span> Edit</a>
+							<form method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/gift/gift.do">
+								<button class='btn btn-info btn-xs'>
+									<span class="glyphicon glyphicon-edit"></span> Edit
+								</button>
+								<input type="hidden" name="action" value="searchGifts">
+								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>">
+								<input type="hidden" name="whichPage"	value="<%=whichPage%>">
+								<input type="hidden" name="edit_gift_no" value="${gift.key.gift_no}">
+							</form>
 						</div>
 						<div>
 							<c:if test='${gift.key.gift_is_on == "尚未上架"}'>
-								<form method="post" action="<%=request.getContextPath()%>/gift/gift.do">
+								<form method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/gift/gift.do">
 								<button class='btn btn-danger btn-xs'>
 									<span class="glyphicon glyphicon-remove"></span> Delete
 								</button>
-								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>">
 								<input type="hidden" name="action" value="deleteOneGift">
+								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>">
+								<input type="hidden" name="whichPage"	value="<%=whichPage%>">
 								<input type="hidden" name="gift_no" value="${gift.key.gift_no}">
 								</form>
 							</c:if>
@@ -115,7 +121,7 @@
 		</table>
 		<%@ include file="giftPage2.file" %> 
 
-		第幾頁:<%=whichPage%> / 總頁數:<%=pageNumber%>	
+		<p style="text-align:right;">頁數:<%=whichPage%> / <%=pageNumber%></p>	
 		
 	</div>
 </body>
