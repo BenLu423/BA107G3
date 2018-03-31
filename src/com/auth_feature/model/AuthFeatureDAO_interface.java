@@ -1,4 +1,4 @@
-package com.admin_feature.model;
+package com.auth_feature.model;
 
 import java.util.List;
 import java.util.Set;

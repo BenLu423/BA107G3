@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.admin_feature.model.AuthFeatureVO;
+import com.auth_feature.model.AuthFeatureVO;
 
 public class AdminJDBCDAO implements AdminDAO_interface{
 	String driver = "oracle.jdbc.driver.OracleDriver";
@@ -19,9 +19,10 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 	private static final String INSERT_ADMIN = "INSERT INTO ADMIN(ADM_NO, ADM_ACCT, ADM_PWD, ADM_NAME) VALUES ('A'||LPAD(to_char(ADMIN_SEQ.NEXTVAL),3,'0'), ?, ?, ?)";
 	private static final String UPDATE_ADMIN = "UPDATE ADMIN SET ADM_ACCT=?,ADM_PWD=?,ADM_NAME=? WHERE ADM_NO=?";
 	private static final String DELETE_ADMIN = "DELETE FROM ADMIN WHERE ADM_NO=?";
-	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_ACCT=? AND ADM_PWD=?";
+	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_NO=?";
 	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN";
 	private static final String GET_ADMIN_AUTHS = "SELECT*FROM AUTH_FEATURE JOIN ADMIN_AUTH ON AUTH_FEATURE.AUTH_NO = ADMIN_AUTH.AUTH_NO WHERE ADM_NO=?";
+	private static final String GET_ONE_ByACCT_PWD = "SELECT*FROM ADMIN WHERE ADM_ACCT=? AND ADM_PWD=?";
 	
 
 	@Override
@@ -32,7 +33,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 		try{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url,userid,passwd);
-			pstmt = con.prepareStatement(INSERT_ADMIN);
+			pstmt = con.prepareStatement(INSERT_ADMIN,PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			pstmt.setString(1, adminVO.getAdm_acct());
 			pstmt.setString(2, adminVO.getAdm_pwd());
@@ -153,7 +154,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 	}
 
 	@Override
-	public AdminVO findByPrimaryKey(String adminAcct,String adminPwd) {
+	public AdminVO findByPrimaryKey(String admin_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -164,8 +165,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 			con = DriverManager.getConnection(url,userid,passwd);
 			pstmt = con.prepareStatement(GET_ONE_ADMIN);
 			
-			pstmt.setString(1, adminAcct);
-			pstmt.setString(2, adminPwd);
+			pstmt.setString(1, admin_no);
 			rs = pstmt.executeQuery();
 			
 			rs.next();
@@ -252,12 +252,12 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 	
 
 	@Override
-	public Set<AuthFeatureVO> getAdminAuths(String admin_no) {
+	public List<AuthFeatureVO> getAdminAuths(String admin_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		AuthFeatureVO auth = null;
-		Set<AuthFeatureVO> set = new LinkedHashSet<AuthFeatureVO>();
+		List<AuthFeatureVO> list = new ArrayList<AuthFeatureVO>();
 		
 		try{
 			Class.forName(driver);
@@ -271,7 +271,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 				auth = new AuthFeatureVO();
 				auth.setAuth_no(rs.getString("auth_no"));
 				auth.setAuth_name(rs.getString("auth_name"));
-				set.add(auth);
+				list.add(auth);
 			}
 		}catch(ClassNotFoundException e){
 			throw new RuntimeException("Couldn't load database driver. "
@@ -296,7 +296,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 				
 			}	
 		}
-		return set;
+		return list;
 	}
 	
 
@@ -323,11 +323,11 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 //		admin.delete("A006");
 		
 		//¥H±b¸¹±K½X¬d¸ß
-		AdminVO adminvo3 = admin.findByPrimaryKey("AAA","AAA");
-		System.out.println("adminvo_no="+adminvo3.getAdm_no());
-		System.out.println("adminvo_acct="+adminvo3.getAdm_acct());
-		System.out.println("adminvo_pwd="+adminvo3.getAdm_pwd());
-		System.out.println("adminvo_name"+adminvo3.getAdm_name());
+//		AdminVO adminvo3 = admin.findByPrimaryKey("A001");
+//		System.out.println("adminvo_no="+adminvo3.getAdm_no());
+//		System.out.println("adminvo_acct="+adminvo3.getAdm_acct());
+//		System.out.println("adminvo_pwd="+adminvo3.getAdm_pwd());
+//		System.out.println("adminvo_name"+adminvo3.getAdm_name());
 		
 		//getAll
 //		List<AdminVO> list = admin.getAll();
@@ -340,11 +340,14 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 //		}
 		
 		//get admin's auths
-//		Set<AuthFeatureVO> auth = admin.getAdminAuths("A004");
+//		List<AuthFeatureVO> auth = admin.getAdminAuths("A001");
 //		for(AuthFeatureVO auths : auth){
 //			System.out.println("auth_no:"+auths.getAuth_no());
 //			System.out.println("auth_name:"+auths.getAuth_name());
 //		}
+		
+		AdminVO adminvo = admin.findByPrimaryKey("A008");
+		System.out.println(adminvo.getAdm_acct());
 		
 		
 	}
@@ -397,6 +400,55 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 			}	
 		}
 		return map;
+	}
+
+	@Override
+	public AdminVO findByAcctAndPwd(String admin_acct, String admin_pws) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		AdminVO admin = null;
+		
+		try{
+			Class.forName(driver);
+			con = DriverManager.getConnection(url,userid,passwd);
+			pstmt = con.prepareStatement(GET_ONE_ByACCT_PWD);
+			
+			pstmt.setString(1, admin_acct);
+			pstmt.setString(2, admin_pws);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			admin = new AdminVO();
+			admin.setAdm_no(rs.getString("adm_no"));
+			admin.setAdm_acct(rs.getString("adm_acct"));
+			admin.setAdm_pwd(rs.getString("adm_pwd"));
+			admin.setAdm_name(rs.getString("adm_name"));
+			
+		}catch(ClassNotFoundException e){
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		}catch(SQLException se){
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		}finally{
+			if(pstmt!=null){
+				try{
+					pstmt.close();
+				}catch(SQLException se){
+					se.printStackTrace(System.err);
+				}
+			}
+			if(con!=null){
+				try{
+					con.close();
+				}catch(Exception e){
+					e.printStackTrace(System.err);
+				}
+				
+			}	
+		}
+		return admin;
 	}
 
 }

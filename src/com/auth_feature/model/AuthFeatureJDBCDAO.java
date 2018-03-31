@@ -1,4 +1,4 @@
-package com.admin_feature.model;
+package com.auth_feature.model;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -306,22 +306,22 @@ public class AuthFeatureJDBCDAO implements AuthFeatureDAO_interface{
 //		System.out.println("auth_name="+auth3.getAuth_name());
 		
 		//getAll
-//		List<Auth_featureVO>list = auth.getAll();
-//		for(Auth_featureVO auth4 : list){
-//			System.out.println("auth_no="+auth4.getAuth_no());
-//			System.out.println("auth_name="+auth4.getAuth_name());
-//			System.out.println("=======================");
-//		}
+		List<AuthFeatureVO>list = auth.getAll();
+		for(AuthFeatureVO auth4 : list){
+			System.out.println("auth_no="+auth4.getAuth_no());
+			System.out.println("auth_name="+auth4.getAuth_name());
+			System.out.println("=======================");
+		}
 		
 		//get admin by auth_no
-		Set<AdminVO> set = auth.getAdminsByAuthno("AF004");
-		for(AdminVO admin : set){
-			System.out.println("admin_no:"+admin.getAdm_no());
-			System.out.println("admin_acct:"+admin.getAdm_acct());
-			System.out.println("admin_pws:"+admin.getAdm_pwd());
-			System.out.println("admin_name:"+admin.getAdm_name());
-			System.out.println("======================");
-		}
+//		Set<AdminVO> set = auth.getAdminsByAuthno("AF001");
+//		for(AdminVO admin : set){
+//			System.out.println("admin_no:"+admin.getAdm_no());
+//			System.out.println("admin_acct:"+admin.getAdm_acct());
+//			System.out.println("admin_pws:"+admin.getAdm_pwd());
+//			System.out.println("admin_name:"+admin.getAdm_name());
+//			System.out.println("======================");
+//		}
 		
 	}
 

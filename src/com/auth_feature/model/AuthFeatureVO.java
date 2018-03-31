@@ -1,4 +1,4 @@
-package com.admin_feature.model;
+package com.auth_feature.model;
 
 public class AuthFeatureVO implements java.io.Serializable{
 	private String auth_no;

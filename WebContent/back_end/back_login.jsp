@@ -22,7 +22,7 @@
 				<div class="form-group">
 					<label for="account">±b¸¹</label> <input type="text"
 						class="form-control" id="account" placeholder="Enter account"
-						name="account" value="${account}">
+						name="account" value="${requestScope.account}">
 				</div>
 				
 				

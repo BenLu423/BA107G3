@@ -1,9 +1,8 @@
 package com.admin.model;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import com.admin_feature.model.AuthFeatureVO;
+import com.auth_feature.model.AuthFeatureVO;
 
 public class AdminService {
 	
@@ -37,16 +36,21 @@ public class AdminService {
 		dao.delete(adm_no);
 	}
 	
-	public AdminVO getOneAdmin(String adminAcct,String adminPwd){
-		return dao.findByPrimaryKey(adminAcct,adminPwd);
+	public AdminVO getOneAdmin(String admin_no){
+		return dao.findByPrimaryKey(admin_no);
+	}
+	
+	public AdminVO getOneByAcctAndPwd(String adm_acct,String adm_pwd){
+		return dao.findByAcctAndPwd(adm_acct, adm_pwd);
 	}
 	
 	public List<AdminVO>getAll(){
 		return dao.getAll();
 	}
 	
-	public Set<AuthFeatureVO>getAdminAuths(String adm_no){
+	public List<AuthFeatureVO>getAdminAuths(String adm_no){
 		return dao.getAdminAuths(adm_no);
 	}
-
+	
+	
 }
