@@ -42,13 +42,13 @@
 								<table class="table table-bordered">
 								<tr>
 									<td><img src="<%=request.getContextPath()%>/back_end/res/img/hito.png" style="width: 50px"></td>
-									<td>員工編號<br>${adminVO.adm_no}
+									<td>員工編號<br>${admin.adm_no}
 									</td>
-									<td>員工姓名<br> <input type="text" name="adminName" value="${adminVO.adm_name}"></td>
-									<td>員工帳號<br><input type="text" name="account" value="${adminVO.adm_acct}"></td>
-									<td>員工密碼<br> <input type="password" name="pwd" value="${adminVO.adm_pwd}"></td>
+									<td>員工姓名<br> <input type="text" name="adminName" value="${admin.adm_name}"></td>
+									<td>員工帳號<br><input type="text" name="account" value="${admin.adm_acct}"></td>
+									<td>員工密碼<br> <input type="password" name="pwd" value="${admin.adm_pwd}"></td>
 									<td><input type="submit" value="送出">
-										<input type="hidden" name="adm_no" value="${adminVO.adm_no}">
+										<input type="hidden" name="adm_no" value="${admin.adm_no}">
 										<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>">
 										<input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>">
 										<input type="hidden" name="action" value="update">
@@ -57,7 +57,7 @@
 								<tr>
 									<td colspan="6">
 									
-									<c:forEach var="tag" items="${adminVO.tag}" varStatus="loop">
+									<c:forEach var="tag" items="${admin.tag}" varStatus="loop">
 									<div data-toggle="buttons" class="btn-group bizmoduleselect">
 										<label class="btn btn-default  ${(tag==1)?'active':''}">
 											<div class="bizcontent">

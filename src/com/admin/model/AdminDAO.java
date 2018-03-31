@@ -35,7 +35,7 @@ public class AdminDAO implements AdminDAO_interface{
 	private static final String UPDATE_ADMIN = "UPDATE ADMIN SET ADM_ACCT=?,ADM_PWD=?,ADM_NAME=? WHERE ADM_NO=?";
 	private static final String DELETE_ADMIN = "DELETE FROM ADMIN WHERE ADM_NO=?";
 	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_NO=?";
-	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN";
+	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN ORDER BY ADM_NO DESC";
 	private static final String GET_ADMIN_AUTHS = "SELECT*FROM AUTH_FEATURE JOIN ADMIN_AUTH ON AUTH_FEATURE.AUTH_NO = ADMIN_AUTH.AUTH_NO WHERE ADM_NO=?";
 	private static final String GET_ONE_ByACCT_PWD = "SELECT*FROM ADMIN WHERE ADM_ACCT=? AND ADM_PWD=?";
 	

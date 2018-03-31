@@ -45,14 +45,14 @@ public class AdminServlet extends HttpServlet {
 				// 檢查是否有填帳密
 				if (account == null || (account.trim().length()) == 0 || psw == null || (psw.trim().length()) == 0) {
 					req.setAttribute("errorMsgs", "請輸入帳號密碼");
-					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/back_login.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				// 檢查是否有此帳戶
 				if (!map.containsKey(account)) {
 					req.setAttribute("errorMsgs", "無此員工");
-					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/back_login.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
 					failureView.forward(req, res);
 					return;
 				} else {
@@ -61,14 +61,14 @@ public class AdminServlet extends HttpServlet {
 					if (!psw.equals(map.get(account))) {
 						req.setAttribute("errorMsgs", "密碼錯誤");
 						req.setAttribute("account", account);
-						RequestDispatcher failureView = req.getRequestDispatcher("/back_end/back_login.jsp");
+						RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
 						failureView.forward(req, res);
 						return;
 					} else {
 						admin = adminSvc.getOneByAcctAndPwd(account, psw);
 						HttpSession session = req.getSession();
 						session.setAttribute("admin", admin);
-						res.sendRedirect(req.getContextPath() + "/back_end/index.jsp");
+						res.sendRedirect(req.getContextPath() + "/back_end/back_page.jsp");
 					}
 				}
 
@@ -192,8 +192,8 @@ public class AdminServlet extends HttpServlet {
 				String adm_no = req.getParameter("adm_no");
 				//以編號取員工物件
 				AdminService admSvc = new AdminService();
-				AdminVO adminVO = admSvc.getOneAdmin(adm_no);
-				req.setAttribute("adminVO", adminVO);
+				AdminVO admin = admSvc.getOneAdmin(adm_no);
+				req.setAttribute("admin", admin);
 				RequestDispatcher successView = req.getRequestDispatcher("/back_end/admin/update_admin.jsp");
 				successView.forward(req, res);
 			}catch(Exception e){
@@ -214,6 +214,9 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			try{
+				
+				String adm_no = req.getParameter("adm_no");
+				
 				//接收請求參數，檢查格式
 				req.setCharacterEncoding("Big5");
 				String adminName = req.getParameter("adminName");
@@ -241,22 +244,22 @@ public class AdminServlet extends HttpServlet {
 					errorMsgs.add("設定權限：請至少選擇一項");
 				}
 				
-				AdminVO adminVO = new AdminVO();
-				adminVO.setAdm_name(adminName2);
-				adminVO.setAdm_pwd(pwd);
+				AdminVO admin = adminSvc.getOneAdmin(adm_no);
+				admin.setAdm_name(adminName2);
+				admin.setAdm_pwd(pwd);
 				
 				//傳回錯誤訊息以及含有鎘是錯誤的adminVO物件
 				if(!errorMsgs.isEmpty()){
 					
-					req.setAttribute("admin", adminVO);
-					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/admin/all_admin-catchTag.jsp");
+					req.setAttribute("admin", admin);
+					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/admin/update_admin.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				
 				//開始修改資料
 				
-				String adm_no = req.getParameter("adm_no");
+				
 				adminSvc.updateAdmin(adm_no, account, pwd, adminName2);
 				
 				AuthService authSvc = new AuthService();
@@ -276,7 +279,7 @@ public class AdminServlet extends HttpServlet {
 				
 			}catch(Exception e){
 				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/admin/all_admin-catchTag.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 				failureView.forward(req, res);
 			}
 		}

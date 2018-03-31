@@ -39,12 +39,12 @@
 						<span class="sr-only">選單切換</span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="<%=request.getContextPath()%>/back_end/index.jsp">Toast後台管理</a>
+					<a class="navbar-brand" href="<%=request.getContextPath()%>/back_end/back_page.jsp">Toast後台管理</a>
 				</div>
 				<div class="collapse navbar-collapse navbar-ex1">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">${sessionScope.admin.adm_name} 您好</a></li>
-						<li><a href="<%=request.getContextPath()%>/back_end/back_login.jsp">登出</a></li>
+						<li><a href="<%=request.getContextPath()%>/back_end/index.jsp">登出</a></li>
 						<li><a href="#" id="timePanel"></a></li>
 					</ul>
 				</div>
