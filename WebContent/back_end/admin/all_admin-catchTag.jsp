@@ -48,7 +48,7 @@
 								<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 								<input type="hidden" name="action" value="search_admin">
 								<div class="input-group-btn">
-									<button class="btn btn-default" type="submit">
+									<button class="btn btn-default" type="submit" style="height:34px;">
 										<i class="glyphicon glyphicon-search"></i>
 									</button>
 								</div>
