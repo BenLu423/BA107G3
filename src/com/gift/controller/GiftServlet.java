@@ -2,6 +2,7 @@ package com.gift.controller;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,10 +30,12 @@ public class GiftServlet extends HttpServlet {
 		//取得查詢字串
 		Map<String, String[]> giftStrQuery = (Map<String, String[]>)session.getAttribute("giftStrQuery");
 		//取得查詢的禮物
-		Map<GiftVO, List<GiftLabelVO>> gifts = giftSvc.getGiftAll(giftStrQuery);
+		Map<GiftVO, List<GiftLabelVO>> gifts = null;
+		if(giftStrQuery != null)
+			gifts = giftSvc.getGiftAll(giftStrQuery);
 		//取得欲修改的禮物
 		Map<GiftVO, List<GiftLabelVO>> giftEdits = (Map<GiftVO, List<GiftLabelVO>>) session.getAttribute("giftEdits");
-		if(!giftEdits.isEmpty() && giftEdits != null){
+		if(giftEdits != null && !giftEdits.isEmpty()){
 			gifts = giftSvc.deductEditGift(gifts, giftEdits);
 		}	
 		req.setAttribute("gifts", gifts);
@@ -42,19 +45,23 @@ public class GiftServlet extends HttpServlet {
 
 		req.setCharacterEncoding("BIG5");
 		String action = req.getParameter("action");
-		System.out.println(action);		
+System.out.println(action);		
+		
 		//來自gift_add.jsp的新增請求
 		if(("addGift").equals(action)){
 			GiftService giftSvc = new GiftService();
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 			HttpSession session = req.getSession();
-			req.setAttribute("errorMsgs", errorMsgs);
 			String requestURL = "/back_end/gift/gift_add.jsp";
+			Map<String,String> errorMsgs = new LinkedHashMap<>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
 			try{
 				/***********************1.接收請求參數 , 輸入格式的錯誤處理*************************/
 				Part gift_pic = req.getPart("gift_pic");
 				if(gift_pic.getSize() != 0 && !"image/jpeg".equals(gift_pic.getContentType())){
 					errorMsgs.put("gift_pic", "檔案非jpg格式");
+				}else if(gift_pic.getSize() == 0 ){
+					errorMsgs.put("gift_pic", "檔案未上傳");
 				}
 				
 				String gift_nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{1,7}$";
@@ -83,16 +90,28 @@ public class GiftServlet extends HttpServlet {
 				} catch (NumberFormatException e) {
 					errorMsgs.put("gift_price","價格請填數字");
 				}
-				
+
+				//產生param傳過來的GiftLable物件們
+				GiftLabelService giftLabelSvc = new GiftLabelService();
+				List<GiftLabelVO> labelList = new ArrayList<>();
+				GiftLabelVO labelVO = null;
+				if(gift_labels != null){
+					for(String giftl_no: gift_labels){
+						labelVO = giftLabelSvc.getOneGiftLabelByNo(giftl_no);
+						labelList.add(labelVO);
+					}
+					req.setAttribute("labelList", labelList);
+				}
 				
 				if (!errorMsgs.isEmpty()) {
+					//用來建立新giftAdds用
 					RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 					failureView.forward(req, res);
 					return;
-				}
+				}				
 				
 				/***************************2.開始新增禮物資料***************************************/
-				//建立GiftVO物件
+				//產生GiftVO物件
 				GiftVO giftVO = new GiftVO();
 				giftVO.setGift_name(gift_name);
 				giftVO.setGift_cnt(gift_cnt);
@@ -107,6 +126,7 @@ public class GiftServlet extends HttpServlet {
 					}
 					giftVO.setGift_pic(aos.toByteArray());
 				}
+
 				
 				//建立標籤明細物件
 				List<GiftLabelDetailVO> deatilList = new ArrayList<GiftLabelDetailVO>();
@@ -117,12 +137,13 @@ public class GiftServlet extends HttpServlet {
 					deatilList.add(detailVO);
 				}
 				giftSvc.addGift(giftVO, deatilList);
-
-				show(req,giftSvc);				
+				
+				
 				RequestDispatcher successView = req.getRequestDispatcher(requestURL);
 				successView.forward(req, res);				
 			}catch(Exception e){
-				errorMsgs.put("Exception", e.getMessage());
+System.out.println("安安又爆炸惹");
+				errorMsgs.put("Exception","新增資料失敗: "+e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 				failureView.forward(req, res);
 			}
@@ -163,7 +184,6 @@ public class GiftServlet extends HttpServlet {
 			Map<String,Map<String,String>> giftEditMsgs = (Map<String, Map<String, String>>) session.getAttribute("giftEditMsgs");		
 			Map<String,String> errorMsgs = new LinkedHashMap<>();
 			req.setAttribute("errorMsgs", errorMsgs);
-
 			try{
 				/***********************1.接收請求參數 , 輸入格式的錯誤處理*************************/
 				Part gift_pic = req.getPart("gift_pic");
@@ -207,9 +227,6 @@ public class GiftServlet extends HttpServlet {
 					errorMsgs.put("gift_is_on", "禮物狀態，請輸入[尚未上架]或[上架中]或[已上架]");
 				}
 				
-				Integer	gift_track_qty = new Integer(req.getParameter("gift_track_qty").trim());
-				Integer gift_buy_qty = new Integer(req.getParameter("gift_buy_qty").trim());
-				
 				//產生param傳過來的GiftVO物件
 				GiftVO giftVO = giftSvc.getOneGift(gift_no);
 				giftVO.setGift_name(gift_name);
@@ -226,7 +243,8 @@ public class GiftServlet extends HttpServlet {
 					giftVO.setGift_pic(aos.toByteArray());
 				}
 				giftVO.setGift_is_on(gift_is_on[0]);
-//				//產生param傳過來的GiftLable物件們
+				
+				//產生param傳過來的GiftLable物件們
 				GiftLabelService giftLabelSvc = new GiftLabelService();
 				List<GiftLabelVO> labelList = new ArrayList<>();
 				GiftLabelVO labelVO = null;
@@ -238,22 +256,29 @@ public class GiftServlet extends HttpServlet {
 				}
 
 				if (!errorMsgs.isEmpty()) {
-					//移除該修改禮物的舊資料
-					giftEdits.remove(giftVO);
-					//加入該修改禮物的新資料
-					giftEdits.put(giftVO, labelList);
+					//用來建立新giftEdits用
+					Map<GiftVO, List<GiftLabelVO>> newEdits = new LinkedHashMap<>();
+					
+					//deep copy (giftEdits)
+					Map<GiftVO, List<GiftLabelVO>> oriEdits = new LinkedHashMap<>();
+				    for (Map.Entry<GiftVO, List<GiftLabelVO>> entry : giftEdits.entrySet()){
+				    	oriEdits.put(entry.getKey(),new ArrayList<GiftLabelVO>(entry.getValue()));
+					}					
+				    Set<GiftVO> oriSet = oriEdits.keySet();
+				    //開始找尋修正的新vo位置，找到後則替代
+				    for(GiftVO vo: oriSet){
+				    	if(vo.equals(giftVO))
+				    		newEdits.put(giftVO, labelList);
+				    	else
+				    		newEdits.put(vo, oriEdits.get(vo));
+				    }
+				    //將更新後的map給予覆蓋
+				    giftEdits = newEdits;
+				    
 					session.setAttribute("giftEdits", giftEdits);
 					giftEditMsgs.put(gift_no, errorMsgs);
 					session.setAttribute("giftEditMsgs",giftEditMsgs);
-					//取得查詢字串
-					Map<String, String[]> giftStrQuery = (Map<String, String[]>)session.getAttribute("giftStrQuery");
-					//取得查詢的禮物
-					Map<GiftVO, List<GiftLabelVO>> gifts = giftSvc.getGiftAll(giftStrQuery);
-					//取得欲修改的禮物
-					if(!giftEdits.isEmpty() && giftEdits != null){
-						gifts = giftSvc.deductEditGift(gifts, giftEdits);
-					}	
-					req.setAttribute("gifts", gifts);
+					show(req,giftSvc);
 					
 					RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 					failureView.forward(req, res);

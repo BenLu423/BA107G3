@@ -110,7 +110,7 @@
 					</thead>
 					<tbody style="display:<c:if test="<%= tag.get(3)==0 %>">none</c:if>">
 						<tr>
-							<td><a href="backGiftAll.html">全部禮物</a></td>
+							<td><a href="<%=request.getContextPath()%>/back_end/gift/gift_index.jsp">全部禮物</a></td>
 						</tr>
 						<tr>
 							<td><a href="#">限時優惠</a></td>

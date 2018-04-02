@@ -1,3 +1,7 @@
+input#gift_name:focus{
+	background-color: white;
+}
+
 .gift-no input,
 .gift-price input{
 	width: 100%;
