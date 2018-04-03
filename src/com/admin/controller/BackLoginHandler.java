@@ -1,7 +1,9 @@
 package com.admin.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,17 +26,17 @@ public class BackLoginHandler extends HttpServlet {
 
 		/**************** 登入比對start *****************/
 		if ("backlogin".equals(action)) {
+			
 			// 比對帳密
 			try {
 
 				AdminService adminSvc = new AdminService();
-				List<AdminVO> admins = adminSvc.getAll();
 				AdminVO admin;
 
 				String account = req.getParameter("account");
 				String psw = req.getParameter("pwd");
+
 				
-				admin = adminSvc.getOneByAcct(account);
 
 				// 檢查是否有填帳密
 				if (account == null || (account.trim().length()) == 0 || psw == null || (psw.trim().length()) == 0) {
@@ -44,7 +46,8 @@ public class BackLoginHandler extends HttpServlet {
 					return;
 				}
 				// 檢查是否有此帳戶
-				if (admin==null) {
+				admin = adminSvc.getOneByAcct(account);
+				if (admin == null) {
 					req.setAttribute("errorMsgs", "無此員工");
 					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
 					failureView.forward(req, res);
@@ -78,7 +81,9 @@ public class BackLoginHandler extends HttpServlet {
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				req.setAttribute("errorMsgs", "無此員工");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
+				failureView.forward(req, res);
 			}
 		}
 	}
