@@ -15,8 +15,8 @@ public interface AdminDAO_interface {
 	//以員工編號搜尋該員工權限
 	public List<AuthFeatureVO> getAdminAuths(String admin_no);
 	
-	//以帳號密碼搜尋員工
-	public AdminVO findByAcctAndPwd(String admin_acct,String admin_pws);
+	//以帳號搜尋員工
+	public AdminVO findByAcct(String admin_acct);
 	
 
 }

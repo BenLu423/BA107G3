@@ -26,58 +26,6 @@ public class AdminServlet extends HttpServlet {
 
 		String action = req.getParameter("action");
 
-		/**************** 登入比對start *****************/
-		if ("backlogin".equals(action)) {
-			// 比對帳密
-			try {
-
-				AdminService adminSvc = new AdminService();
-				List<AdminVO> admins = adminSvc.getAll();
-				AdminVO admin;
-				Map<String, String> map = new HashMap<String, String>();// 帳密比對用
-				for (AdminVO adminvo : admins) {
-					map.put(adminvo.getAdm_acct(), adminvo.getAdm_pwd());
-				}
-				
-				String account = req.getParameter("account");
-				String psw = req.getParameter("pwd");
-
-				// 檢查是否有填帳密
-				if (account == null || (account.trim().length()) == 0 || psw == null || (psw.trim().length()) == 0) {
-					req.setAttribute("errorMsgs", "請輸入帳號密碼");
-					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
-					failureView.forward(req, res);
-					return;
-				}
-				// 檢查是否有此帳戶
-				if (!map.containsKey(account)) {
-					req.setAttribute("errorMsgs", "無此員工");
-					RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
-					failureView.forward(req, res);
-					return;
-				} else {
-					
-					// 有此帳戶的話比對密碼是否正確
-					if (!psw.equals(map.get(account))) {
-						req.setAttribute("errorMsgs", "密碼錯誤");
-						req.setAttribute("account", account);
-						RequestDispatcher failureView = req.getRequestDispatcher("/back_end/index.jsp");
-						failureView.forward(req, res);
-						return;
-					} else {
-						admin = adminSvc.getOneByAcctAndPwd(account, psw);
-						HttpSession session = req.getSession();
-						session.setAttribute("admin", admin);
-						res.sendRedirect(req.getContextPath() + "/back_end/back_page.jsp");
-					}
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		/**************** 登入比對end *****************/
 		/************** 新增後台員工start **************/
 		
 		if("insert_admin".equals(action)){
@@ -120,6 +68,11 @@ public class AdminServlet extends HttpServlet {
 					errorMsgs.add("員工密碼：只能是英文字母和數字，且長度於2到10之間");
 				}
 				
+				String mail = req.getParameter("mail");
+				if(mail==null || mail.trim().length()==0){
+					errorMsgs.add("員工信箱：請勿空白");
+				}
+				
 				String []auths = req.getParameterValues("auth");
 				if(auths == null){
 					errorMsgs.add("設定權限：請至少選擇一項");
@@ -128,6 +81,7 @@ public class AdminServlet extends HttpServlet {
 				AdminVO adminVO = new AdminVO();
 				adminVO.setAdm_acct(account);
 				adminVO.setAdm_name(adminName2);
+				adminVO.setAdm_mail(mail);
 				
 				//傳回錯誤訊息以及含有鎘是錯誤的adminVO物件
 				if(!errorMsgs.isEmpty()){
@@ -140,9 +94,9 @@ public class AdminServlet extends HttpServlet {
 				
 				//開始新增資料
 				/*1.新增員工*/
-				adminSvc.addAdmin(account, pwd, adminName2);
+				adminSvc.addAdmin(account, pwd, adminName2,mail);
 				/*2.加入權限*/
-				AdminVO admin = adminSvc.getOneByAcctAndPwd(account, pwd);
+				AdminVO admin = adminSvc.getOneByAcct(account);
 				AuthService authSvc = new AuthService();
 				authSvc.addAuth(admin.getAdm_no(), auths);
 				/*3.新增成功，跳轉到員工頁面*/
@@ -230,13 +184,15 @@ public class AdminServlet extends HttpServlet {
 				
 				String account = req.getParameter("account");
 				String reg = "^[a-zA-Z0-9]{2,10}$";
-				
-				
-				String pwd = req.getParameter("pwd");
-				if(pwd==null || pwd.trim().length()==0){
-					errorMsgs.add("員工密碼：請勿空白");
-				}else if(!pwd.trim().matches(reg)){
+				if(account==null || account.trim().length()==0){
+					errorMsgs.add("員工帳號：請勿空白");
+				}else if(!account.trim().matches(reg)){
 					errorMsgs.add("員工密碼：只能是英文字母和數字，且長度於2到10之間");
+				}
+				
+				String mail = req.getParameter("mail");
+				if(mail==null || mail.trim().length()==0){
+					errorMsgs.add("員工信箱：請勿空白");
 				}
 				
 				String []auths = req.getParameterValues("auth");
@@ -246,7 +202,8 @@ public class AdminServlet extends HttpServlet {
 				
 				AdminVO admin = adminSvc.getOneAdmin(adm_no);
 				admin.setAdm_name(adminName2);
-				admin.setAdm_pwd(pwd);
+				admin.setAdm_acct(account);
+				admin.setAdm_mail(mail);
 				
 				//傳回錯誤訊息以及含有鎘是錯誤的adminVO物件
 				if(!errorMsgs.isEmpty()){
@@ -260,7 +217,7 @@ public class AdminServlet extends HttpServlet {
 				//開始修改資料
 				
 				
-				adminSvc.updateAdmin(adm_no, account, pwd, adminName2);
+				adminSvc.updateAdmin(adm_no, account, mail, adminName2);
 				
 				AuthService authSvc = new AuthService();
 				
@@ -274,6 +231,7 @@ public class AdminServlet extends HttpServlet {
 				authSvc.addAuth(adm_no, auths);
 				
 				/*3.新增成功，跳轉到員工頁面*/
+				req.setAttribute("admin", admin);
 				RequestDispatcher successView = req.getRequestDispatcher(requestURL);   // 修改成功後,轉交回送出修改的來源網頁
 				successView.forward(req, res);
 				

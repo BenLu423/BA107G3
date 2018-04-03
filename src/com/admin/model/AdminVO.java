@@ -12,12 +12,24 @@ public class AdminVO implements java.io.Serializable{
 	private String adm_acct;
 	private String adm_pwd;
 	private String adm_name;
+	private String adm_mail;
+	
 	private String authsForHtml;
 	private List<Integer> tag;
 	
 	public AdminVO(){
 		
 	}
+
+	
+	public String getAdm_mail() {
+		return adm_mail;
+	}
+
+	public void setAdm_mail(String adm_mail) {
+		this.adm_mail = adm_mail;
+	}
+
 
 	public String getAdm_no() {
 		return adm_no;

@@ -48,7 +48,7 @@
 								<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 								<input type="hidden" name="action" value="search_admin">
 								<div class="input-group-btn">
-									<button class="btn btn-default" type="submit" style="height:34px;">
+									<button class="btn btn-default" type="submit">
 										<i class="glyphicon glyphicon-search"></i>
 									</button>
 								</div>
@@ -73,7 +73,7 @@
 										</td>
 										<td>員工帳號<br>${adminVO.adm_acct}
 										</td>
-										<td>員工密碼<br>${adminVO.adm_pwd}
+										<td>員工信箱<br>${adminVO.adm_mail}
 										</td>
 										<td>
 										<form method="post" action="<%=request.getContextPath()%>/admin/admin.do">
@@ -94,9 +94,9 @@
 										<td colspan="7">
 										
 										
-											<c:forEach var="checked" items="${adminVO.tag}" varStatus="loop">
+											<c:forEach var="tag" items="${adminVO.tag}" varStatus="loop">
 												
-												<div class="auth-list ${(checked==1)?'checked':''}">
+												<div class="auth-list ${(tag==1)?'checked':''}">
 												<span class='glyphicon glyphicon-ok hlyphicon-lg'></span>
 												<h5>${auths[loop.index].auth_name}</h5>
 												</div>

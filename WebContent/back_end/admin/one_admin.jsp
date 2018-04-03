@@ -54,7 +54,7 @@
 									</td>
 									<td>員工帳號<br>${admin.adm_acct}
 									</td>
-									<td>員工密碼<br>${admin.adm_pwd}
+									<td>員工信箱<br>${admin.adm_mail}
 									</td>
 									<td>
 									<form method="post" action="<%=request.getContextPath()%>/admin/admin.do">

@@ -11,21 +11,22 @@ public class AdminService {
 		dao = new AdminDAO();
 	}
 	
-	public AdminVO addAdmin(String adm_acct,String adm_pwd ,String adm_name){
+	public AdminVO addAdmin(String adm_acct,String adm_pwd ,String adm_name,String adm_mail){
 		AdminVO adminVO = new AdminVO();
 		adminVO.setAdm_acct(adm_acct);
 		adminVO.setAdm_pwd(adm_pwd);
 		adminVO.setAdm_name(adm_name);
+		adminVO.setAdm_mail(adm_mail);
 		dao.insert(adminVO);
 		
 		return adminVO;
 	}
 	
-	public AdminVO updateAdmin(String adm_no,String adm_acct,String adm_pwd ,String adm_name){
+	public AdminVO updateAdmin(String adm_no,String adm_acct,String adm_mail ,String adm_name){
 		AdminVO adminVO = new AdminVO();
 		adminVO.setAdm_no(adm_no);
 		adminVO.setAdm_acct(adm_acct);
-		adminVO.setAdm_pwd(adm_pwd);
+		adminVO.setAdm_mail(adm_mail);
 		adminVO.setAdm_name(adm_name);
 		dao.update(adminVO);
 		
@@ -40,8 +41,8 @@ public class AdminService {
 		return dao.findByPrimaryKey(admin_no);
 	}
 	
-	public AdminVO getOneByAcctAndPwd(String adm_acct,String adm_pwd){
-		return dao.findByAcctAndPwd(adm_acct, adm_pwd);
+	public AdminVO getOneByAcct(String adm_acct){
+		return dao.findByAcct(adm_acct);
 	}
 	
 	public List<AdminVO>getAll(){

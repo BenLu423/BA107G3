@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+session.invalidate();
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,7 +21,7 @@
 
 			<h1 align="center" style="margin-bottom: 50px;">Toast後台登入</h1>
 
-			<form class="form-inline" action="<%=request.getContextPath()%>/admin/admin.do" method="post">
+			<form class="form-inline" action="<%=request.getContextPath()%>/backLoginHandler" method="post">
 				<div class="form-group">
 					<label for="account">帳號</label> <input type="text"
 						class="form-control" id="account" placeholder="Enter account"

@@ -22,7 +22,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_NO=?";
 	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN ORDER BY ADM_NO DESC";
 	private static final String GET_ADMIN_AUTHS = "SELECT*FROM AUTH_FEATURE JOIN ADMIN_AUTH ON AUTH_FEATURE.AUTH_NO = ADMIN_AUTH.AUTH_NO WHERE ADM_NO=?";
-	private static final String GET_ONE_ByACCT_PWD = "SELECT*FROM ADMIN WHERE ADM_ACCT=? AND ADM_PWD=?";
+	private static final String GET_ONE_ByACCT = "SELECT*FROM ADMIN WHERE ADM_ACCT=?";
 	
 
 	@Override
@@ -323,21 +323,21 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 //		admin.delete("A006");
 		
 		//¥H±b¸¹±K½X¬d¸ß
-//		AdminVO adminvo3 = admin.findByPrimaryKey("A001");
-//		System.out.println("adminvo_no="+adminvo3.getAdm_no());
-//		System.out.println("adminvo_acct="+adminvo3.getAdm_acct());
-//		System.out.println("adminvo_pwd="+adminvo3.getAdm_pwd());
-//		System.out.println("adminvo_name"+adminvo3.getAdm_name());
+		AdminVO adminvo3 = admin.findByAcct("AAA");
+		System.out.println("adminvo_no="+adminvo3.getAdm_no());
+		System.out.println("adminvo_acct="+adminvo3.getAdm_acct());
+		System.out.println("adminvo_pwd="+adminvo3.getAdm_pwd());
+		System.out.println("adminvo_name="+adminvo3.getAdm_name());
 		
 		//getAll
-		List<AdminVO> list = admin.getAll();
-		for(AdminVO adminvo4 : list){
-			System.out.println("adminvo_no="+adminvo4.getAdm_no());
-			System.out.println("adminvo_acct="+adminvo4.getAdm_acct());
-			System.out.println("adminvo_pwd="+adminvo4.getAdm_pwd());
-			System.out.println("adminvo_name="+adminvo4.getAdm_name());
-			System.out.println("================================");
-		}
+//		List<AdminVO> list = admin.getAll();
+//		for(AdminVO adminvo4 : list){
+//			System.out.println("adminvo_no="+adminvo4.getAdm_no());
+//			System.out.println("adminvo_acct="+adminvo4.getAdm_acct());
+//			System.out.println("adminvo_pwd="+adminvo4.getAdm_pwd());
+//			System.out.println("adminvo_name="+adminvo4.getAdm_name());
+//			System.out.println("================================");
+//		}
 		
 		//get admin's auths
 //		List<AuthFeatureVO> auth = admin.getAdminAuths("A001");
@@ -403,7 +403,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 	}
 
 	@Override
-	public AdminVO findByAcctAndPwd(String admin_acct, String admin_pws) {
+	public AdminVO findByAcct(String admin_acct) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -412,10 +412,9 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 		try{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url,userid,passwd);
-			pstmt = con.prepareStatement(GET_ONE_ByACCT_PWD);
+			pstmt = con.prepareStatement(GET_ONE_ByACCT);
 			
 			pstmt.setString(1, admin_acct);
-			pstmt.setString(2, admin_pws);
 			rs = pstmt.executeQuery();
 			
 			rs.next();
@@ -424,6 +423,7 @@ public class AdminJDBCDAO implements AdminDAO_interface{
 			admin.setAdm_acct(rs.getString("adm_acct"));
 			admin.setAdm_pwd(rs.getString("adm_pwd"));
 			admin.setAdm_name(rs.getString("adm_name"));
+			admin.setAdm_mail(rs.getString("adm_mail"));
 			
 		}catch(ClassNotFoundException e){
 			throw new RuntimeException("Couldn't load database driver. "

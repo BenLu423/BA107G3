@@ -31,13 +31,13 @@ public class AdminDAO implements AdminDAO_interface{
 		}
 	}
 	
-	private static final String INSERT_ADMIN = "INSERT INTO ADMIN(ADM_NO, ADM_ACCT, ADM_PWD, ADM_NAME) VALUES ('A'||LPAD(to_char(ADMIN_SEQ.NEXTVAL),3,'0'), ?, ?, ?)";
-	private static final String UPDATE_ADMIN = "UPDATE ADMIN SET ADM_ACCT=?,ADM_PWD=?,ADM_NAME=? WHERE ADM_NO=?";
+	private static final String INSERT_ADMIN = "INSERT INTO ADMIN(ADM_NO, ADM_ACCT, ADM_PWD, ADM_NAME,ADM_MAIL) VALUES ('A'||LPAD(to_char(ADMIN_SEQ.NEXTVAL),3,'0'), ?, ?, ?,?)";
+	private static final String UPDATE_ADMIN = "UPDATE ADMIN SET ADM_ACCT=?,ADM_MAIL=?,ADM_NAME=? WHERE ADM_NO=?";
 	private static final String DELETE_ADMIN = "DELETE FROM ADMIN WHERE ADM_NO=?";
 	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_NO=?";
 	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN ORDER BY ADM_NO DESC";
 	private static final String GET_ADMIN_AUTHS = "SELECT*FROM AUTH_FEATURE JOIN ADMIN_AUTH ON AUTH_FEATURE.AUTH_NO = ADMIN_AUTH.AUTH_NO WHERE ADM_NO=?";
-	private static final String GET_ONE_ByACCT_PWD = "SELECT*FROM ADMIN WHERE ADM_ACCT=? AND ADM_PWD=?";
+	private static final String GET_ONE_ByACCT = "SELECT*FROM ADMIN WHERE ADM_ACCT=?";
 	
 	@Override
 	public void insert(AdminVO adminVO) {
@@ -51,6 +51,7 @@ public class AdminDAO implements AdminDAO_interface{
 			pstmt.setString(1, adminVO.getAdm_acct());
 			pstmt.setString(2, adminVO.getAdm_pwd());
 			pstmt.setString(3, adminVO.getAdm_name());
+			pstmt.setString(4,adminVO.getAdm_mail());
 			
 			pstmt.executeUpdate();
 			System.out.println("新增完成");
@@ -88,7 +89,7 @@ public class AdminDAO implements AdminDAO_interface{
 			pstmt = con.prepareStatement(UPDATE_ADMIN);
 			
 			pstmt.setString(1, adminVO.getAdm_acct());
-			pstmt.setString(2, adminVO.getAdm_pwd());
+			pstmt.setString(2, adminVO.getAdm_mail());
 			pstmt.setString(3, adminVO.getAdm_name());
 			pstmt.setString(4, adminVO.getAdm_no());
 			
@@ -175,6 +176,7 @@ public class AdminDAO implements AdminDAO_interface{
 			admin.setAdm_acct(rs.getString("adm_acct"));
 			admin.setAdm_pwd(rs.getString("adm_pwd"));
 			admin.setAdm_name(rs.getString("adm_name"));
+			admin.setAdm_mail(rs.getString("adm_mail"));
 			
 			System.out.println("查詢完成");
 			
@@ -220,6 +222,7 @@ public class AdminDAO implements AdminDAO_interface{
 				admin.setAdm_acct(rs.getString("adm_acct"));
 				admin.setAdm_pwd(rs.getString("adm_pwd"));
 				admin.setAdm_name(rs.getString("adm_name"));
+				admin.setAdm_mail(rs.getString("adm_mail"));
 				adminList.add(admin);
 			}
 			
@@ -311,6 +314,7 @@ public class AdminDAO implements AdminDAO_interface{
 				admin.setAdm_acct(rs.getString("adm_acct"));
 				admin.setAdm_pwd(rs.getString("adm_pwd"));
 				admin.setAdm_name(rs.getString("adm_name"));
+				admin.setAdm_mail(rs.getString("adm_mail"));
 				map.put(rs.getString("adm_acct"), rs.getString("adm_pwd"));
 			}
 			
@@ -338,7 +342,7 @@ public class AdminDAO implements AdminDAO_interface{
 	}
 
 	@Override
-	public AdminVO findByAcctAndPwd(String admin_acct, String admin_pws) {
+	public AdminVO findByAcct(String admin_acct) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -346,10 +350,9 @@ public class AdminDAO implements AdminDAO_interface{
 		
 		try{
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ONE_ByACCT_PWD);
+			pstmt = con.prepareStatement(GET_ONE_ByACCT);
 			
 			pstmt.setString(1, admin_acct);
-			pstmt.setString(2, admin_pws);
 			rs = pstmt.executeQuery();
 			
 			rs.next();
@@ -358,6 +361,7 @@ public class AdminDAO implements AdminDAO_interface{
 			admin.setAdm_acct(rs.getString("adm_acct"));
 			admin.setAdm_pwd(rs.getString("adm_pwd"));
 			admin.setAdm_name(rs.getString("adm_name"));
+			admin.setAdm_mail(rs.getString("adm_mail"));
 			
 		}catch(SQLException se){
 			throw new RuntimeException("A database error occured. "

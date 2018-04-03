@@ -40,6 +40,12 @@
 								name="pwd">
 						</div>
 						<br>
+						<div class="form-group">
+							<label for="mail">­û¤u«H½c</label> <input type="text"
+								class="form-control" id="mail" placeholder="Enter password"
+								name="mail" value="${requestScope.admin['adm_mail']}">
+						</div>
+						<br>
 
 						<hr>
 						<jsp:useBean id="authFeatureSvc" scope="page" class="com.auth_feature.model.AuthFeatureService"/>
