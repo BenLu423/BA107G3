@@ -65,9 +65,9 @@
                 		${(not empty errorMsgs["gift_price"]) ? 'style="background-color:rgb(255,150,120)"' : ''}>${param.gift_cnt}</textarea></div>
               		</div>          		
               		<div class="form-group" style="height:268px">
-                		<input type="file" name="gift_pic" class="gift-add-pic">
 	              		<div class="errMsg">${errorMsgs["gift_pic"]}</div>
-                		<img src="" alt="" style="width:268px; height:268px">
+                		<input type="file" name="gift_pic" class="gift-add-pic">
+                		<img src="${noAddPic}" alt="" style="width:268px; height:268px">
               		</div>
             		
 

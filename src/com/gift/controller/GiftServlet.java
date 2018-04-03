@@ -2,7 +2,6 @@ package com.gift.controller;
 
 import java.io.*;
 import java.util.*;
-import java.util.Map.Entry;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -91,6 +90,21 @@ System.out.println(action);
 					errorMsgs.put("gift_price","價格請填數字");
 				}
 
+//				//產生param傳過來的file轉成base64回傳
+//				if(gift_pic.getSize() != 0){
+//					InputStream is = gift_pic.getInputStream();
+//					ByteArrayOutputStream aos = new ByteArrayOutputStream();
+//					byte[] pic = new byte[8*1024];
+//					int len;
+//					while((len = is.read(pic))!=-1){
+//						aos.write(pic, 0, len);
+//					}
+//					Base64.Encoder encoder = Base64.getEncoder();
+//					System.out.println(aos.toByteArray());
+//					String noAddPic = encoder.encodeToString(aos.toByteArray());
+//					System.out.println(noAddPic);
+//					req.setAttribute("noAddPic", noAddPic);
+//				}
 				//產生param傳過來的GiftLable物件們
 				GiftLabelService giftLabelSvc = new GiftLabelService();
 				List<GiftLabelVO> labelList = new ArrayList<>();
