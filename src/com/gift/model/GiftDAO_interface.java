@@ -16,11 +16,4 @@ public interface GiftDAO_interface {
 	public List<GiftVO> getAll();
 	public List<GiftVO> getAll(Map<String, String[]> map); 
 	public byte[] getPic(String gift_no);
-	
-//	//查詢某標籤的禮物(一對多)(回傳 Set)
-//	public Set<GiftVO> getGiftsByLabel(String giftl_name);
-
-//	//萬用複合查詢(傳入參數型態Map)(回傳 List)
-//	public List<GiftVO> getAll(Map<String, String[]> map); 
-
 }

@@ -334,7 +334,7 @@ System.out.println("Hen爆炸!!!");
 			req.setAttribute("errorMsgs", errorMsgs);
 			HttpSession session = req.getSession();
 			GiftService giftSvc = new GiftService();
-			String requestURL = "/back_end/gift/gift_index.jsp";
+			String requestURL = req.getParameter("requestURL");
 			
 			try {
 				//判斷是否有存在欲修改的禮物
