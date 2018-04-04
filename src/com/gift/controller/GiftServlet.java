@@ -79,7 +79,7 @@ System.out.println("G action: " + action);
 				String gift_cnt = req.getParameter("gift_cnt");
 				if(gift_cnt == null || gift_cnt.trim().length() == 0){
 					errorMsgs.put("gift_cnt", "內容請勿空白");
-				} else if (gift_name.trim().length()>=200){
+				} else if (gift_cnt.trim().length()>=200){
 					errorMsgs.put("gift_cnt", "內容長度必需在1到200之間");
 				}
 				
