@@ -73,6 +73,10 @@ public class GiftDiscountService {
 		daoGD.delete(giftd_no);
 	}
 	
+	public GiftDiscountVO getOneGD(String giftd_no){
+		return daoGD.getByPrimaryKey(giftd_no);
+	}
+	
 	public Map<GiftDiscountVO,GiftVO> getOne(String giftd_no){
 		Map<GiftDiscountVO,GiftVO> map = new HashMap<GiftDiscountVO,GiftVO>();
 		GiftDiscountVO giftDiscountVO = daoGD.getByPrimaryKey(giftd_no);

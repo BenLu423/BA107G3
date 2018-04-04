@@ -288,15 +288,33 @@ td.giftd-edit,
 td.giftd-no{
 	width: 11%;
 }
+td.giftd-edit button{
+	margin-bottom: 15px;
+}
+td.giftd-no p,
+td.giftd-percent p{
+	font-size: 25px;
+}
+td.giftd-pic-1 p{
+	font-size: 20px;
+	text-align: center;
+}
+td.giftd-amount p{
+	font-size: 50px;
+}
+
+td.giftd-start p,
+td.giftd-end p,
+td.giftd-time p{
+	font-size: 18px;
+}
+
 td.giftd-pic{
 	width: 20%;
 }
 td.giftd-pic-1,
 td.giftd-pic-2{
 	width: 10%;
-}
-td.giftd-pic-1 p{
-	text-align: right;
 }
 td.giftd-pic-2 img{
 	width:100px;
@@ -307,8 +325,28 @@ td.giftd-percent{
 td.giftd-amount{
 	width: 10%;
 }
+td.giftd-amount input{
+	font-size:50px;
+	width: 100%;
+	text-align: center;
+}
 td.giftd-start,
 td.giftd-end,
 td.giftd-time{
 	width:13%
+}
+
+td.giftd-timeRange{
+	width: 26%;
+	text-align: center;
+}
+td.giftd-timeRange input{
+	font-size: 20px;
+	text-align: center;
+}
+
+td.giftd-percent input{
+	font-size: 2em;
+	width: 100%;
+	text-align: center;
 }
