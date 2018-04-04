@@ -7,6 +7,9 @@ import javax.management.RuntimeErrorException;
 import javax.naming.*;
 import javax.sql.DataSource;
 
+import com.gift.model.GiftVO;
+import com.gift.model.Gift_CompositeQuery;
+
 public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 	
 	private static DataSource ds = null;
@@ -225,5 +228,58 @@ public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 		return list;
 	}
 
+	
+	@Override
+	public List<GiftDiscountVO> getAll(Map<String, String[]> map) {
+		List<GiftDiscountVO> list = new ArrayList<>();
+		GiftDiscountVO giftDiscountVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			String finalSQL = GiftDiscount_CompositeQuery.get_WhereCondition(map);
+			pstmt = con.prepareStatement(finalSQL);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				giftDiscountVO = new GiftDiscountVO();
+				giftDiscountVO.setGiftd_no(rs.getString("giftd_no"));
+				giftDiscountVO.setGift_no(rs.getString("gift_no"));
+				giftDiscountVO.setGiftd_start(rs.getTimestamp("giftd_start"));
+				giftDiscountVO.setGiftd_end(rs.getTimestamp("giftd_end"));
+				giftDiscountVO.setGiftd_percent(rs.getDouble("giftd_percent"));
+				giftDiscountVO.setGiftd_amount(rs.getInt("giftd_amount"));
+				list.add(giftDiscountVO);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally{
+			if(rs != null){
+				try {
+						rs.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				};
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
 	
 }

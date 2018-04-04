@@ -28,6 +28,15 @@
 		<servlet-name>GiftServlet</servlet-name>
 		<url-pattern>/gift/gift.do</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>GiftDiscountServlet</servlet-name>
+		<servlet-class>com.giftDiscount.controller.GiftDiscountServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GiftDiscountServlet</servlet-name>
+		<url-pattern>/gift/giftDiscount.do</url-pattern>
+	</servlet-mapping>
+	
 <!--靖為 - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 

@@ -70,7 +70,7 @@
                 	</tbody>
         			</table>
         		</div>
-        		<c:if test="${empty gifts}">
+        		<c:if test="${empty gifts and (empty giftStrQuery)}">
         			<jsp:forward page="/gift/gift.do">
         				<jsp:param name="action" value="searchGifts" />
         			</jsp:forward>

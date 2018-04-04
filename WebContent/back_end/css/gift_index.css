@@ -101,7 +101,8 @@ textarea {
 	text-align: center;
 }
 
-.gift-edit{
+.gift-edit,
+.giftd-edit{
 	min-width: 110px;
 	max-width: 110px;
 }
@@ -270,4 +271,44 @@ button[data-target=all]:hover{
 
 #searchContext{
 	width:500px;	
+}
+
+td.giftd-edit,
+td.giftd-no,
+td.giftd-pic,
+td.giftd-percent,
+td.giftd-start,
+td.giftd-end,
+td.giftd-amount,
+td.giftd-time{
+	text-align: center;
+}
+
+td.giftd-edit,
+td.giftd-no{
+	width: 11%;
+}
+td.giftd-pic{
+	width: 20%;
+}
+td.giftd-pic-1,
+td.giftd-pic-2{
+	width: 10%;
+}
+td.giftd-pic-1 p{
+	text-align: right;
+}
+td.giftd-pic-2 img{
+	width:100px;
+}
+td.giftd-percent{
+	width: 9%;
+}
+td.giftd-amount{
+	width: 10%;
+}
+td.giftd-start,
+td.giftd-end,
+td.giftd-time{
+	width:13%
 }
