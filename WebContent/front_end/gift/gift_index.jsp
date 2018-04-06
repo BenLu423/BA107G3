@@ -15,40 +15,43 @@
         <div class="col-xs-12 col-sm-10 content">
             <div class="content-top"></div>  
 			<!-- ·j´M°Ï -->
+			<form method="post" action="<%=request.getContextPath()%>/gift/gift.do" class="form-horizontal" role="form">
 			<div class="input-group searchBar" id="adv-search">
-			<input type="text" class="form-control" placeholder="Search for Gift" />
+			<input type="text" class="form-control" name="keyWord" placeholder="Search for Gift" />
 			<div class="input-group-btn">
 			    <div class="btn-group" role="group">
 			        <div class="dropdown dropdown-lg">
 			            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
 			            <div class="dropdown-menu dropdown-menu-right" role="menu">
-			                <form class="form-horizontal" role="form">
-			                  <div class="form-group">
-			                    <label for="filter">Filter by</label>
-			                    <select class="form-control">
-			                        <option value="0" selected>All Snippets</option>
-			                        <option value="1">Featured</option>
-			                        <option value="2">Most popular</option>
-			                        <option value="3">Top rated</option>
-			                        <option value="4">Most commented</option>
-			                    </select>
-			                  </div>
-			                  <div class="form-group">
-			                    <label for="contain">Author</label>
-			                    <input class="form-control" type="text" />
-			                  </div>
-			                  <div class="form-group">
-			                    <label for="contain">Contains the words</label>
-			                    <input class="form-control" type="text" />
-			                  </div>
-			                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-			                </form>
+			                	<div class="form-group">
+			                    	<label for="filter">Filter by</label>
+			                    	<select class="form-control">
+			                        	<option value="0" selected>All Snippets</option>
+				                        <option value="1">Featured</option>
+				                        <option value="2">Most popular</option>
+				                        <option value="3">Top rated</option>
+				                        <option value="4">Most commented</option>
+			                    	</select>
+			                  	</div>
+			                  	<div class="form-group">
+				                    <label for="contain">Author</label>
+				                    <input class="form-control" type="text" />
+			                  	</div>
+			                  	<div class="form-group">
+			                    	<label for="contain">Contains the words</label>
+			                    	<input class="form-control" type="text" />
+			                  	</div>
+			                  	<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+			                  	<input type="hidden" name="action" value="searchGifts">
+								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>">
+			               
 			            </div>
 			        </div>
-			        <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-			        </div>
+			        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+			    </div>
 			</div>
 			</div>   
+		   	</form>
 			<!-- //·j´M°Ï -->          
 
 			<div class="col-xs-12 col-sm-12">

@@ -29,7 +29,7 @@ public class GiftOrderDAO implements GiftOrderDAO_interface {
 		/* * * * * * * * * * * * * * * * * * * * * * * *
 		 * 此新增會依以下順序進行，若有失敗則rollback			 	* 
 		 * ---------------------------------------------* 
-		 *X1. 扣除會員點數[MEMBER]						 	* 
+		 *x1. 扣除會員點數[MEMBER]						 	* 
 		 *X2. 更改折價券紀錄[COUPONS_RECORD](選填)		 	* 
 		 * 3. 新增1筆訂單[GIFT_ORDER]						*
 		 * 4. 新增N筆訂單明細[GIFT_ORDER_DETAIL]			 	* 

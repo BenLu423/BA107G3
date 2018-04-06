@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:useBean id="gift" class="com.gift.model.GiftService" scope="page"></jsp:useBean>
 <html>
@@ -13,7 +13,7 @@
 <div class="col-xs-12 col-sm-12">
 	<div class="row">
 	<%@ include file="giftPage1.file" %> 
-	<c:forEach var="gift" items="${gift.giftAll}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" varStatus="status">
+	<c:forEach var="gift" items="${(gifts!=null) ? gifts : (gift.giftAll)}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" varStatus="status">
       	<c:if test="${(status.count)%5 == 1}">
        	<div class="col-xs-12 col-sm-1 gift-side"></div>
       	</c:if>
