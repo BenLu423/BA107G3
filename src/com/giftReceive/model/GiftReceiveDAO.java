@@ -6,7 +6,7 @@ import com.member.model.MemberService;
 
 public class GiftReceiveDAO implements GiftReceiveDAO_interface{
 	
-	private static final String INSERT_STMT = "INSERT INTO GIFT_RECEIVE(GIFTR_NO,MEM_NO_SELF,MEM_NO_OTHER,GIFTOD_NO,GIFTR_AMOUNT,GIFTR_TIME) VALUES(to_char(sysdate,'yyyymmdd')||'-GR'||LPAD(to_char(GIFT_RECEIVE_SEQ.NEXTVAL),3,'0'),?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO GIFT_RECEIVE(GIFTR_NO,MEM_NO_SELF,MEM_NO_OTHER,GIFTOD_NO,GIFTR_AMOUNT,GIFTR_TIME,GIFTR_MESSAGE) VALUES(to_char(sysdate,'yyyymmdd')||'-GR'||LPAD(to_char(GIFT_RECEIVE_SEQ.NEXTVAL),3,'0'),?,?,?,?,?,?)";
 	
 	@Override
 	public void insert(GiftReceiveVO giftReceiveVO, Connection con) {
@@ -26,6 +26,7 @@ public class GiftReceiveDAO implements GiftReceiveDAO_interface{
 			pstmt.setString(3, giftReceiveVO.getGiftod_no());
 			pstmt.setInt(4, giftReceiveVO.getGiftr_amount());
 			pstmt.setTimestamp(5, giftReceiveVO.getGiftr_time());
+			pstmt.setString(6, giftReceiveVO.getGiftr_message());
 			pstmt.executeUpdate();
 			
 			//6. 修改收禮會員的總收禮數量[MEMBER]

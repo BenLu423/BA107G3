@@ -4,12 +4,13 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class GiftOrderDetailVO implements Serializable {
-	String giftod_no;//訂單明細編號
-	String gift_no;//禮物編號
-	String gifto_no;//訂單編號
-	Integer giftod_amount;//購買數量
-	Integer giftod_money;//購買金額
-	Integer giftod_inventory;//可用剩餘數量
+	String giftod_no;// 訂單明細編號
+	String gift_no;// 禮物編號
+	String gifto_no;// 訂單編號
+	Integer giftod_unit;// 購買單價
+	Integer giftod_amount;// 購買數量
+	Integer giftod_money;// 購買小計
+	Integer giftod_inventory;// 可用剩餘數量
 
 	public GiftOrderDetailVO() {
 		super();
@@ -61,6 +62,14 @@ public class GiftOrderDetailVO implements Serializable {
 
 	public void setGiftod_inventory(Integer giftod_inventory) {
 		this.giftod_inventory = giftod_inventory;
+	}
+
+	public Integer getGiftod_unit() {
+		return giftod_unit;
+	}
+
+	public void setGiftod_unit(Integer giftod_unit) {
+		this.giftod_unit = giftod_unit;
 	}
 
 }

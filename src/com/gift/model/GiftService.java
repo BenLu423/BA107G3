@@ -3,6 +3,7 @@ package com.gift.model;
 import java.sql.Connection;
 import java.util.*;
 
+import com.giftDiscount.model.*;
 import com.giftLabel.model.*;
 import com.giftLabelDetail.model.*;
 
@@ -10,11 +11,13 @@ public class GiftService {
 	private GiftDAO_interface dao;
 	private GiftLabelDAO_interface labelDao;
 	private GiftLabelDetailDAO_interface detailDao;
+	private GiftDiscountDAO_interface discountDao;
 
 	public GiftService() {
 		dao = new GiftDAO();
 		labelDao = new GiftLabelDAO();
 		detailDao = new GiftLabelDetailDAO();
+		discountDao = new GiftDiscountDAO();
 	}
 
 	private Map<GiftVO, List<GiftLabelVO>> getLabelList(List<GiftVO> list) {
@@ -85,6 +88,24 @@ public class GiftService {
 		dao.delete(gift_no);
 	}
 
+	public Integer getMoney(String gift_no){
+		//眔讽[搂挡纔磃]程基
+		
+		//﹍搂基
+		GiftVO giftVO = dao.getByPrimaryKey(gift_no);
+		Integer oriMoney = giftVO.getGift_price();
+		
+		//琌Τ纔磃
+		GiftDiscountVO giftDiscountVO = discountDao.getCurrentValidGift(gift_no);
+		Double offer = 1.0;
+		if(giftDiscountVO != null)
+			offer = giftDiscountVO.getGiftd_percent();
+		
+		//ヘ玡程基
+		Double price = oriMoney * offer;
+		return price.intValue();
+	}
+	
 	public GiftVO getOneGift(String gift_no) {
 		return dao.getByPrimaryKey(gift_no);
 	}
@@ -113,4 +134,5 @@ public class GiftService {
 	public byte[] getPic(String gift_no) {
 		return dao.getPic(gift_no);
 	}
+
 }

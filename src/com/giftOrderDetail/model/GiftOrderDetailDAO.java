@@ -7,7 +7,7 @@ import com.giftReceive.model.*;
 
 public class GiftOrderDetailDAO implements GiftOrderDetailDAO_interface {
 	
-	private static final String INSERT_STMT = "INSERT INTO GIFT_ORDER_DETAIL VALUES (to_char(sysdate,'yyyymmdd')||'-GOD'||LPAD(to_char(GIFT_ORDER_DETAIL_SEQ.NEXTVAL),3,'0'),?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO GIFT_ORDER_DETAIL VALUES (to_char(sysdate,'yyyymmdd')||'-GOD'||LPAD(to_char(GIFT_ORDER_DETAIL_SEQ.NEXTVAL),3,'0'),?,?,?,?,?,?)";
 	
 	@Override
 	public void insert(Map.Entry<GiftOrderDetailVO, List<GiftReceiveVO>> giftOrderDetail, Connection con) {
@@ -23,9 +23,10 @@ public class GiftOrderDetailDAO implements GiftOrderDetailDAO_interface {
 			pstmt = con.prepareStatement(INSERT_STMT, cols);
 			pstmt.setString(1, giftOrderDetailVO.getGift_no());
 			pstmt.setString(2, giftOrderDetailVO.getGifto_no());
-			pstmt.setInt(3, giftOrderDetailVO.getGiftod_amount());
-			pstmt.setInt(4, giftOrderDetailVO.getGiftod_money());
-			pstmt.setInt(5, giftOrderDetailVO.getGiftod_inventory());
+			pstmt.setInt(3, giftOrderDetailVO.getGiftod_unit());
+			pstmt.setInt(4, giftOrderDetailVO.getGiftod_amount());
+			pstmt.setInt(5, giftOrderDetailVO.getGiftod_money());
+			pstmt.setInt(6, giftOrderDetailVO.getGiftod_inventory());
 			pstmt.executeUpdate();
 			
 			rs= pstmt.getGeneratedKeys();

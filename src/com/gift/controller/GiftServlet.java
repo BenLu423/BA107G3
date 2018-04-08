@@ -44,7 +44,7 @@ public class GiftServlet extends HttpServlet {
 
 		req.setCharacterEncoding("BIG5");
 		String action = req.getParameter("action");
-System.out.println("G action: " + action);		
+System.out.println("Gift action: " + action);		
 		
 		//來自gift_add.jsp的新增請求
 		if(("addGift").equals(action)){

@@ -25,6 +25,7 @@ public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 	private static final String INSERT_STMT = "INSERT INTO GIFT_DISCOUNT(GIFTD_NO,GIFT_NO,GIFTD_START,GIFTD_END,GIFTD_PERCENT,GIFTD_AMOUNT) VALUES ('GD'||LPAD(to_char(GIFT_DISCOUNT_SEQ.NEXTVAL),3,'0'),?,?,?,?,?)";
 	private static final String UPDATE_STMT = "UPDATE GIFT_DISCOUNT SET GIFT_NO=?,GIFTD_START=?,GIFTD_END=?,GIFTD_PERCENT=?,GIFTD_AMOUNT=? WHERE GIFTD_NO=?";
 	private static final String DELETE_STMT = "DELETE FROM GIFT_DISCOUNT WHERE GIFTD_NO=?";
+	private static final String CURRENT_VALID_GIFT_STMT = "SELECT * FROM GIFT_DISCOUNT WHERE GIFT_NO=? AND (CURRENT_TIMESTAMP BETWEEN GIFTD_START AND GIFTD_END)";
 	private static final String FIND_BY_PK_STMT = "SELECT * FROM GIFT_DISCOUNT WHERE GIFTD_NO=?";
 	private static final String GET_ALL_STMT 	= "SELECT * FROM GIFT_DISCOUNT ORDER BY GIFTD_NO DESC";
 	
@@ -125,6 +126,56 @@ public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 				}
 			}
 		}
+	}
+
+	@Override
+	public GiftDiscountVO getCurrentValidGift(String gift_no) {
+		//尋找當前禮物是否存在於限時優惠中
+		GiftDiscountVO giftDiscountVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(CURRENT_VALID_GIFT_STMT);
+			pstmt.setString(1, gift_no);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				giftDiscountVO = new GiftDiscountVO();
+				giftDiscountVO.setGiftd_no(rs.getString("giftd_no"));
+				giftDiscountVO.setGift_no(rs.getString("gift_no"));
+				giftDiscountVO.setGiftd_start(rs.getTimestamp("giftd_start"));
+				giftDiscountVO.setGiftd_end(rs.getTimestamp("giftd_end"));
+				giftDiscountVO.setGiftd_percent(rs.getDouble("giftd_percent"));
+				giftDiscountVO.setGiftd_amount(rs.getInt("giftd_amount"));
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally {
+			if(rs != null){
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(pstmt != null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return giftDiscountVO;
 	}
 
 	@Override

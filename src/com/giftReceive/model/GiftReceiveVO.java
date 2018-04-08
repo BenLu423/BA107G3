@@ -14,6 +14,7 @@ public class GiftReceiveVO implements Serializable {
 	String giftr_is_found;// 收贈禮是否成立
 	String giftr_is_open;// 收贈禮是否公開
 	String giftr_notice;// 收贈禮通知
+	String giftr_message;// 收贈禮留言
 
 	public GiftReceiveVO() {
 		super();
@@ -89,6 +90,14 @@ public class GiftReceiveVO implements Serializable {
 
 	public void setGiftr_notice(String giftr_notice) {
 		this.giftr_notice = giftr_notice;
+	}
+
+	public String getGiftr_message() {
+		return giftr_message;
+	}
+
+	public void setGiftr_message(String giftr_message) {
+		this.giftr_message = giftr_message;
 	}
 
 }
