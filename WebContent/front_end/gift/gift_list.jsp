@@ -35,11 +35,12 @@
 					<p>Price : <span>$${gift.key.gift_price}</span></p>
 					<button type="button" style="margin-right: 0px;">FOLLOW</button>
 					<button type="button" class="addToCart" style="margin: 0px;">ADD TO CART</button>
-					<select name="giftd_amount" style="height: 30px;width: 45px;">
+					<select name="giftod_amount" style="height: 30px;width: 45px;">
 						<c:forEach var="count" begin="1" end="10" step="1">
 							<option value="${count}">${count}</option>
 						</c:forEach>
 					</select>  
+					<input type="hidden" name="action" value="addOrder">
 				</div>
         	</div>
 		</div>
@@ -53,21 +54,4 @@
 	</div>
 </div> 		
 </body>
-<script type="text/javascript">
-$(document).ready(function() {
-	$('.addToCart').click(function(){
-		var addGift = $(this).parent('div').children().serializeArray();
-		console.log();
-		$.ajax({
-			  type: 'POST',
-			  url: '/BA107G3/gift/giftOrder.do',
-			  data: JSON.stringify(addGift),
-			  dataType: 'text',
-			  success: (function() { alert("second success"); }),
-			  error:(function() { alert("second error"); })
-			}); 
-	});
-
-});
-</script>
 </html>

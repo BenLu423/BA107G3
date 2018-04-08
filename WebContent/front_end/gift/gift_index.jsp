@@ -43,6 +43,8 @@
 			                  	</div>
 			                  	<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 			                  	<input type="hidden" name="action" value="searchGifts">
+<%-- 			    	            <input type="hidden" name="tabWho" value="${(empty param.tabWho) ? '' : param.tabWho}"> --%>
+			    	            <input type="hidden" name="tabWho" value="tab2">
 								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>">
 			               
 			            </div>
@@ -53,33 +55,26 @@
 			</div>   
 		   	</form>
 			<!-- //搜尋區 -->          
-
+ 
 			<div class="col-xs-12 col-sm-12">
 		        <div role="tabpanel">
 		        <!-- 標籤面板：標籤區 -->
 			        <ul class="nav nav-tabs" role="tablist">
-			            <li role="presentation" class="active">
+			            <li role="presentation" ${(param.tabWho=="tab1") ? 'class="active"' : ''}>
 			                <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">限時優惠</a>
 			            </li>
-			            <li role="presentation">
-			                <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">最新禮物</a>
-			            </li>
-			            <li role="presentation">
-			                <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">全部禮物</a>
+			            <li role="presentation" ${(param.tabWho=="tab2") ? 'class="active"' : ''}>
+			                <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">全部禮物</a>
 			            </li>
 			        </ul>
 			                    
 					<!-- 標籤面板：內容區 -->
 					<div class="tab-content gift-content">
-				    	<div role="tabpanel" class="tab-pane active" id="tab1">
-					        <!-- 第一層 -->
-							<jsp:include page="/front_end/gift/gift_list.jsp"></jsp:include>
+				    	<div role="tabpanel" class="tab-pane ${(param.tabWho=='tab1') ? 'active' : ''}" id="tab1">
+				    		<jsp:include page="/front_end/gift/gift_disCount.jsp"></jsp:include>
 				    	</div>
-					    <div role="tabpanel" class="tab-pane" id="tab2">
-					        <!-- 頭條標籤的內容 -->
-					    </div>
-					    <div role="tabpanel" class="tab-pane" id="tab3">
-					        <!-- 最新標籤的內容 -->
+					    <div role="tabpanel" class="tab-pane ${(param.tabWho=='tab2') ? 'active' : ''}" id="tab2">
+							<jsp:include page="/front_end/gift/gift_list.jsp"></jsp:include>
 					    </div>
 					</div>
 		        </div>
@@ -91,4 +86,12 @@
 </div>	      
 <jsp:include page="/front_end/footer.jsp"></jsp:include>
 </body>
+<script type="text/javascript">
+$('a[href="#tab1"]').click(function(){
+	 $('input[name="tabWho"]').val('tab1');
+});
+$('a[href="#tab2"]').click(function(){
+	 $('input[name="tabWho"]').val('tab2');
+});
+</script>
 </html>

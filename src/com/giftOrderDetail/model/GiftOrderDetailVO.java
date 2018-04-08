@@ -7,6 +7,7 @@ public class GiftOrderDetailVO implements Serializable {
 	String giftod_no;// 訂單明細編號
 	String gift_no;// 禮物編號
 	String gifto_no;// 訂單編號
+	String giftd_no;// 限時優惠編號
 	Integer giftod_unit;// 購買單價
 	Integer giftod_amount;// 購買數量
 	Integer giftod_money;// 購買小計
@@ -18,6 +19,14 @@ public class GiftOrderDetailVO implements Serializable {
 
 	public String getGiftod_no() {
 		return giftod_no;
+	}
+
+	public String getGiftd_no() {
+		return giftd_no;
+	}
+
+	public void setGiftd_no(String giftd_no) {
+		this.giftd_no = giftd_no;
 	}
 
 	public void setGiftod_no(String giftod_no) {

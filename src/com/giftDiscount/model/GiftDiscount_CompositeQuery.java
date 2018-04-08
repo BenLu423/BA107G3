@@ -43,9 +43,11 @@ public class GiftDiscount_CompositeQuery {
 					whereCondition.append(" and " + aCondition);
 			}
 				
-		} 
-		whereCondition.append("order by giftd_no desc");
-		System.out.println(whereCondition.toString());
+		}
+		if(count==0)
+			whereCondition.append("where (CURRENT_TIMESTAMP BETWEEN GIFTD_START AND GIFTD_END) order by giftd_no desc");
+		else
+			whereCondition.append("and (CURRENT_TIMESTAMP BETWEEN GIFTD_START AND GIFTD_END) order by giftd_no desc");
 		return whereCondition.toString();
 	}
 	
@@ -53,10 +55,10 @@ public class GiftDiscount_CompositeQuery {
 //
 //		// 配合 req.getParameterMap()方法 回傳 java.util.Map<java.lang.String,java.lang.String[]> 之測試
 //		Map<String, String[]> map = new TreeMap<String, String[]>();
-//		map.put("gift_no", new String[] { "G001" });
+//		map.put("gift_no", new String[] { "G003" });
 //		map.put("action", new String[] { "getXXX" }); // 注意Map裡面會含有action的key
 //
-//		String finalSQL = Gift_CompositeQuery.get_WhereCondition(map);
+//		String finalSQL = GiftDiscount_CompositeQuery.get_WhereCondition(map);
 //		System.out.println("●●finalSQL = " + finalSQL);
 //
 //	}

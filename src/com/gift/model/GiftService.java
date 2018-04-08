@@ -106,6 +106,18 @@ public class GiftService {
 		return price.intValue();
 	}
 	
+	public Integer getAmount(String gift_no){
+		//取得可購買數量，範圍為20與限時優惠數量取[最小值]
+		
+		//是否有限時優惠
+		GiftDiscountVO giftDiscountVO = discountDao.getCurrentValidGift(gift_no);
+		Integer count = 10;
+		if(giftDiscountVO != null)
+			count = count<giftDiscountVO.getGiftd_amount() ? count : giftDiscountVO.getGiftd_amount();
+		
+		return count;
+	}
+	
 	public GiftVO getOneGift(String gift_no) {
 		return dao.getByPrimaryKey(gift_no);
 	}

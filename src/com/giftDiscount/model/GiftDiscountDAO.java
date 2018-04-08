@@ -27,7 +27,7 @@ public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 	private static final String DELETE_STMT = "DELETE FROM GIFT_DISCOUNT WHERE GIFTD_NO=?";
 	private static final String CURRENT_VALID_GIFT_STMT = "SELECT * FROM GIFT_DISCOUNT WHERE GIFT_NO=? AND (CURRENT_TIMESTAMP BETWEEN GIFTD_START AND GIFTD_END)";
 	private static final String FIND_BY_PK_STMT = "SELECT * FROM GIFT_DISCOUNT WHERE GIFTD_NO=?";
-	private static final String GET_ALL_STMT 	= "SELECT * FROM GIFT_DISCOUNT ORDER BY GIFTD_NO DESC";
+	private static final String GET_ALL_STMT 	= "SELECT * FROM GIFT_DISCOUNT WHERE (CURRENT_TIMESTAMP BETWEEN GIFTD_START AND GIFTD_END) ORDER BY GIFTD_NO DESC";
 	
 	@Override
 	public void insert(GiftDiscountVO giftDiscountVO) {
