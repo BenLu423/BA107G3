@@ -3,7 +3,7 @@ package com.giftDiscount.model;
 import java.util.*;
 
 
-public class GiftDiscount_CompositeQuery {
+public class GiftDiscount_CompositeQueryAll {
 
 	public static String get_aCondition_For_Oracle(String columnName, String value){
 		String aCondition = null;

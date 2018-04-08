@@ -68,11 +68,11 @@
                 	</tbody>
         			</table>
         		</div>
-        		<c:if test="${(empty gifts) and (empty giftDiscountQuery)}">
-        			<jsp:forward page="/gift/giftDiscount.do">
-        				<jsp:param name="action" value="searchGiftDiscounts" />
-        			</jsp:forward>
-				</c:if>
+<%--         		<c:if test="${(empty giftDiscounts) and (empty giftDiscountQuery)}"> --%>
+<%--         			<jsp:forward page="/gift/giftDiscount.do"> --%>
+<%--         				<jsp:param name="action" value="searchGiftDiscounts" /> --%>
+<%--         			</jsp:forward> --%>
+<%-- 				</c:if> --%>
 				<c:if test="${giftDiscountEdits != null}">
 				<jsp:include page="gift_discount_listEdit.jsp"></jsp:include>
 				</c:if>

@@ -30,8 +30,9 @@ public class GiftServlet extends HttpServlet {
 		Map<String, String[]> giftStrQuery = (Map<String, String[]>)session.getAttribute("giftStrQuery");
 		//取得查詢的禮物
 		Map<GiftVO, List<GiftLabelVO>> gifts = null;
-		if(giftStrQuery != null)
-			gifts = giftSvc.getGiftAll(giftStrQuery);
+		if(giftStrQuery == null)
+			giftStrQuery = new LinkedHashMap<>();
+		gifts = giftSvc.getGiftAll(giftStrQuery);
 		//取得欲修改的禮物
 		Map<GiftVO, List<GiftLabelVO>> giftEdits = (Map<GiftVO, List<GiftLabelVO>>) session.getAttribute("giftEdits");
 		if(giftEdits != null && !giftEdits.isEmpty()){
@@ -396,7 +397,7 @@ System.out.println("Hen爆炸!!!");
 				
 				//將查詢的禮物扣除要修改的禮物，避免重複出現
 				if(giftEdits!=null || !giftEdits.isEmpty()){
-				gifts = giftSvc.deductEditGift(gifts, giftEdits);
+					gifts = giftSvc.deductEditGift(gifts, giftEdits);
 				}
 				//將查詢禮物(原先扣除修改)的結果，並set進req
 				req.setAttribute("gifts", gifts);

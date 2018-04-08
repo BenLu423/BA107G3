@@ -28,6 +28,7 @@ public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 	private static final String CURRENT_VALID_GIFT_STMT = "SELECT * FROM GIFT_DISCOUNT WHERE GIFT_NO=? AND (CURRENT_TIMESTAMP BETWEEN GIFTD_START AND GIFTD_END)";
 	private static final String FIND_BY_PK_STMT = "SELECT * FROM GIFT_DISCOUNT WHERE GIFTD_NO=?";
 	private static final String GET_ALL_STMT 	= "SELECT * FROM GIFT_DISCOUNT WHERE (CURRENT_TIMESTAMP BETWEEN GIFTD_START AND GIFTD_END) ORDER BY GIFTD_NO DESC";
+	private static final String TOTAL_STMT = "SELECT * FROM GIFT_DISCOUNT ORDER BY GIFTD_NO DESC";
 	
 	@Override
 	public void insert(GiftDiscountVO giftDiscountVO) {
@@ -228,6 +229,111 @@ public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 	}
 
 	@Override
+	public List<GiftDiscountVO> getTotal() {
+		List<GiftDiscountVO> list = new ArrayList<>();
+		GiftDiscountVO giftDiscountVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(TOTAL_STMT);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				giftDiscountVO = new GiftDiscountVO();
+				giftDiscountVO.setGiftd_no(rs.getString("giftd_no"));
+				giftDiscountVO.setGift_no(rs.getString("gift_no"));
+				giftDiscountVO.setGiftd_start(rs.getTimestamp("giftd_start"));
+				giftDiscountVO.setGiftd_end(rs.getTimestamp("giftd_end"));
+				giftDiscountVO.setGiftd_percent(rs.getDouble("giftd_percent"));
+				giftDiscountVO.setGiftd_amount(rs.getInt("giftd_amount"));
+				list.add(giftDiscountVO);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally{
+			if(rs != null){
+				try {
+						rs.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				};
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<GiftDiscountVO> getTotal(Map<String, String[]> map) {
+		List<GiftDiscountVO> list = new ArrayList<>();
+		GiftDiscountVO giftDiscountVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			String finalSQL = GiftDiscount_CompositeQueryTotal.get_WhereCondition(map);
+			pstmt = con.prepareStatement(finalSQL);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				giftDiscountVO = new GiftDiscountVO();
+				giftDiscountVO.setGiftd_no(rs.getString("giftd_no"));
+				giftDiscountVO.setGift_no(rs.getString("gift_no"));
+				giftDiscountVO.setGiftd_start(rs.getTimestamp("giftd_start"));
+				giftDiscountVO.setGiftd_end(rs.getTimestamp("giftd_end"));
+				giftDiscountVO.setGiftd_percent(rs.getDouble("giftd_percent"));
+				giftDiscountVO.setGiftd_amount(rs.getInt("giftd_amount"));
+				list.add(giftDiscountVO);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally{
+			if(rs != null){
+				try {
+						rs.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				};
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
 	public List<GiftDiscountVO> getAll() {
 		List<GiftDiscountVO> list = new ArrayList<>();
 		GiftDiscountVO giftDiscountVO = null;
@@ -291,7 +397,7 @@ public class GiftDiscountDAO implements GiftDiscountDAO_interface{
 		
 		try {
 			con = ds.getConnection();
-			String finalSQL = GiftDiscount_CompositeQuery.get_WhereCondition(map);
+			String finalSQL = GiftDiscount_CompositeQueryAll.get_WhereCondition(map);
 			pstmt = con.prepareStatement(finalSQL);
 			rs = pstmt.executeQuery();
 			while(rs.next()){

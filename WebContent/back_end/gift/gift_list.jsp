@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<jsp:useBean id="gift" class="com.gift.model.GiftService" scope="page"/>
 <c:set var="statusList" value="尚未上架,上架中,已下架"/>
 
 <html>
@@ -16,7 +17,7 @@
 		<table class="table table-filter gift-management">
 			<tbody>
 				
-				<c:forEach var="gift" items="${gifts}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+				<c:forEach var="gift" items="${(gifts!=null) ? gifts : (gift.giftAll)}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 					<c:choose>
 						<c:when test='${gift.key.gift_is_on == "尚未上架"}'>
 							<tr data-status="never">

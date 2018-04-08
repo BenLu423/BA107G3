@@ -29,15 +29,15 @@ public class GiftDiscountServlet extends HttpServlet {
 		//取得查詢字串
 		Map<String, String[]> giftDiscountQuery = (Map<String, String[]>)session.getAttribute("giftDiscountQuery");
 		//取得查詢的禮物
-		Map<GiftDiscountVO, GiftVO> gifts = null;
+		Map<GiftDiscountVO, GiftVO> giftDiscounts = null;
 		if(giftDiscountQuery != null)
-			gifts = giftDiscountSvc.getGiftDiscountAll(giftDiscountQuery);
+			giftDiscounts = giftDiscountSvc.getGiftDiscountTotal(giftDiscountQuery);
 		//取得欲修改的禮物
 		Map<GiftDiscountVO, GiftVO> giftDiscountEdits = (Map<GiftDiscountVO, GiftVO>) session.getAttribute("giftDiscountEdits");
 		if(giftDiscountEdits != null && !giftDiscountEdits.isEmpty()){
-			gifts = giftDiscountSvc.deductEditGD(gifts, giftDiscountEdits);
+			giftDiscounts = giftDiscountSvc.deductEditGD(giftDiscounts, giftDiscountEdits);
 		}	
-		req.setAttribute("gifts", gifts);
+		req.setAttribute("giftDiscounts", giftDiscounts);
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -220,14 +220,14 @@ System.out.println("Hen爆炸!!!");
 					session.setAttribute("giftDiscountQuery", map);
 					giftDiscountQuery = map;
 				}
-				Map<GiftDiscountVO, GiftVO> gifts = giftDiscountSvc.getGiftDiscountAll(giftDiscountQuery);
+				Map<GiftDiscountVO, GiftVO> giftDiscounts = giftDiscountSvc.getGiftDiscountTotal(giftDiscountQuery);
 
 				//將查詢的禮物扣除要修改的禮物，避免重複出現
 				if(giftDiscountEdits!=null || !giftDiscountEdits.isEmpty()){
-					gifts = giftDiscountSvc.deductEditGD(gifts, giftDiscountEdits);
+					giftDiscounts = giftDiscountSvc.deductEditGD(giftDiscounts, giftDiscountEdits);
 				}
 				//將查詢禮物(原先扣除修改)的結果，並set進req
-				req.setAttribute("gifts", gifts);
+				req.setAttribute("giftDiscounts", giftDiscounts);
 				RequestDispatcher successView = req.getRequestDispatcher(requestURL);
 				successView.forward(req, res);
 			} catch (Exception e){

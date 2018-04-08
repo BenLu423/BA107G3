@@ -90,10 +90,27 @@ public class GiftDiscountService {
 		return daoGD.getAll();
 	}
 	
+	public List<GiftDiscountVO> getTotal(){
+		return daoGD.getTotal();
+	}
+	
 	public Map<GiftDiscountVO,GiftVO> getGiftDiscountAll(Map<String, String[]> map){
 		List<GiftDiscountVO> list = daoGD.getAll(map);
 		return getLabelList(list);
-		
+	}
+	
+	public Map<GiftDiscountVO,GiftVO> getGiftDiscountAll(){
+		List<GiftDiscountVO> list = daoGD.getAll();
+		return getLabelList(list);
 	}
 
+	public Map<GiftDiscountVO,GiftVO> getGiftDiscountTotal(Map<String, String[]> map){
+		List<GiftDiscountVO> list = daoGD.getTotal(map);
+		return getLabelList(list);
+	}
+	
+	public Map<GiftDiscountVO,GiftVO> getGiftDiscountTotal(){
+		List<GiftDiscountVO> list = daoGD.getTotal();
+		return getLabelList(list);
+	}
 }

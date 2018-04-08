@@ -70,11 +70,6 @@
                 	</tbody>
         			</table>
         		</div>
-        		<c:if test="${empty gifts and (empty giftStrQuery)}">
-        			<jsp:forward page="/gift/gift.do">
-        				<jsp:param name="action" value="searchGifts" />
-        			</jsp:forward>
-				</c:if>
 				<c:if test="${giftEdits != null}">
 				<jsp:include page="gift_listEdit.jsp"></jsp:include>
 				</c:if>
