@@ -68,13 +68,31 @@
 $(document).ready(function() {
 	$('.addToCart').click(function(){
 		var addGift = $(this).parent('div').children().serializeArray();
-		console.log(JSON.stringify(addGift));
 		$.ajax({
 			  type: 'POST',
 			  url: '/BA107G3/gift/giftOrder.do',
 			  data: addGift,
-			  dataType: 'text',
-			  success: (function() { alert("second success"); }),
+			  dataType: 'json',
+			  success: (function(data) {
+	 			  var contextPath = '${pageContext.request.contextPath}';
+	 			  var servletPath = '${pageContext.request.servletPath}';
+	 			  var tabWho = '${(param.tabWho!=null) ? param.tabWho : "tab1"}';
+	 			  var whichPage = '${param.whichPage}';
+	 			  console.log(contextPath + '/gift/gift.do?action=searchGifts&tabWho='+tabWho+'&requestURL='+servletPath+'&whichPage='+whichPage);
+				  window.location = contextPath + '/gift/gift.do?action=serachFrontGifts&tabWho='+tabWho+'&requestURL='+servletPath+'&whichPage='+whichPage;
+// 				if(data.isExist != 'yes'){
+// 				  $('#cartSum')[0].innerText = parseInt($('#cartSum')[0].innerText) + 1;
+// 			  	}
+				
+// 				var requestURL = '${pageContext.request.contextPath}';
+// 				var requestURL = '${pageContext.request.contextPath}';
+// 				$('#cartSum').parent().siblings('ul')[0].innerHTML =
+// 				  	'<li><a href="#"><img style="height:30px;" src="'+requestURL+'/DBGifReader4?table=GIFT&gift_no='+data.gift_no+'">'+
+// 				  	'<span>¡@'+data.gift_name+'¡@'+data.gift_amount+'­Ó</span></a></li>'+
+// 					$('#cartSum').parent().siblings('ul')[0].innerHTML;
+				
+// 			  	$('#cartSum').parent().siblings('ul').find('li:eq(-2)')[0].innerText = 'total: $888';  
+			  }),
 			  error:(function() { alert("second error"); })
 			}); 
 	});

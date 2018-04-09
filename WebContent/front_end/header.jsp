@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<jsp:useBean id="giftSvc" scope="page" class="com.gift.model.GiftService"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -90,19 +92,27 @@
                                          
                          <div class="btn-group">
                              <button class="btn btn-default dropdown-toggle mybutton-icon" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                             購物車 <span class="badge">2</span>
+                            	 購物車 <span class="badge" id="cartSum">${fn:length(orderDetail)}</span>
                              </button>
                              <ul class="dropdown-menu agile_short_dropdown dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                                 <li><a href="#">flower</a></li>
-                                 <li><a href="#">car</a></li>
+                                 <c:forEach var="detail" items="${orderDetail}">
+                                 <c:set var="gift" value="${giftSvc.getOneGift(detail.key.gift_no)}" scope="page"/>
+                                 <li>
+	                                 <a href="#">
+		                                 <img style="height:30px;" src="<%=request.getContextPath()%>/DBGifReader4?table=GIFT&gift_no=${gift.gift_no}">
+		                                 <span>　${gift.gift_name}　${detail.key.giftod_amount}個</span>
+	                                 </a>
+                                 </li>
+                                 </c:forEach>
                                  <li role="separator" class="divider"></li>
-                                 <li>total: $888</li>
+                                 <li>total: $${orderMoney}</li>
+                                 <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_order.jsp">前往結帳</a></li>
                              </ul>                                
                          </div>
                          
                          <div class="btn-group">
                              <button class="btn btn-default dropdown-toggle mybutton-icon" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                             通知 <span class="badge">888</span>
+                             	通知 <span class="badge">888</span>
                              </button>
                              <ul class="dropdown-menu agile_short_dropdown dropdown-menu-right" aria-labelledby="dropdownMenu2" style="text-align: left">
                                     <li><a href="#">　 劉德華　　請求加為好友</a></li>
@@ -175,11 +185,6 @@
         </div>
 
     </div>
-   
-    
-
-  
-    
 </div>
 </div>
 </nav>   

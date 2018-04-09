@@ -28,8 +28,7 @@
 				                <th class="order-unit">單價</th>
 				                <th class="order-money">小計</th>
 				                <th class="order-inventory">可買量</th>
-				                <th class="order-person">收禮人</th>
-				                <th class="order-qty">收禮數量</th>
+				                <th class="order-person">收禮人/收禮數量</th>
 				            </tr>
 				        </thead>
 				        <tbody>
@@ -54,7 +53,6 @@
 				                <td class="order-money">${detail.key.giftod_money}</td>
 				                <td class="order-inventory"></td>
 				                <td class="order-person">資料</td>
-				                <td class="order-qty">資料</td>
 				            </tr>
 				        </c:forEach>
 				        </tbody>

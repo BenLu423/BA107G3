@@ -1,27 +1,27 @@
 <nav aria-label="Page navigation" style="text-align: center;">
   <ul class="pagination">
     <li>
-      <a href="<%=request.getContextPath()%>/gift/gift.do?action=searchGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=(whichPage-1 > 0) ? whichPage-1 : 1%>" aria-label="Previous">
+      <a href="<%=request.getContextPath()%>/gift/gift.do?action=serachFrontGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=(whichPage-1 > 0) ? whichPage-1 : 1%>" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
 	<% if(whichPage <= (selectNumber)/2){
 			for(int i=1;i<=selectNumber && i<= pageNumber; i++){
-	%>		<li><a href="<%=request.getContextPath()%>/gift/gift.do?action=searchGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=i%>"><%=i%></a></li>
+	%>		<li><a href="<%=request.getContextPath()%>/gift/gift.do?action=serachFrontGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=i%>"><%=i%></a></li>
 	<%		
 			}
 	   }else if(whichPage >= (pageNumber-(selectNumber-1)/2)){
 		   	for(int i=whichPage-((selectNumber-1)/2); i<=pageNumber ; i++){
-	%>		<li><a href="<%=request.getContextPath()%>/gift/gift.do?action=searchGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=i%>"><%=i%></a></li>	   		
+	%>		<li><a href="<%=request.getContextPath()%>/gift/gift.do?action=serachFrontGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=i%>"><%=i%></a></li>	   		
 	<%	   	}
 	   }else{	
 	   		for (int i=whichPage-1; i<whichPage-1+selectNumber ; i++){
 	%>
-    		<li><a href="<%=request.getContextPath()%>/gift/gift.do?action=searchGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=i%>"><%=i%></a></li>
+    		<li><a href="<%=request.getContextPath()%>/gift/gift.do?action=serachFrontGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=i%>"><%=i%></a></li>
 	<% 		}
 	   } %>
     <li>
-      <a href="<%=request.getContextPath()%>/gift/gift.do?action=searchGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=(whichPage+1 < pageNumber) ? whichPage+1 : pageNumber%>" aria-label="Next">
+      <a href="<%=request.getContextPath()%>/gift/gift.do?action=serachFrontGifts&tabWho=${param.tabWho}&requestURL=<%=request.getServletPath()%>&whichPage=<%=(whichPage+1 < pageNumber) ? whichPage+1 : pageNumber%>" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>

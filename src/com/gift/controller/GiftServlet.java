@@ -327,9 +327,41 @@ System.out.println("Hen爆炸!!!");
 			}
 			
 		}
+		//來自前端gift_index.jsp的查詢請求
+		if(("serachFrontGifts").equals(action)){
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			HttpSession session = req.getSession();
+			GiftService giftSvc = new GiftService();
+			String requestURL = req.getParameter("requestURL");
+			
+			try {
+				//取得查詢字串
+				Map<String, String[]> giftFrontQuery = (Map<String, String[]>)session.getAttribute("giftFrontQuery");
+				
+				//如果為每次請求搜尋[即不是換頁]
+				String whichPage = req.getParameter("whichPage");
+				if(whichPage == null || "".equals(whichPage) ){
+					Map<String, String[]> map = new HashMap<String, String[]> (req.getParameterMap());
+					session.setAttribute("giftFrontQuery", map);
+					giftFrontQuery = map;
+				}
+				giftFrontQuery.put("gift_is_on", new String[]{"上架中"});
+				Map<GiftVO, List<GiftLabelVO>> gifts = giftSvc.getGiftAll(giftFrontQuery);
+				
+				req.setAttribute("gifts", gifts);
+				RequestDispatcher successView = req.getRequestDispatcher(requestURL);
+				successView.forward(req, res);
+			} catch (Exception e){
+System.out.println("前端顯示爆炸啦!!!");
+				errorMsgs.put("Exception","無法取得資料: "+e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
+				failureView.forward(req, res);
+			}
+			
+		}
 		
-		
-		//來自gift_index.jsp的查詢請求
+		//來自後端gift_index.jsp的查詢請求
 		if("searchGifts".equals(action)){
 			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 			req.setAttribute("errorMsgs", errorMsgs);

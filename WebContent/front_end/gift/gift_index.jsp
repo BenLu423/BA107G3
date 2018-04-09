@@ -43,7 +43,6 @@
 			                  	</div>
 			                  	<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 			                  	<input type="hidden" name="action" value="searchGifts">
-<%-- 			    	            <input type="hidden" name="tabWho" value="${(empty param.tabWho) ? '' : param.tabWho}"> --%>
 			    	            <input type="hidden" name="tabWho" value="tab2">
 			    	            <input type="hidden" name="gift_is_on" value="¤W¬[¤¤">
 								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>">
