@@ -165,7 +165,7 @@
                     	<li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/member/member_search_all.jsp" class="friends.html">交友搜尋</a></li> 
                         <li class="menu__item"><a href="diary.html" class="menu__link">日記專欄</a></li>
                         <li class="menu__item"><a href="event.html" class="menu__link">活動特輯</a></li>
-                        <li class="menu__item"><a href="gift.html" class="menu__link">禮物商城</a></li>
+                        <li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/gift/gift_index.jsp" class="menu__link">禮物商城</a></li>
                         <li class="menu__item"><a href="chat.html" class="menu__link">聊天室</a></li>         
                     </ul>
                     </nav>
