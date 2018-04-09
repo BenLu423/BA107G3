@@ -73,6 +73,10 @@ public class GiftDiscountService {
 		daoGD.delete(giftd_no);
 	}
 	
+	public GiftDiscountVO getCurrentValidGift(String gift_no){
+		return daoGD.getCurrentValidGift(gift_no);
+	}
+	
 	public GiftDiscountVO getOneGD(String giftd_no){
 		return daoGD.getByPrimaryKey(giftd_no);
 	}
@@ -87,7 +91,16 @@ public class GiftDiscountService {
 	}
 	
 	public List<GiftDiscountVO> getAll(){
-		return daoGD.getAll();
+		
+		List<GiftDiscountVO> ori = daoGD.getAll();
+		List<GiftDiscountVO> list = new ArrayList<>();
+		for(GiftDiscountVO vo: ori){
+			GiftVO giftVO = daoG.getByPrimaryKey(vo.getGift_no());
+			if("¤W¬[¤¤".equals(giftVO.getGift_is_on()))
+				list.add(vo);
+			
+		}
+		return list;
 	}
 	
 	public List<GiftDiscountVO> getTotal(){

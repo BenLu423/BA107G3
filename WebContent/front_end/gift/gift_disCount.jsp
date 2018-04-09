@@ -24,7 +24,7 @@
 				<div class="item-img">
 					<img src="<%=request.getContextPath()%>/DBGifReader4?table=GIFT&gift_no=${discount.gift_no}">
 					<div class="gift-discount">
-						${discount.giftd_percent}
+						${discount.giftd_percent*10}§é
 					</div>
 					<div class="gift-labels">
 						<c:forEach var="label" items="${giftLabelSvc.getListGiftLabel(discount.gift_no)}">

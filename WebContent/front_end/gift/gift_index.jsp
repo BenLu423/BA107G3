@@ -61,7 +61,7 @@
 		        <div role="tabpanel">
 		        <!-- 標籤面板：標籤區 -->
 			        <ul class="nav nav-tabs" role="tablist">
-			            <li role="presentation" ${(param.tabWho=="tab1") ? 'class="active"' : ''}>
+			            <li role="presentation" ${(param.tabWho!="tab2") ? 'class="active"' : ''}>
 			                <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">限時優惠</a>
 			            </li>
 			            <li role="presentation" ${(param.tabWho=="tab2") ? 'class="active"' : ''}>
@@ -71,7 +71,7 @@
 			                    
 					<!-- 標籤面板：內容區 -->
 					<div class="tab-content gift-content">
-				    	<div role="tabpanel" class="tab-pane ${(param.tabWho=='tab1') ? 'active' : ''}" id="tab1">
+				    	<div role="tabpanel" class="tab-pane ${(param.tabWho!='tab2') ? 'active' : ''}" id="tab1">
 				    		<jsp:include page="/front_end/gift/gift_disCount.jsp"></jsp:include>
 				    	</div>
 					    <div role="tabpanel" class="tab-pane ${(param.tabWho=='tab2') ? 'active' : ''}" id="tab2">
