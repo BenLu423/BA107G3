@@ -17,7 +17,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.admin_feature.model.AuthFeatureVO;
+import com.auth_feature.model.AuthFeatureVO;
 
 public class AdminDAO implements AdminDAO_interface{
 	
@@ -31,13 +31,14 @@ public class AdminDAO implements AdminDAO_interface{
 		}
 	}
 	
-	private static final String INSERT_ADMIN = "INSERT INTO ADMIN(ADM_NO, ADM_ACCT, ADM_PWD, ADM_NAME) VALUES ('A'||LPAD(to_char(ADMIN_SEQ.NEXTVAL),3,'0'), ?, ?, ?)";
-	private static final String UPDATE_ADMIN = "UPDATE ADMIN SET ADM_ACCT=?,ADM_PWD=?,ADM_NAME=? WHERE ADM_NO=?";
+	private static final String INSERT_ADMIN = "INSERT INTO ADMIN(ADM_NO, ADM_ACCT, ADM_PWD, ADM_NAME,ADM_MAIL) VALUES ('A'||LPAD(to_char(ADMIN_SEQ.NEXTVAL),3,'0'), ?, ?, ?,?)";
+	private static final String UPDATE_ADMIN = "UPDATE ADMIN SET ADM_ACCT=?,ADM_MAIL=?,ADM_NAME=? WHERE ADM_NO=?";
 	private static final String DELETE_ADMIN = "DELETE FROM ADMIN WHERE ADM_NO=?";
-	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_ACCT=? AND ADM_PWD=?";
-	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN";
+	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_NO=?";
+	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN ORDER BY ADM_NO DESC";
 	private static final String GET_ADMIN_AUTHS = "SELECT*FROM AUTH_FEATURE JOIN ADMIN_AUTH ON AUTH_FEATURE.AUTH_NO = ADMIN_AUTH.AUTH_NO WHERE ADM_NO=?";
-
+	private static final String GET_ONE_ByACCT = "SELECT*FROM ADMIN WHERE ADM_ACCT=?";
+	
 	@Override
 	public void insert(AdminVO adminVO) {
 		Connection con = null;
@@ -50,6 +51,7 @@ public class AdminDAO implements AdminDAO_interface{
 			pstmt.setString(1, adminVO.getAdm_acct());
 			pstmt.setString(2, adminVO.getAdm_pwd());
 			pstmt.setString(3, adminVO.getAdm_name());
+			pstmt.setString(4,adminVO.getAdm_mail());
 			
 			pstmt.executeUpdate();
 			System.out.println("新增完成");
@@ -87,7 +89,7 @@ public class AdminDAO implements AdminDAO_interface{
 			pstmt = con.prepareStatement(UPDATE_ADMIN);
 			
 			pstmt.setString(1, adminVO.getAdm_acct());
-			pstmt.setString(2, adminVO.getAdm_pwd());
+			pstmt.setString(2, adminVO.getAdm_mail());
 			pstmt.setString(3, adminVO.getAdm_name());
 			pstmt.setString(4, adminVO.getAdm_no());
 			
@@ -155,7 +157,7 @@ public class AdminDAO implements AdminDAO_interface{
 	}
 
 	@Override
-	public AdminVO findByPrimaryKey(String adminAcct,String adminPwd) {
+	public AdminVO findByPrimaryKey(String admin_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -165,8 +167,7 @@ public class AdminDAO implements AdminDAO_interface{
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_ADMIN);
 			
-			pstmt.setString(1, adminAcct);
-			pstmt.setString(2, adminPwd);
+			pstmt.setString(1, admin_no);
 			rs = pstmt.executeQuery();
 			
 			rs.next();
@@ -175,6 +176,7 @@ public class AdminDAO implements AdminDAO_interface{
 			admin.setAdm_acct(rs.getString("adm_acct"));
 			admin.setAdm_pwd(rs.getString("adm_pwd"));
 			admin.setAdm_name(rs.getString("adm_name"));
+			admin.setAdm_mail(rs.getString("adm_mail"));
 			
 			System.out.println("查詢完成");
 			
@@ -220,6 +222,7 @@ public class AdminDAO implements AdminDAO_interface{
 				admin.setAdm_acct(rs.getString("adm_acct"));
 				admin.setAdm_pwd(rs.getString("adm_pwd"));
 				admin.setAdm_name(rs.getString("adm_name"));
+				admin.setAdm_mail(rs.getString("adm_mail"));
 				adminList.add(admin);
 			}
 			
@@ -247,12 +250,12 @@ public class AdminDAO implements AdminDAO_interface{
 	}
 
 	@Override
-	public Set<AuthFeatureVO> getAdminAuths(String admin_no) {
+	public List<AuthFeatureVO> getAdminAuths(String admin_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		AuthFeatureVO auth = null;
-		Set<AuthFeatureVO> set = new LinkedHashSet<AuthFeatureVO>();
+		List<AuthFeatureVO> list = new ArrayList<AuthFeatureVO>();
 		
 		try{
 			
@@ -266,7 +269,7 @@ public class AdminDAO implements AdminDAO_interface{
 				auth = new AuthFeatureVO();
 				auth.setAuth_no(rs.getString("auth_no"));
 				auth.setAuth_name(rs.getString("auth_name"));
-				set.add(auth);
+				list.add(auth);
 			}
 		}catch(SQLException se){
 			throw new RuntimeException("A database error occured. "
@@ -288,7 +291,7 @@ public class AdminDAO implements AdminDAO_interface{
 				
 			}	
 		}
-		return set;
+		return list;
 	}
 
 	
@@ -298,7 +301,6 @@ public class AdminDAO implements AdminDAO_interface{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		AdminVO admin = null;
-		List<AdminVO> adminList = new ArrayList<AdminVO>();
 		Map<String , String >map = new HashMap<String ,String >();
 		
 		try{
@@ -312,6 +314,7 @@ public class AdminDAO implements AdminDAO_interface{
 				admin.setAdm_acct(rs.getString("adm_acct"));
 				admin.setAdm_pwd(rs.getString("adm_pwd"));
 				admin.setAdm_name(rs.getString("adm_name"));
+				admin.setAdm_mail(rs.getString("adm_mail"));
 				map.put(rs.getString("adm_acct"), rs.getString("adm_pwd"));
 			}
 			
@@ -336,6 +339,51 @@ public class AdminDAO implements AdminDAO_interface{
 			}	
 		}
 		return map;
+	}
+
+	@Override
+	public AdminVO findByAcct(String admin_acct) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		AdminVO admin = null;
+		
+		try{
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_ByACCT);
+			
+			pstmt.setString(1, admin_acct);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			admin = new AdminVO();
+			admin.setAdm_no(rs.getString("adm_no"));
+			admin.setAdm_acct(rs.getString("adm_acct"));
+			admin.setAdm_pwd(rs.getString("adm_pwd"));
+			admin.setAdm_name(rs.getString("adm_name"));
+			admin.setAdm_mail(rs.getString("adm_mail"));
+			
+		}catch(SQLException se){
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		}finally{
+			if(pstmt!=null){
+				try{
+					pstmt.close();
+				}catch(SQLException se){
+					se.printStackTrace(System.err);
+				}
+			}
+			if(con!=null){
+				try{
+					con.close();
+				}catch(Exception e){
+					e.printStackTrace(System.err);
+				}
+				
+			}	
+		}
+		return admin;
 	}
 	
 

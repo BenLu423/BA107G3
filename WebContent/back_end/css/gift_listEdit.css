@@ -1,0 +1,35 @@
+input#gift_name:focus{
+	background-color: white;
+}
+
+.gift-no input,
+.gift-price input{
+	width: 100%;
+	margin: 10px 0px 10px 0px;
+	text-align: center;
+}
+
+
+
+.gift-status select{
+	overflow:hidden;
+}
+
+.gift-status p{
+	text-align: center;
+}
+
+.gift-pic input{
+	width: 74px;
+	display: inline-block;
+}
+
+.gift-pic img{
+	width:110px;
+	height:110px;
+}
+
+.errMsg{
+	color:red;
+	font-size:10px;
+}

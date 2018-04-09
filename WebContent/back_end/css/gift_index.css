@@ -1,23 +1,82 @@
-.gift-search, .gift-menu{
-    padding-top: 12px;
-    padding-bottom: 28px;
+nav .pagination{
+	margin:0px;
+}
+
+#giftAdd{
+	background-color: transparent;
+    color: white;
+    border: 0px;
+}
+
+button#giftAdd:focus{
+	outline:0;
+}
+
+input[type="file"] {
+  color: transparent;
+}
+
+.gift-cont{
+	margin-top:20px;	
+}
+
+textarea {
+  resize : none;
+}
+
+.gift-add-card{
+	position:relative;	
+}
+
+.gift-add-close{
+	position:absolute;
+ 	top: -10px;
+ 	right: 0px;	
+}
+
+.gift-add-close p{
+	font-size: 50px;
+	margin: 0px;
+}
+
+.gift-add-card .modal-dialog{
+	margin-top:0px;	
+}
+
+.gift-add-body .form-group input{
+	margin: 0px;
+}
+
+.gift-add-submit:hover,
+.gift-add-reset:hover{
+	background-color: black;
+	color: white;
+}
+
+#addPage,
+#addGift,
+#backPage{
+	width:80px;
+	margin-bottom: 20px;
+}
+
+#giftAdd h3{
+	margin: 10px;
+}
+
+.gift-search{
+    padding: 0px;
+    width: 100%;
+}
+
+.gift-menu{
+    padding-top: 0px;
+    padding-bottom: 20px;
     width: 40%;
 }
 
-.gift-search input{
-	margin:0px;
-	padding:0px;
-}
-
-.gift-search input,
-.gift-serach button{
-	height:100%;
-}
-
-.gift-search input{
-	width: 400px;
-	size:30px;
-	
+.gift-management{
+	margin-bottom: 0px;
 }
 
 .gift-management>tbody>tr>td{
@@ -42,7 +101,8 @@
 	text-align: center;
 }
 
-.gift-edit{
+.gift-edit,
+.giftd-edit{
 	min-width: 110px;
 	max-width: 110px;
 }
@@ -52,18 +112,34 @@
 	margin:5px;
 }
 
+.gift-edit p{
+	margin: 0px;
+}
+
  .gift-pic{
 	min-width: 120px;
 	max-width: 120px;
 }
 
 .gift-pic img{
-	max-width: 7.5em;
+	height: 120px;
+	width: 120px;
 }
 
 .gift-no{
 	min-width: 125px;
 	max-width: 125px;
+}
+
+.gift-no p{
+	text-align: center;
+	font-size: 30px;
+	margin: 0px;
+}
+
+.gift-no input{
+	text-align: center;
+	font-size: 20px;
 }
 
 .gift-no h2{
@@ -89,7 +165,8 @@
 	max-width: 400px;
 }
 
-.gift-contents p{
+.gift-contents p,
+.gift-contents textarea{
 	font-size: 18px;
 }
 
@@ -99,7 +176,8 @@
 }
 
 
-.gift-price p{
+.gift-price p,
+.gift-price input{
 	font-size: 2em;
 	text-align: center;
 }
@@ -146,30 +224,129 @@
 	max-width: 70px;
 }
 
-/* button[id=never]{ */
-/* 	background-color: #FFF; */
-/* 	color: #000; */
-/* 	border: 1px solid black; */
-/* 	font-weight: bolder; */
-/* } */
+button[data-target=never]{
+	background-color: #FFF;
+	color: blue;
+	font-weight: bolder;
+}
 
-/* button[id=added]{ */
-/* 	background-color: #FFF; */
-/* 	color: green; */
-/* 	font-weight: bolder; */
-/* } */
-/* button[id=off]{ */
-/* 	background-color: #FFF; */
-/* 	color: red; */
-/* 	font-weight: bolder; */
-/* } */
-/* button[id=all]{ */
-/* 	background-color: #FFF; */
-/* 	color: black; */
-/* 	border: 1px solid black; */
-/* } */
+button[data-target=added]{
+	background-color: #FFF;
+	color: green;
+	font-weight: bolder;
+}
 
-/* button[id=all]:hover{ */
-/* 	background-color: #000; */
-/* 	color: white; */
-/* } */
+button[data-target=off]{
+	background-color: #FFF;
+	color: red;
+	font-weight: bolder;
+}
+
+button[data-target=all]{
+	background-color: #FFF;
+	color: black;
+	border: 1px solid black;
+}
+
+button[data-target=all]:hover{
+	background-color: #000;
+	color: white;
+	
+}
+
+.form-inline{
+	font-size:0px;
+	border-radius: 0px;
+	
+}
+
+.form-control{
+	border-radius: 0px;
+}
+
+.form-group input{
+	margin: 10px 0px 10px 0px;
+
+}
+
+#searchContext{
+	width:500px;	
+}
+
+td.giftd-edit,
+td.giftd-no,
+td.giftd-pic,
+td.giftd-percent,
+td.giftd-start,
+td.giftd-end,
+td.giftd-amount,
+td.giftd-time{
+	text-align: center;
+}
+
+td.giftd-edit,
+td.giftd-no{
+	width: 11%;
+}
+td.giftd-edit button{
+	margin-bottom: 15px;
+}
+td.giftd-no p,
+td.giftd-percent p{
+	font-size: 25px;
+}
+td.giftd-pic-1 p{
+	font-size: 20px;
+	text-align: center;
+}
+td.giftd-amount p{
+	font-size: 50px;
+}
+
+td.giftd-start p,
+td.giftd-end p,
+td.giftd-time p{
+	font-size: 18px;
+}
+
+td.giftd-pic{
+	width: 20%;
+}
+td.giftd-pic-1,
+td.giftd-pic-2{
+	width: 10%;
+}
+td.giftd-pic-2 img{
+	width:100px;
+}
+td.giftd-percent{
+	width: 9%;
+}
+td.giftd-amount{
+	width: 10%;
+}
+td.giftd-amount input{
+	font-size:50px;
+	width: 100%;
+	text-align: center;
+}
+td.giftd-start,
+td.giftd-end,
+td.giftd-time{
+	width:13%
+}
+
+td.giftd-timeRange{
+	width: 26%;
+	text-align: center;
+}
+td.giftd-timeRange input{
+	font-size: 20px;
+	text-align: center;
+}
+
+td.giftd-percent input{
+	font-size: 2em;
+	width: 100%;
+	text-align: center;
+}

@@ -1,0 +1,37 @@
+.table > tbody > tr > td,
+.table > thead > tr > th{
+     vertical-align: middle;
+     text-align: center;
+}
+
+.table > thead > tr > th{
+     background-color: rgba(255,194,194,1);
+}
+.order-disCount{
+	font-size: 12px;
+	background-color: red;
+	color: white;
+	text-align: center;
+}
+td.order-name{
+	width: 10%;
+}
+.order-pic{
+	width: 15%;
+}
+.order-pic img{
+	height: 100px;
+}
+.order-amount,
+.order-unit,
+.order-money,
+.order-inventory{
+	width: 10%;
+}
+
+.order-person{
+	width: 25%;
+}
+.order-qty{
+	width: 10%;
+}

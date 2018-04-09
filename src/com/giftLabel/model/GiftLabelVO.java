@@ -26,7 +26,36 @@ public class GiftLabelVO implements Serializable {
 	public void setGiftl_name(String giftl_name) {
 		this.giftl_name = giftl_name;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((giftl_name == null) ? 0 : giftl_name.hashCode());
+		result = prime * result + ((giftl_no == null) ? 0 : giftl_no.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GiftLabelVO other = (GiftLabelVO) obj;
+		if (giftl_name == null) {
+			if (other.giftl_name != null)
+				return false;
+		} else if (!giftl_name.equals(other.giftl_name))
+			return false;
+		if (giftl_no == null) {
+			if (other.giftl_no != null)
+				return false;
+		} else if (!giftl_no.equals(other.giftl_no))
+			return false;
+		return true;
+	}
 	
 }

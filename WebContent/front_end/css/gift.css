@@ -1,3 +1,5 @@
+
+
 .gift-content{
 	padding-top: 2em;
 }
@@ -12,12 +14,14 @@
     margin-bottom: 50px;
 }
 
+
 .gift-item:hover{
 	box-shadow: 0px 0px 40px 2px rgba(192,159,57,1);
 	transition: transform 0.5s;
 }
 
 .item-img {
+	position:relative;	
     background-color: #fff; 
     width: 100%;
     min-height: 250px;
@@ -27,7 +31,8 @@
 }
 
 .gift-item img {
-    width: 100%;
+    width: 229px;
+    height: 229px;
     
 }
 
@@ -39,7 +44,7 @@
     text-align: center;
 }
 
-.gift-item h6 {
+.gift-item .JQellipsis {
     padding: 0 1em;
     line-height: 1.5em;
     margin: 1em 0;
@@ -66,7 +71,26 @@
 .gift-item p s{
 	font-size: 0.5em;
 }
+.gift-discount{
+	position:absolute;
+ 	top: 0px;
+ 	right: 0px;
+ 	border-radius:50%;
+ 	background-color: #ffff80;		
+}
+.gift-labels{
+	position:absolute;
+ 	bottom: 0px;
+ 	left: 0px;
+ 	border-radius:50%;
+ 	background-color: #ff9696;	
+}
 
+.gift-labels p{
+ 	padding: 0px;
+ 	text-align: center;
+ 	font-size: 16px;
+}
 .gift-item button {
     border: none;
     background: #fff;
@@ -83,4 +107,8 @@
     background: #000;
     color: #fff;
 	transition:0.5s all;
+}
+
+.col-xs-12.col-sm-1.gift-side{
+	height:555px;
 }

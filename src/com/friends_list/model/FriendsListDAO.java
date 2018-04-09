@@ -28,15 +28,15 @@ public class FriendsListDAO implements FriendsListDAO_interface{
 		}
 	}
 	
-	private static final String INSERT_FRIENDS = "INSERT INTO FRIENDS_LIST (MEM_NO_SELF,MEM_NO_OTHER)VALUES(?,?)";
+	private static final String INSERT_FRIENDS = "INSERT INTO FRIENDS_LIST (MEM_NO_SELF,MEM_NO_OTHER)VALUES(?,?);";
 	private static final String UPDATE_FRIENDS = "UPDATE FRIENDS_LIST SET MEM_NO_SELF=?,MEM_NO_OTHER=?,FRILIST_MODIFY=?,FRILIST_TIME=?,FRILIST_NOTICE=? WHERE MEM_NO_SELF=? AND MEM_NO_OTHER=?";
 	private static final String DELETE_FRIENDS = "DELETE FROM FRIENDS_LIST WHERE MEM_NO_SELF=? AND MEM_NO_OTHER=?";
 	private static final String GET_ONE_LIST = "SELECT*FROM FRIENDS_LIST WHERE MEM_NO_SELF=? AND MEM_NO_OTHER=?";
 	private static final String GET_ALL = "SELECT*FROM FRIENDS_LIST";
-	private static final String GET_LIST_ByMEMEBERNO = "SELECT*FROM FRIENDS_LIST WHERE (MEM_NO_SELF=? OR MEM_NO_OTHER =?) AND FRILIST_MODIFY='是'";
+	private static final String GET_LIST_ByMEMEBERNO = "SELECT*FROM FRIENDS_LIST WHERE MEM_NO_SELF=? AND (FRILIST_MODIFY='是' OR FRILIST_MODIFY='黑名單')";
 
 	@Override
-	public void insert(FriendsListVO frilistVO) {
+	public void insert(String self , String other) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -44,8 +44,8 @@ public class FriendsListDAO implements FriendsListDAO_interface{
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_FRIENDS);
 			
-			pstmt.setString(1, frilistVO.getMem_no_self());
-			pstmt.setString(2, frilistVO.getMem_no_other());
+			pstmt.setString(1, self);
+			pstmt.setString(2, other);
 			
 			pstmt.executeUpdate();
 			System.out.println("新增成功");
@@ -244,18 +244,18 @@ public class FriendsListDAO implements FriendsListDAO_interface{
 	}
 
 	@Override
-	public Set<FriendsListVO> getMemberFriends(String mem_no) {
+	public List<FriendsListVO> getMemberFriends(String mem_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		FriendsListVO friendsVO = null;
-		Set<FriendsListVO> set = new LinkedHashSet<FriendsListVO>();
+		List<FriendsListVO> list = new ArrayList<FriendsListVO>();
 		
 		try{
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_LIST_ByMEMEBERNO);
 			pstmt.setString(1, mem_no);
-			pstmt.setString(2, mem_no);
+			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()){
@@ -265,7 +265,7 @@ public class FriendsListDAO implements FriendsListDAO_interface{
 				friendsVO.setFrilist_modify(rs.getString("frilist_modify"));
 				friendsVO.setFrilist_time(rs.getDate("frilist_time"));
 				friendsVO.setFrilist_notice(rs.getString("frilist_notice"));
-				set.add(friendsVO);
+				list.add(friendsVO);
 			}
 			
 			
@@ -288,7 +288,7 @@ public class FriendsListDAO implements FriendsListDAO_interface{
 				}
 			}
 		}
-		return set;
+		return list;
 	}
 
 }

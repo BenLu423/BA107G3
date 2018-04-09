@@ -1,6 +1,7 @@
 package com.gift.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public class GiftVO implements Serializable {
@@ -80,5 +81,30 @@ public class GiftVO implements Serializable {
 	public void setGift_buy_qty(Integer gift_buy_qty) {
 		this.gift_buy_qty = gift_buy_qty;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((gift_no == null) ? 0 : gift_no.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GiftVO other = (GiftVO) obj;
+		if (gift_no == null) {
+			if (other.gift_no != null)
+				return false;
+		} else if (!gift_no.equals(other.gift_no))
+			return false;
+		return true;
+	}
+
 }

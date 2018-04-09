@@ -1,9 +1,8 @@
 package com.admin.model;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import com.admin_feature.model.AuthFeatureVO;
+import com.auth_feature.model.AuthFeatureVO;
 
 public class AdminService {
 	
@@ -12,21 +11,22 @@ public class AdminService {
 		dao = new AdminDAO();
 	}
 	
-	public AdminVO addAdmin(String adm_acct,String adm_pwd ,String adm_name){
+	public AdminVO addAdmin(String adm_acct,String adm_pwd ,String adm_name,String adm_mail){
 		AdminVO adminVO = new AdminVO();
 		adminVO.setAdm_acct(adm_acct);
 		adminVO.setAdm_pwd(adm_pwd);
 		adminVO.setAdm_name(adm_name);
+		adminVO.setAdm_mail(adm_mail);
 		dao.insert(adminVO);
 		
 		return adminVO;
 	}
 	
-	public AdminVO updateAdmin(String adm_no,String adm_acct,String adm_pwd ,String adm_name){
+	public AdminVO updateAdmin(String adm_no,String adm_acct,String adm_mail ,String adm_name){
 		AdminVO adminVO = new AdminVO();
 		adminVO.setAdm_no(adm_no);
 		adminVO.setAdm_acct(adm_acct);
-		adminVO.setAdm_pwd(adm_pwd);
+		adminVO.setAdm_mail(adm_mail);
 		adminVO.setAdm_name(adm_name);
 		dao.update(adminVO);
 		
@@ -37,16 +37,21 @@ public class AdminService {
 		dao.delete(adm_no);
 	}
 	
-	public AdminVO getOneAdmin(String adminAcct,String adminPwd){
-		return dao.findByPrimaryKey(adminAcct,adminPwd);
+	public AdminVO getOneAdmin(String admin_no){
+		return dao.findByPrimaryKey(admin_no);
+	}
+	
+	public AdminVO getOneByAcct(String adm_acct){
+		return dao.findByAcct(adm_acct);
 	}
 	
 	public List<AdminVO>getAll(){
 		return dao.getAll();
 	}
 	
-	public Set<AuthFeatureVO>getAdminAuths(String adm_no){
+	public List<AuthFeatureVO>getAdminAuths(String adm_no){
 		return dao.getAdminAuths(adm_no);
 	}
-
+	
+	
 }

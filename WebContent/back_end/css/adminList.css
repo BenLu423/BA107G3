@@ -1,0 +1,56 @@
+.input-group{
+	width: 200px;
+}
+
+#admin table{
+	font-size: 15px;
+	text-align: center;
+	align-items: center;
+}
+
+#admin .table{
+	margin-bottom: 10px;
+	border: 1px solid #aaa;
+	
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	vertical-align:baseline;
+}
+
+
+#admin tbody{
+	background-color: #fff;
+	text-align: center;
+}
+
+#admin th{
+	width: 155px;
+	text-align: center;
+}
+
+.item{
+	text-align: center;
+	padding: 0px;
+	margin: 5px;
+}
+.auth-list{
+	display:inline-block;
+	width:130px;
+	background-color: #fff;
+	color:#111; 
+	box-shadow:5px 8px 8px 0 #ccc;
+	border-radius: 5px;
+	height: 55px;
+	margin-right: 15px; 
+}
+
+.auth-list .glyphicon{
+	color:#fff;
+}
+
+.checked{
+	background-color: #007ba7;
+	color:#fff; 
+}
+

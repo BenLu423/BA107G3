@@ -207,17 +207,17 @@ public class AdminAuthJDBCDAO implements AdminAuthDAO_interface{
 //		adau.delete("A004", "AF001");
 		
 		//get one 
-//		Admin_authVO adauvo2 = adau.findByPrimaryKey("A004", "AF006");
-//		System.out.println(adauvo2.getAdm_no());
-//		System.out.println(adauvo2.getAuth_no());
+		AdminAuthVO adauvo2 = adau.findByPrimaryKey("A004", "AF006");
+		System.out.println(adauvo2.getAdm_no());
+		System.out.println(adauvo2.getAuth_no());
 		
 		//get all
-		List<AdminAuthVO> list = adau.getAll();
-		for(AdminAuthVO adaus : list){
-			System.out.println(adaus.getAdm_no());
-			System.out.println(adaus.getAuth_no());
-			System.out.println("==============");
-		}
+//		List<AdminAuthVO> list = adau.getAll();
+//		for(AdminAuthVO adaus : list){
+//			System.out.println(adaus.getAdm_no());
+//			System.out.println(adaus.getAuth_no());
+//			System.out.println("==============");
+//		}
 	}
 	
 

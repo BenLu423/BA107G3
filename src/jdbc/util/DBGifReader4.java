@@ -11,6 +11,7 @@ import javax.servlet.http.*;
 import javax.sql.DataSource;
 
 import com.gift.model.GiftService;
+import com.giftOrderView.model.GiftOrderViewService;
 
 @WebServlet("/DBGifReader4")
 public class DBGifReader4 extends HttpServlet {
@@ -18,7 +19,7 @@ public class DBGifReader4 extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 //		req.setCharacterEncoding("BIG5");
-		res.setContentType("image/png");
+		res.setContentType("image/jpeg");
 		ServletOutputStream out = res.getOutputStream();
 		byte[] pic = null;
 		try{
@@ -28,6 +29,12 @@ public class DBGifReader4 extends HttpServlet {
 					GiftService giftSvc = new GiftService();
 					String gift_no = (String)req.getParameter("gift_no");
 					pic = giftSvc.getPic(gift_no);
+					break;
+				case "GIFT_ORDER_VIEW":
+					GiftOrderViewService giftOrderViewSvc = new GiftOrderViewService();
+					String giftr_no = (String)req.getParameter("giftr_no");
+					String columnName = (String)req.getParameter("columnName");
+					pic = giftOrderViewSvc.getPic(giftr_no, columnName);
 					break;
 			}
 			

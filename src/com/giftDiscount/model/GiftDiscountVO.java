@@ -4,16 +4,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @SuppressWarnings("serial")
-public class GiftDiscountVO implements Serializable{
+public class GiftDiscountVO implements Serializable {
 	private String giftd_no;
 	private String gift_no;
 	private Timestamp giftd_start;
 	private Timestamp giftd_end;
 	private Double giftd_percent;
 	private Integer giftd_amount;
-	
-	public GiftDiscountVO(){
-		
+
+	public GiftDiscountVO() {
+
 	}
 
 	public String getGiftd_no() {
@@ -63,4 +63,30 @@ public class GiftDiscountVO implements Serializable{
 	public void setGiftd_amount(Integer giftd_amount) {
 		this.giftd_amount = giftd_amount;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((giftd_no == null) ? 0 : giftd_no.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GiftDiscountVO other = (GiftDiscountVO) obj;
+		if (giftd_no == null) {
+			if (other.giftd_no != null)
+				return false;
+		} else if (!giftd_no.equals(other.giftd_no))
+			return false;
+		return true;
+	}
+
 }

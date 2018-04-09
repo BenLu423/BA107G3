@@ -1,6 +1,6 @@
 package com.admin_auth.model;
 
-import java.util.List;
+import java.util.*;
 
 public interface AdminAuthDAO_interface {
 	public void insert(AdminAuthVO asauVO);
