@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -24,8 +25,23 @@
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/index_chat.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/gift.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/event.css">
+    
+
+
 </head>
 <body>
+<%
+	request.setAttribute("requsetURL", request.getRequestURI());
+	String path = (String)request.getAttribute("requsetURL");
+	Object isSession = session.getAttribute("memSelf");
+	if(isSession == null && !(path.equals("/BA107G3/front_end/login.jsp"))){
+		session.setAttribute("location", request.getRequestURI());
+	}
+%>
+
+
+
+
 <!-- header -->
 <nav class="navbar navbar-default navbar-fixed-top mynavbar">
 <div class="container-fluid">      
@@ -34,20 +50,44 @@
      </div>
      <div class="col-xs-12 col-sm-2">
 		<div class="logo">
-             <a href="index.html">
+             <a href="<%=request.getContextPath()%>/front_end/index.jsp">
              <img src="<%=request.getContextPath()%>/front_end/res/img/logo/Logo.gif">
+             
              </a>
          </div>
      </div>
+     
      <div class="col-xs-12 col-sm-9">
          <div class="row">
+         <%--登入成功 --%>
+         <c:if test="${not empty memSelf}" var="true" scope="session">
              <div class="col-xs-12 col-sm-3 col-sm-offset-9 login">
-                     <div class="btn-group btn-group-justified mymenu-icon">
+                     <div class="btn-group btn-group-justified mymenu-icon">        
+                     	 
+	                 	 <div class="btn-group login-photo">
+                           <%--   <img src="<%=request.getContextPath()%>/DBGifReader4?mem_id=<%=mem_id%>">--%>
+                          	        
+                           		 <img id="index-photo-stick" src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memSelf.mem_no}">
+                         	  
+                         </div>   
+                     	 
                          <div class="btn-group">
+                         	<a href="<%=request.getContextPath()%>/front_end/member/modify_personal_data_main_page.jsp">          
                              <button type="button" class="btn btn-default mybutton-icon">
-                                 	登出
+                                 	${memSelf.mem_name}
                              </button>
-                         </div>
+                             </a>      
+                         </div>    
+                                                
+                         <div class="btn-group">
+                         <form action="<%=request.getContextPath()%>/member/mem.do" method="post">
+                             <button type="submit" class="btn btn-default mybutton-icon" name="linked_logon_page">
+                                 	登出
+                             </button>        
+                              	<input type="hidden" name="action" value="getlinked_logon_page">
+                    	 </form>  
+                         </div>                           
+                                         
                          <div class="btn-group">
                              <button class="btn btn-default dropdown-toggle mybutton-icon" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                              購物車 <span class="badge">2</span>
@@ -77,7 +117,7 @@
                                 <div class="menu-icon"></div>
                                 </button>
                                 <ul class="dropdown-menu agile_short_dropdown dropdown-menu-right" aria-labelledby="dropdownMenu3">
-                                    <li><a href="#">帳號設定</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/front_end/member/modify_personal_data_main_page.jsp?mem_no=${memSelf.mem_no}&mem_account=${memSelf.mem_account}">帳號設定</a></li>
                                     <li><a href="#">好友管理</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">收禮清單</a></li>
@@ -89,22 +129,40 @@
                                 </ul>                                
                             </div>
                         </div>
-
-
-
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-  <li><a href="#">Regular link</a></li>
-  <li class="disabled"><a href="#">Disabled link</a></li>
-  <li><a href="#">Another link</a></li>
-</ul>                       
+							  <li><a href="#">Regular link</a></li>
+							  <li class="disabled"><a href="#">Disabled link</a></li>
+							  <li><a href="#">Another link</a></li>
+						</ul>                       
                 </div>
+                </c:if>
+                
+                <%-- 訪客 --%>
+                <c:if test="${empty memSelf}" var="true" scope="application">
+                  <div class="col-xs-12 col-sm-3 col-sm-offset-9 login">
+                     <div class="btn-group btn-group-justified mymenu-icon">        
+                     	 
+	                 	<div class="btn-group">
+		                 	<form action="<%=request.getContextPath()%>/member/mem.do" method="post">
+		                     	<button type="submit" class="btn btn-default mybutton-icon" name="linked_login_page">
+		                         	登入
+		                    	 </button>
+		                       <input type="hidden" name="action" value="getlinked_login_page">
+		         	    	</form>
+		                </div>       
+                       </div>                        
+                  </div>
+                </c:if>
+                
+                
+                    
                 <div class="col-xs-12 col-sm-12">
                     <div class="collapse navbar-collapse">
                         <nav class="menu menu--iris">
                         <ul class="nav navbar-nav menu__list">
                         	 <!-- menu__item--current -->
                     	<li class="menu__item"><a href="#" class="news.html">最新公告</a></li>
-                    	<li class="menu__item"><a href="#" class="friends.html">交友搜尋</a></li> 
+                    	<li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/member/member_search_all.jsp" class="friends.html">交友搜尋</a></li> 
                         <li class="menu__item"><a href="diary.html" class="menu__link">日記專欄</a></li>
                         <li class="menu__item"><a href="event.html" class="menu__link">活動特輯</a></li>
                         <li class="menu__item"><a href="gift.html" class="menu__link">禮物商城</a></li>
@@ -117,8 +175,12 @@
         </div>
 
     </div>
-</div>
+   
+    
 
+  
+    
+</div>
 </div>
 </nav>   
 <!-- //header-->

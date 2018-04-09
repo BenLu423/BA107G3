@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -172,7 +173,7 @@ public class MemberJDBCDAO implements MemberDAO_interface{
 	}
 	/*³æµ§¬d¸ß*/
 	@Override
-	public MemberVO memberSelect(String name) {
+	public MemberVO getOne(String name) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -339,5 +340,30 @@ public class MemberJDBCDAO implements MemberDAO_interface{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public MemberVO memberFindByPK(String mem_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MemberVO> blurSearch(String mem_name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MemberVO> getAll(Map<String, String[]> map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void memIntro(MemberVO member) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 }

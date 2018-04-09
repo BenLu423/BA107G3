@@ -1,5 +1,6 @@
 package com.member.model;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -27,27 +30,33 @@ import org.apache.catalina.ssi.ByteArrayServletOutputStream;
 
 public class MemberDAO implements MemberDAO_interface{
 
-	
+	/*新增測試*/
 	static final String INSERT = "INSERT INTO MEMBER(MEM_NO, MEM_ACCOUNT, MEM_PASSWORD, MEM_JOIN_TIME, MEM_NAME, MEM_GENDER, MEM_BIRTHDAY, MEM_COUNTY, MEM_DEPOSIT, MEM_CONTACT, MEM_EMOTION, MEM_BONUS, MEM_BLOODTYPE, MEM_HEIGHT, MEM_WEIGHT, MEM_INTEREST, MEM_INTRO, MEM_ONLINE, MEM_LONGITUDE, MEM_LATITUDE, MEM_PHONE, MEM_MAIL, MEM_PHOTO, MEM_PROHIBIT, MEM_SETNOTIFY, MEM_TIMENOTIFY) "
 			+ "VALUES ('M'||LPAD(to_char(MEMBER_SEQ.NEXTVAL),3,'0'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	
+	/*修改測試*/
 	static final String UPDATE = "UPDATE MEMBER SET MEM_ACCOUNT = ?, MEM_PASSWORD = ? WHERE MEM_NO = ?";
 	
-	/*查詢帳號是否存在*/
-	static final String SINGLE_SEARCH = "SELECT MEM_ACCOUNT FROM MEMBER WHERE MEM_ACCOUNT = ?";
-	
+	/*單筆查詢*/
+	static final String GETONE = "SELECT * FROM MEMBER WHERE MEM_NO = ?";
+	/*查詢全部*/
 	static final String GETALL = "SELECT * FROM MEMBER";
-	
+	/*查詢帳號是否存在*/
+	static final String ISMEMEXSIT = "SELECT MEM_ACCOUNT FROM MEMBER WHERE MEM_ACCOUNT = ?";
 	/*會員登入*/
 	static final String CHECKLOGIN = "SELECT * FROM MEMBER WHERE MEM_ACCOUNT = ? AND MEM_PASSWORD = ?";
 	/*會員註冊*/
 	static final String REGISTER = "INSERT INTO MEMBER(MEM_NO, MEM_ACCOUNT, MEM_PASSWORD, MEM_NAME, MEM_GENDER, MEM_BIRTHDAY, MEM_COUNTY, MEM_CONTACT, MEM_EMOTION, MEM_BLOODTYPE, MEM_HEIGHT, MEM_WEIGHT)"
 			+ "VALUES ('M'||LPAD(to_char(MEMBER_SEQ.NEXTVAL),3,'0'),? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
+	/*測試處理圖片*/
+	static final String GETPIC = "SELECT MEM_PHOTO FROM MEMBER WHERE MEM_NO = ?";
+	/*修改自我介紹*/
+	static final String UPDATEINTRO ="UPDATE MEMBER SET MEM_INTRO = ? WHERE MEM_NO = ?";
+	
+	/*基本查詢*/
+	static final String BLURSEARCH = "SELECT * FROM MEMBER WHERE UPPER(MEM_NAME) LIKE ?";
 	
 	
-	
-	
-	/*驅動載入*/									
+	/********驅動載入********/									
 	private static DataSource ds = null;
 	static {
 		try{
@@ -58,7 +67,7 @@ public class MemberDAO implements MemberDAO_interface{
 		}
 	}
 	
-	/*新增資料*/
+	/********新增資料********/
 	@Override
 	public void memberAdd(MemberVO member) {
 		Connection con = null;
@@ -120,7 +129,7 @@ public class MemberDAO implements MemberDAO_interface{
 		}
 	}
 
-	/*處理圖片*/
+	/*測試處理圖片*/
 	public byte[] getPic(String pic){
 		File file = null;
 		FileInputStream fis = null;
@@ -142,7 +151,7 @@ public class MemberDAO implements MemberDAO_interface{
 	
 
 	
-	/*修改資料*/
+	/********修改資料********/
 	@Override
 	public void memberUpdate(MemberVO member) {
 		Connection con = null;
@@ -183,9 +192,9 @@ public class MemberDAO implements MemberDAO_interface{
 		}
 		
 	}
-	/*單筆查詢*/
+	/********單筆查詢********/
 	@Override
-	public MemberVO memberSelect(String mem_account) {
+	public MemberVO getOne(String mem_no) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -193,13 +202,39 @@ public class MemberDAO implements MemberDAO_interface{
 		
 		try {
 			con = ds.getConnection();
-			ps = con.prepareStatement(SINGLE_SEARCH);
-			ps.setString(1, mem_account);
+			ps = con.prepareStatement(GETONE);
+			ps.setString(1, mem_no);
 			
 			rs = ps.executeQuery();
 			while(rs.next()){
 				mvos = new MemberVO();
-				mvos.setMem_account(rs.getString("MEM_NAME"));
+				mvos.setMem_no(rs.getString("MEM_NO"));
+				mvos.setMem_account(rs.getString("MEM_ACCOUNT"));
+				mvos.setMem_password(rs.getString("MEM_PASSWORD"));
+				mvos.setMem_join_time(rs.getDate("MEM_JOIN_TIME"));
+				mvos.setMem_name(rs.getString("MEM_NAME"));
+				mvos.setMem_gender(rs.getString("MEM_GENDER"));
+				mvos.setMem_birthday(rs.getDate("MEM_BIRTHDAY"));
+				mvos.setMem_county(rs.getString("MEM_COUNTY"));
+				mvos.setMem_deposit(rs.getInt("MEM_DEPOSIT"));
+				mvos.setMem_contact(rs.getString("MEM_CONTACT"));
+				mvos.setMem_emotion(rs.getString("MEM_EMOTION"));
+				mvos.setMem_bonus(rs.getInt("MEM_BONUS"));
+				mvos.setMem_bloodtype(rs.getString("MEM_BLOODTYPE"));
+				mvos.setMem_height(rs.getInt("MEM_HEIGHT"));
+				mvos.setMem_weight(rs.getInt("MEM_WEIGHT"));
+				mvos.setMem_interest(rs.getString("MEM_INTEREST"));
+				mvos.setMem_intro(rs.getString("MEM_INTRO"));
+				mvos.setMem_online(rs.getString("MEM_ONLINE"));
+				mvos.setMem_longitude(rs.getDouble("MEM_LONGITUDE"));
+				mvos.setMem_latitude(rs.getDouble("MEM_LATITUDE"));
+				mvos.setMem_phone(rs.getString("MEM_PHONE"));
+				mvos.setMem_mail(rs.getString("MEM_MAIL"));
+				mvos.setMem_photo(rs.getBytes("MEM_PHOTO"));
+				mvos.setMem_prohibit(rs.getString("MEM_PROHIBIT"));
+				mvos.setMem_set_notify(rs.getString("MEM_SETNOTIFY"));
+				mvos.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));
+				mvos.setMem_receive_gift(rs.getInt("MEM_RECEIVE_GIFT"));
 			}
 			
 		} catch (SQLException e) {
@@ -232,7 +267,7 @@ public class MemberDAO implements MemberDAO_interface{
 		}
 		return mvos;
 	}
-	/*查詢全部*/
+	/********查詢全部********/
 	@Override
 	public List<MemberVO> getAll() {
 		List<MemberVO> memberList = new ArrayList<MemberVO>();
@@ -271,7 +306,8 @@ public class MemberDAO implements MemberDAO_interface{
 				mvos.setMem_photo(rs.getBytes("MEM_PHOTO"));
 				mvos.setMem_prohibit(rs.getString("MEM_PROHIBIT"));
 				mvos.setMem_set_notify(rs.getString("MEM_SETNOTIFY"));
-				mvos.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));;
+				mvos.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));
+				mvos.setMem_receive_gift(rs.getInt("MEM_RECEIVE_GIFT"));
 				memberList.add(mvos);
 			}
 		} catch (SQLException e) {
@@ -305,7 +341,10 @@ public class MemberDAO implements MemberDAO_interface{
 		}
 		return memberList;
 	}
-	/*確認登入*/
+	
+	
+	
+	/********確認登入********/
 	public MemberVO checkLogin(String mem_account,String mem_password){
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -344,14 +383,12 @@ public class MemberDAO implements MemberDAO_interface{
 				mem.setMem_photo(rs.getBytes("MEM_PHOTO"));
 				mem.setMem_prohibit(rs.getString("MEM_PROHIBIT"));
 				mem.setMem_set_notify(rs.getString("MEM_SETNOTIFY"));
-				mem.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));;	
-			}
-			
+				mem.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));	
+				mem.setMem_receive_gift(rs.getInt("MEM_RECEIVE_GIFT"));
+			}		
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally{
-			
-			
 			try{
 				if(con != null){
 					con.close();
@@ -359,11 +396,15 @@ public class MemberDAO implements MemberDAO_interface{
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
-		}
-		
+		}	
 		return mem;
 	}
-	/*會員註冊*/
+
+	
+	
+	
+	
+	/********會員註冊********/
 	public void memberRegister(MemberVO member){
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -403,6 +444,11 @@ public class MemberDAO implements MemberDAO_interface{
 		}
 	}
 	
+	
+	
+	
+	
+	/********是否為會員********/
 	public boolean isMember(String mem_account){
 		boolean ismem = false;
 		Connection con = null;
@@ -410,7 +456,7 @@ public class MemberDAO implements MemberDAO_interface{
 		ResultSet rs = null;
 		try{
 			con = ds.getConnection();
-			ps = con.prepareStatement(SINGLE_SEARCH);
+			ps = con.prepareStatement(ISMEMEXSIT);
 			ps.setString(1, mem_account);
 			rs = ps.executeQuery();
 			while(rs.next()){
@@ -431,6 +477,290 @@ public class MemberDAO implements MemberDAO_interface{
 		return ismem;
 	}
 	
+	/********修改自我介紹********/
+	public void memIntro(MemberVO member){
+		Connection con = null;
+		PreparedStatement ps = null;
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(UPDATEINTRO);
+			ps.setString(1, member.getMem_intro());
+			ps.setString(2, member.getMem_no());
+			ps.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}	
+	}
 	
+	
+	
+	
+	
+	
+	
+	/********基本搜尋(模糊查詢)********/
+	public List<MemberVO> blurSearch(String mem_name){
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MemberVO memvo = null;
+		List<MemberVO> memberList = new ArrayList<MemberVO>(); 
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(BLURSEARCH);
+			ps.setString(1, "%"+mem_name+"%");
+			rs = ps.executeQuery();
+			while(rs.next()){
+				memvo = new MemberVO();
+				memvo.setMem_no(rs.getString("MEM_NO"));
+				memvo.setMem_account(rs.getString("MEM_ACCOUNT"));
+				memvo.setMem_password(rs.getString("MEM_PASSWORD"));
+				memvo.setMem_join_time(rs.getDate("MEM_JOIN_TIME"));
+				memvo.setMem_name(rs.getString("MEM_NAME"));
+				memvo.setMem_gender(rs.getString("MEM_GENDER"));
+				memvo.setMem_birthday(rs.getDate("MEM_BIRTHDAY"));
+				memvo.setMem_county(rs.getString("MEM_COUNTY"));
+				memvo.setMem_deposit(rs.getInt("MEM_DEPOSIT"));
+				memvo.setMem_contact(rs.getString("MEM_CONTACT"));
+				memvo.setMem_emotion(rs.getString("MEM_EMOTION"));
+				memvo.setMem_bonus(rs.getInt("MEM_BONUS"));
+				memvo.setMem_bloodtype(rs.getString("MEM_BLOODTYPE"));
+				memvo.setMem_height(rs.getInt("MEM_HEIGHT"));
+				memvo.setMem_weight(rs.getInt("MEM_WEIGHT"));
+				memvo.setMem_interest(rs.getString("MEM_INTEREST"));
+				memvo.setMem_intro(rs.getString("MEM_INTRO"));
+				memvo.setMem_online(rs.getString("MEM_ONLINE"));
+				memvo.setMem_longitude(rs.getDouble("MEM_LONGITUDE"));
+				memvo.setMem_latitude(rs.getDouble("MEM_LATITUDE"));
+				memvo.setMem_phone(rs.getString("MEM_PHONE"));
+				memvo.setMem_mail(rs.getString("MEM_MAIL"));
+				memvo.setMem_photo(rs.getBytes("MEM_PHOTO"));
+				memvo.setMem_prohibit(rs.getString("MEM_PROHIBIT"));
+				memvo.setMem_set_notify(rs.getString("MEM_SETNOTIFY"));
+				memvo.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));
+				memvo.setMem_receive_gift(rs.getInt("MEM_RECEIVE_GIFT"));
+				memberList.add(memvo);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		
+		return memberList;
+	}
+	/********進階搜尋(複合查詢)********/
+	public List<MemberVO> getAll(Map<String,String[]> map){
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		MemberVO memvo = null;
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try{
+			con = ds.getConnection();
+			String preciseSQL = "SELECT * FROM MEMBER"
+			+  get_WhereCondition(map);
+			System.out.println("preciseSQL = " + preciseSQL);
+			ps = con.prepareStatement(preciseSQL);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				memvo= new MemberVO();
+				memvo.setMem_no(rs.getString("MEM_NO"));
+				memvo.setMem_account(rs.getString("MEM_ACCOUNT"));
+				memvo.setMem_password(rs.getString("MEM_PASSWORD"));
+				memvo.setMem_join_time(rs.getDate("MEM_JOIN_TIME"));
+				memvo.setMem_name(rs.getString("MEM_NAME"));
+				memvo.setMem_gender(rs.getString("MEM_GENDER"));
+				memvo.setMem_birthday(rs.getDate("MEM_BIRTHDAY"));
+				memvo.setMem_county(rs.getString("MEM_COUNTY"));
+				memvo.setMem_deposit(rs.getInt("MEM_DEPOSIT"));
+				memvo.setMem_contact(rs.getString("MEM_CONTACT"));
+				memvo.setMem_emotion(rs.getString("MEM_EMOTION"));
+				memvo.setMem_bonus(rs.getInt("MEM_BONUS"));
+				memvo.setMem_bloodtype(rs.getString("MEM_BLOODTYPE"));
+				memvo.setMem_height(rs.getInt("MEM_HEIGHT"));
+				memvo.setMem_weight(rs.getInt("MEM_WEIGHT"));
+				memvo.setMem_interest(rs.getString("MEM_INTEREST"));
+				memvo.setMem_intro(rs.getString("MEM_INTRO"));
+				memvo.setMem_online(rs.getString("MEM_ONLINE"));
+				memvo.setMem_longitude(rs.getDouble("MEM_LONGITUDE"));
+				memvo.setMem_latitude(rs.getDouble("MEM_LATITUDE"));
+				memvo.setMem_phone(rs.getString("MEM_PHONE"));
+				memvo.setMem_mail(rs.getString("MEM_MAIL"));
+				memvo.setMem_photo(rs.getBytes("MEM_PHOTO"));
+				memvo.setMem_prohibit(rs.getString("MEM_PROHIBIT"));
+				memvo.setMem_set_notify(rs.getString("MEM_SETNOTIFY"));
+				memvo.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));
+				memvo.setMem_receive_gift(rs.getInt("MEM_RECEIVE_GIFT"));
+				list.add(memvo);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
+	public static String get_aCondition_For_Oracle(String columnName,String value){
+		String aCondition = null;
+		if("mem_gender".equals(columnName) || "mem_county".equals(columnName)){
+			aCondition = columnName + " = " +"'" + value + "'";
+			
+		}else if(columnName.startsWith("mem_height")){
+			String str_h1 = null;
+			String str_h2 = null;
+			if("mem_height1".equals(columnName)){
+				str_h1 = columnName;
+				String col = columnName.substring(0,10);
+				aCondition = col + " >= " + value;
+			}else if("mem_height2".equals(columnName)){
+				String col = columnName.substring(0,10);
+				aCondition = col + " <= " + value;
+			}
+			
+		}else if(columnName.startsWith("mem_weight")){
+				String str_w1 = null;
+				String str_w2 = null;
+			if("mem_weight1".equals(columnName)){
+				str_w1 = columnName;
+				String col = columnName.substring(0,10);
+				aCondition = col + " >= " + value;
+			}else if("mem_weight2".equals(columnName)){
+				str_w2 = columnName;
+				String col = columnName.substring(0,10);
+				aCondition = col + " <= " + value;
+			}
+			
+		}else if(columnName.startsWith("mem_emotion") || columnName.startsWith("mem_contact")){
+			String col = columnName.substring(0, 11);
+			aCondition = col + " = " +"'" + value + "'";
+		}
+
+		return aCondition.toUpperCase() + " ";
+	}
+	
+	
+	public static String get_WhereCondition(Map<String,String[]> map){
+		Set<String> keys = map.keySet();
+		StringBuffer whereCondition = new StringBuffer();
+		StringBuffer orCondition = new StringBuffer();
+		int count = 0;
+		int mem_emotion_sum = 0;
+		int mem_contact_sum = 0;
+		int mem_emotion_count = 0;
+		int mem_contact_count = 0;
+		int judge_where_emotion_key = 0;
+		int judge_where_contact_key = 0;
+		int c = 2;
+
+		
+		mem_emotion_count = getStateCount(keys, mem_emotion_count,"mem_emotion");
+		mem_contact_count = getStateCount(keys, mem_contact_count,"mem_contact");
+	
+		System.out.println("mem_emotion_count = " + mem_emotion_count);
+		System.out.println("mem_contact_count = " + mem_contact_count);
+
+		for(String key :keys){
+		try{
+			String value = map.get(key)[0];
+			if(value != null && value.trim().length() != 0 && !"action".equals(key)){
+			count++;
+			String aCondition = get_aCondition_For_Oracle(key,value.trim());
+			
+				if("mem_gender".equals(key) || "mem_county".equals(key)){
+					mem_emotion_sum = 0;
+					mem_contact_sum = 0;
+				}else if("mem_height".equals(key.substring(0,10)) || "mem_weight".equals(key.substring(0,10))){
+					mem_emotion_sum = 0;
+					mem_contact_sum = 0;
+				}else if("mem_emotion".equals(key.substring(0, 11))){
+					mem_contact_sum = 0;
+					mem_emotion_sum++;					
+				}else if("mem_contact".equals(key.substring(0,11))){
+					mem_emotion_sum = 0;
+					mem_contact_sum++;
+				}
+				
+				if(count == 1){
+					whereCondition.append(" WHERE " + aCondition);
+					if(key.startsWith("mem_emotion")){
+						judge_where_emotion_key++;	
+					}else if(key.startsWith("mem_contact")){
+						judge_where_contact_key++;
+					}
+				}else if(mem_emotion_sum > 1){						
+						if(c == mem_emotion_count && judge_where_emotion_key == 0){	
+							whereCondition.append("OR " + aCondition + ")");
+							c = 2;
+						}else{
+							whereCondition.append("OR " + aCondition);
+							c++;
+						}
+						System.out.println("c = "+c);
+				}else if(mem_contact_sum > 1){
+					if(c == mem_contact_count && judge_where_contact_key == 0){	
+						whereCondition.append("OR " + aCondition + ")");
+						c = 2;
+					}else{
+						whereCondition.append("OR " + aCondition);
+						c++;
+					}
+
+				}else{
+					if(key.length() >= 11){
+							if("mem_emotion".equals(key.substring(0, 11)) || "mem_contact".equals(key.substring(0,11))){
+								whereCondition.append("AND " + "("+ aCondition);	
+							}else{
+								whereCondition.append("AND " + aCondition);
+							}
+					}else{
+							whereCondition.append("AND " + aCondition);	
+						}
+					
+				}
+				System.out.println("有送出查詢資料的欄位數count = " + count);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		}
+		System.out.println();
+		return whereCondition.toString();
+	}
+	
+	public static int getStateCount(Set<String> keys,int count, String colname){
+		count = 0;
+			for(String key: keys){
+				try{
+					if(colname.equals(key.substring(0,11))){
+						count++;
+					}
+				}catch(StringIndexOutOfBoundsException e){
+				}
+			}
+		return count;
+	}
 	
 }

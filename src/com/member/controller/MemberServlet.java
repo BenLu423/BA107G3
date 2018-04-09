@@ -1,20 +1,26 @@
 package com.member.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+import org.apache.catalina.deploy.ContextService;
 
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
@@ -29,10 +35,10 @@ public class MemberServlet extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		req.setCharacterEncoding("Big5");	
+		req.setCharacterEncoding("Big5");
+		res.setContentType("image/png");
 		String action = req.getParameter("action");
-		
-		
+		/***************會員登入***************/
 		if("getAccount_judge".equals(action)){
 			
 			List<String> errorMsgs = new ArrayList<String>();
@@ -53,7 +59,7 @@ public class MemberServlet extends HttpServlet {
 				}
 				/*如果錯誤訊息不是空的就回傳錯誤訊息*/
 				if(!errorMsgs.isEmpty()){
-					RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
+					RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");
 					rd.forward(req, res);
 					return;
 				}
@@ -67,23 +73,36 @@ public class MemberServlet extends HttpServlet {
 					System.out.println("無效的帳號");
 				}
 				if(!errorMsgs.isEmpty()){
-					RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
+					RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");
 					rd.forward(req, res);
 					return;
 				}
+
+		
 				
-				/*************** 得到會員Session資訊**************/
+				/***************得到會員Session資訊**************/
 				HttpSession memSession = req.getSession();
-				memSession.setAttribute("memSelf", memSelf);
-				
-				String index = "/personal_page.jsp";
-				RequestDispatcher rd = req.getRequestDispatcher(index);
-				rd.forward(req, res);
+				Object isNullSession = memSession.getAttribute("memSelf");
+				String location = (String)memSession.getAttribute("location");
+				System.out.println(location);
+				if(isNullSession == null){	
+					memSession.setAttribute("memSelf", memSelf);
+					System.out.println("登入:"+memSession.getId());
+					if(location != null){
+						memSession.removeAttribute("location");
+						res.sendRedirect(location);
+						return;
+					}
+				}
+				String index = req.getContextPath()+"/front_end/index.jsp";
+//				RequestDispatcher rd = req.getRequestDispatcher(index);
+//				rd.forward(req, res);
+				res.sendRedirect(index);
 				return;
 			}catch(Exception e){
 				errorMsgs.add("無法取得資料");
 				System.out.println("無法取得資料");
-				RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");
 				rd.forward(req, res);
 				return;
 			}
@@ -91,7 +110,28 @@ public class MemberServlet extends HttpServlet {
 		}
 		
 		
-		/*會員註冊*/
+		/***************登入頁面連到註冊頁面***************/
+		if("getlinked_member_register_page".equals(action)){
+				res.sendRedirect(req.getContextPath()+"/front_end/member/member_register.jsp");
+				return;
+		}
+		/***************首頁跳轉登入頁面***************/
+		if("getlinked_login_page".equals(action)){
+			res.sendRedirect(req.getContextPath()+"/front_end/login.jsp");
+				return;
+		}
+		/***************會員登出***************/
+		if("getlinked_logon_page".equals(action)){
+				HttpSession memSession = req.getSession();
+				System.out.println("登出:"+memSession.getId());
+				memSession.invalidate();
+				res.sendRedirect(req.getContextPath()+"/front_end/index.jsp");
+				return;
+		}
+		
+		
+		
+		/***************會員註冊***************/
 		if("getregister_judge".equals(action)){
 			
 				Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
@@ -137,7 +177,7 @@ public class MemberServlet extends HttpServlet {
 					errorMsgs.put("mem_gender", "請選擇性別");
 				}else if(mem_gender.equals("男") || mem_gender.equals("女")){
 				}else{
-					errorMsgs.put("mem_gender", "請選擇性別123");
+					errorMsgs.put("mem_gender", "請選擇性別");
 				}
 				
 				
@@ -160,16 +200,13 @@ public class MemberServlet extends HttpServlet {
 				Integer mem_height = null;
 				try{
 					mem_height = Integer.valueOf(req.getParameter("mem_height").trim());
-//					if(mem_height < 120 || mem_height > 220)throw new NumberFormatException();
 				}catch(NumberFormatException e){
 					errorMsgs.put("mem_height", "請選擇身高");
 				}
 		
 				Integer mem_weight = null;
 				try{
-					mem_weight = Integer.valueOf(req.getParameter("mem_weight").trim());
-//					if(mem_weight < 30 || mem_weight > 220)throw new NumberFormatException();
-					
+					mem_weight = Integer.valueOf(req.getParameter("mem_weight").trim());	
 				}catch(NumberFormatException e){
 					errorMsgs.put("mem_weight", "請選擇體重");
 				}
@@ -192,24 +229,122 @@ public class MemberServlet extends HttpServlet {
 			
 							
 				if(! errorMsgs.isEmpty()){
-					RequestDispatcher rd = req.getRequestDispatcher("/member_register.jsp");
+					RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_register.jsp");
 					rd.forward(req, res);
 					return;
 				}
 				
 				MemberVO memRegister = new MemberVO(); 
 				memRegister = ms.memberRegisterService(mem_account, mem_password, mem_name, mem_birthday, mem_bloodtype, mem_gender, mem_county, mem_height, mem_weight, mem_emotion, mem_contact);
-				RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");
 				rd.forward(req, res);
 			}catch(Exception e){
 				System.out.println("無法取得資料");
-				RequestDispatcher rd = req.getRequestDispatcher("/member_register.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_register.jsp");
 				rd.forward(req, res);
 			}
 			
 		}
-
+		/***************會員修改***************/
 		
+		
+		
+		/****************自我介紹***************/
+		if("getintro_judge".equals(action)){
+
+			try{
+			String mem_intro = req.getParameter("mem_intro");
+			System.out.println(mem_intro);
+			MemberVO memvo = null;
+			HttpSession memintro = req.getSession();
+			memvo = (MemberVO) memintro.getAttribute("memSelf");
+			if(mem_intro.trim().length() == 0 || mem_intro == null || memintro == null){
+				System.out.println(mem_intro.isEmpty());
+				String referer = req.getHeader("referer");
+				res.sendRedirect(referer);
+				return;
+			}
+			MemberService ms = new MemberService();
+			String mem_no = memvo.getMem_no();
+			System.out.println("mem_no ="+mem_no);
+			memvo = ms.getOneMem(mem_no);
+			if(memvo == null){
+				System.out.println("錯誤1");
+				res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+				return;
+			}
+			memvo = ms.updateIntro(mem_intro, mem_no);
+			res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+			return;
+				
+			}catch(Exception e){
+				System.out.println("錯誤");
+				res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+				return;
+			}
+		}
+		
+		
+		
+	    /***********************************/
+		/*								   */
+		/*								   */
+		/*								   */
+		/*				搜尋功能			   */
+		/*								   */
+		/* 								   */
+		/*   							   */
+		/***********************************/
+
+		/***************基本搜尋***************/
+		
+		if("blur_search".equals(action)){
+			
+			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
+				req.setAttribute("errorMsgs", errorMsgs);
+			try{
+				String mem_name = req.getParameter("mem_name");
+				if(mem_name == null || mem_name.trim().length() == 0){
+					errorMsgs.put("查無資料", "查無資料");
+					RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
+					rd.forward(req, res);
+					return;
+				}
+					System.out.println(mem_name);
+					MemberService ms = new MemberService();
+					List<MemberVO> getallMemberData = ms.blur(mem_name);
+					req.setAttribute("getallMemberData", getallMemberData);
+					RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
+					rd.forward(req, res);
+					return;
+			}catch(Exception e){
+				errorMsgs.put("查無資料", "查無資料");
+				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
+				rd.forward(req, res);
+				return;	
+			}
+		}
+		/***************進階搜尋***************/
+		
+		if("listMems_ByCompositeQuery".equals(action)){
+				
+			try{
+				Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();
+
+				MemberService ms = new MemberService();
+				List<MemberVO>getallMemberData = ms.precise(map);
+						
+				req.setAttribute("getallMemberData1", getallMemberData);
+				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
+				rd.forward(req, res);
+				return;
+				
+			}catch(Exception e){
+				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
+				rd.forward(req, res);
+				return;	
+			}
+		}
 		
 		
 		

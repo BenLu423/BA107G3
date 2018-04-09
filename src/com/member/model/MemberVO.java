@@ -30,6 +30,7 @@ public class MemberVO implements Serializable {
 	private String mem_prohibit;
 	private String mem_set_notify;
 	private Date mem_time_notify;
+	private Integer mem_receive_gift;
 	
 	public MemberVO(){
 	}
@@ -240,6 +241,14 @@ public class MemberVO implements Serializable {
 
 	public void setMem_time_notify(Date mem_time_notify) {
 		this.mem_time_notify = mem_time_notify;
+	}
+
+	public Integer getMem_receive_gift() {
+		return mem_receive_gift;
+	}
+
+	public void setMem_receive_gift(Integer mem_receive_gift) {
+		this.mem_receive_gift = mem_receive_gift;
 	};
 	
 	
