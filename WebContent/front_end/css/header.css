@@ -6,16 +6,19 @@ html,body{
     /*background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);*/
 }
 
-div#adv-search{
-	padding: 0px;
-}
 .login .btn{
   padding: 0px;  
 }
 
+
 .login .btn-group{
     width: 80px;
+    height: 40px;
     text-align: center;
+}
+
+.login .login-photo{
+	text-align: right;
 }
 
 .login .btn-group-menu{
@@ -139,6 +142,11 @@ nav.navbar.navbar-default:hover {
 	opacity: 1;
 	-webkit-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
+}
+#index-photo-stick{
+	border-radius: 20px;
+    width: 40px;
+    height: 40px;
 }
 /*-- //header --*/
 
