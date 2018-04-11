@@ -1,5 +1,6 @@
 package com.giftDiscount.model;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -67,6 +68,10 @@ public class GiftDiscountService {
 	
 	public void update(GiftDiscountVO giftDiscountVO){
 		daoGD.update(giftDiscountVO);
+	}
+	
+	public void updateAmount(String giftd_no, Integer buyAmount, Connection con){
+		daoGD.updateAmount(giftd_no, buyAmount, con);
 	}
 	
 	public void delete(String giftd_no){

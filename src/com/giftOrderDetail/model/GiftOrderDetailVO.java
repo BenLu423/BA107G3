@@ -81,4 +81,47 @@ public class GiftOrderDetailVO implements Serializable {
 		this.giftod_unit = giftod_unit;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((gift_no == null) ? 0 : gift_no.hashCode());
+		result = prime * result + ((giftd_no == null) ? 0 : giftd_no.hashCode());
+		result = prime * result + ((gifto_no == null) ? 0 : gifto_no.hashCode());
+		result = prime * result + ((giftod_no == null) ? 0 : giftod_no.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GiftOrderDetailVO other = (GiftOrderDetailVO) obj;
+		if (gift_no == null) {
+			if (other.gift_no != null)
+				return false;
+		} else if (!gift_no.equals(other.gift_no))
+			return false;
+		if (giftd_no == null) {
+			if (other.giftd_no != null)
+				return false;
+		} else if (!giftd_no.equals(other.giftd_no))
+			return false;
+		if (gifto_no == null) {
+			if (other.gifto_no != null)
+				return false;
+		} else if (!gifto_no.equals(other.gifto_no))
+			return false;
+		if (giftod_no == null) {
+			if (other.giftod_no != null)
+				return false;
+		} else if (!giftod_no.equals(other.giftod_no))
+			return false;
+		return true;
+	}
+
 }

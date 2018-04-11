@@ -90,7 +90,7 @@
                     	 </form>  
                          </div>                           
                                          
-                         <div class="btn-group">
+                         <div class="btn-group" id="myCart">
                              <button class="btn btn-default dropdown-toggle mybutton-icon" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             	 ÁÊª«¨® <span class="badge" id="cartSum">${fn:length(orderDetail)}</span>
                              </button>

@@ -25,10 +25,31 @@ td.order-name{
 .order-amount,
 .order-unit,
 .order-money,
-.order-inventory{
+.order-inventory-enough,
+.order-inventory-not-enough{
 	width: 10%;
 }
-
+.order-inventory-enough{
+	color: green;
+}
+.order-inventory-not-enough{
+	color: red;
+}
 .order-person{
-	width: 35%;
+	width: 25%;
+}
+.order-delete{
+	width: 10%;	
+}
+.order-person input{
+	width: 70px;
+	height: 20px;
+	text-align: center;
+}
+.giftr_message{
+	position: absolute;
+	width: 200px;
+	height: 40px;
+	margin-left: 10px;
+	
 }

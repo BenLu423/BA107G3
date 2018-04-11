@@ -39,6 +39,7 @@ public class TestGiftOrderService extends HttpServlet {
 		for(int i=1;i<=3;i++){
 			giftOrderDetailVO = new GiftOrderDetailVO();
 			giftOrderDetailVO.setGift_no("G00"+(i+5));
+			giftOrderDetailVO.setGiftd_no("GD003");
 			giftOrderDetailVO.setGiftod_unit(25);
 			giftOrderDetailVO.setGiftod_amount(40);
 			giftOrderDetailVO.setGiftod_money(1000);
