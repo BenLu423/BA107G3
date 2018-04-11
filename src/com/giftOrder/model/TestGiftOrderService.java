@@ -38,18 +38,18 @@ public class TestGiftOrderService extends HttpServlet {
 		map = new LinkedHashMap<>();
 		for(int i=1;i<=3;i++){
 			giftOrderDetailVO = new GiftOrderDetailVO();
-			giftOrderDetailVO.setGift_no("G00"+(i+5));
-			giftOrderDetailVO.setGiftd_no("GD003");
-			giftOrderDetailVO.setGiftod_unit(25);
-			giftOrderDetailVO.setGiftod_amount(40);
-			giftOrderDetailVO.setGiftod_money(1000);
-			giftOrderDetailVO.setGiftod_inventory(10);
+			giftOrderDetailVO.setGift_no("G00"+i);
+			giftOrderDetailVO.setGiftd_no("GD005");
+			giftOrderDetailVO.setGiftod_unit(100);
+			giftOrderDetailVO.setGiftod_amount(5);
+			giftOrderDetailVO.setGiftod_money(500);
+			giftOrderDetailVO.setGiftod_inventory(1);
 			list = new ArrayList<>();
 			for(int j=1;j<=4;j++){
 				giftReceiveVO = new GiftReceiveVO();
 				giftReceiveVO.setMem_no_self(mem_no_self);
-				giftReceiveVO.setMem_no_other("M00"+(j+1));
-				giftReceiveVO.setGiftr_amount(j+5);
+				giftReceiveVO.setMem_no_other("M002");
+				giftReceiveVO.setGiftr_amount(1);
 				list.add(giftReceiveVO);
 			}
 			map.put(giftOrderDetailVO, list);

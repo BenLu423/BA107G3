@@ -6,6 +6,7 @@ import java.util.*;
 import com.giftDiscount.model.GiftDiscountService;
 import com.giftDiscount.model.GiftDiscountVO;
 import com.giftReceive.model.*;
+import com.member.model.MemberService;
 
 public class GiftOrderDetailDAO implements GiftOrderDetailDAO_interface {
 	
@@ -36,22 +37,15 @@ public class GiftOrderDetailDAO implements GiftOrderDetailDAO_interface {
 			if(rs.next())
 				giftodNoSeq = rs.getString(1);
 			
-			//尋找該明細的禮物是否屬於限時優惠
-			String giftd_no = giftOrderDetailVO.getGiftd_no();
-			if(giftd_no != null && !"".equals(giftd_no)){
-				//若屬於則扣除該限時優惠的數量
-				GiftDiscountService giftDiscountSvc = new GiftDiscountService();
-				giftDiscountSvc.updateAmount(giftd_no, giftOrderDetailVO.getGiftod_amount(), con);
-			}
-			
 			//5. 新增N筆送禮紀錄[GIFT_RECEIVE]	
 			GiftReceiveService giftReceiveSvc = new GiftReceiveService();
+			
 			for(GiftReceiveVO giftReceiveVO: giftReceiveList){
 				//在收贈禮Table中填入訂單明細編號
 				giftReceiveVO.setGiftod_no(giftodNoSeq);
-				//6.會跳轉到giftReceiveDAO執行
 				giftReceiveSvc.insert(giftReceiveVO, con);
 			}
+			
 		} catch (SQLException e) {
 			if(con != null){
 				try {

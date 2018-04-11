@@ -866,7 +866,7 @@ public class MemberDAO implements MemberDAO_interface{
 
 	@Override
 	public void updateRecGift(String mem_no, Integer addRecGift, Connection con) {
-		/* con從GiftReceiveDAO的insert()傳遞過來  */
+		/* con從GiftOrderDAO的insert()傳遞過來  */
 		PreparedStatement pstmt = null;
 		MemberVO memberVO = getOne(mem_no);
 		Integer oriRecGift = memberVO.getMem_receive_gift();

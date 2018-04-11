@@ -29,9 +29,6 @@ public class GiftReceiveDAO implements GiftReceiveDAO_interface{
 			pstmt.setString(6, giftReceiveVO.getGiftr_message());
 			pstmt.executeUpdate();
 			
-			//6. 修改收禮會員的總收禮數量[MEMBER]
-			MemberService memberSvc = new MemberService();
-//尚未			
 		} catch (SQLException e) {
 			if(con != null){
 				try {
