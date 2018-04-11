@@ -14,4 +14,5 @@ public interface MemberDAO_interface {
 	List<MemberVO> blurSearch(String mem_name);
 	List<MemberVO> getAll(Map<String,String[]> map);
 	void memIntro(MemberVO member);
+	void memModify(MemberVO member);
 }

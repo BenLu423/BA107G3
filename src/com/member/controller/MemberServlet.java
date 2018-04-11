@@ -14,17 +14,20 @@ import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.catalina.deploy.ContextService;
 
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
 
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -245,7 +248,7 @@ public class MemberServlet extends HttpServlet {
 			}
 			
 		}
-		/***************會員修改***************/
+		
 		
 		
 		
@@ -285,7 +288,179 @@ public class MemberServlet extends HttpServlet {
 		}
 		
 		
+		/***************會員修改***************/
+		if("getmodify_data_judge".equals(action)){
+			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
+			String mem_nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,15}$";
+			String mem_phoneReg = "[0-9]{9}";
+			String mem_mailReg = "^[_a-z0-9-]+([.][_a-z0-9-]+)*@[a-z0-9-]+([.][a-z0-9-]+)*$";
+			try{
+				Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();
+				Set<String> keys = map.keySet();
+				HttpSession memData = req.getSession();
+				MemberVO memvo = (MemberVO)memData.getAttribute("memSelf");
+				MemberService ms = new MemberService();
+				System.out.println(memvo.getMem_no());
+				MemberVO scond_memvo = ms.getOneMem(memvo.getMem_no());
+				
 		
+				for(String key : keys){
+					String value = map.get(key)[0];
+			
+					if(value == null || value.trim().length() == 0){
+						System.out.println(key+":" + value);
+						switch(key){
+						case "mem_no" :
+							if(!(value.equals(memvo.getMem_no()))){
+								res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+								return;
+							}
+						case "mem_name" :
+							value = scond_memvo.getMem_name();
+							System.out.println(key+":" + value);
+							break;
+						case "mem_phone" :
+							if(scond_memvo.getMem_phone() != null){
+								value = String.valueOf(scond_memvo.getMem_phone());
+								System.out.println(scond_memvo.getMem_phone());
+								System.out.println(key+":" + value);
+							}else{
+								value = "000000000";
+							}
+							break;
+						case "mem_mail" :
+							if(scond_memvo.getMem_mail() != null){
+							value = scond_memvo.getMem_mail();
+							System.out.println(key+":" + value);
+							}else{
+								value = "1@gmail.com";
+							}
+							
+							break;
+						case "mem_height" :
+							String height = String.valueOf(scond_memvo.getMem_height());
+							value = height;
+							System.out.println(key+":" + value);
+							break;
+						case "mem_weight" :
+							String weight = String.valueOf(scond_memvo.getMem_weight());
+							value = weight;
+							System.out.println(key+":" + value);
+							break;
+						case "mem_emotion" :
+							value = scond_memvo.getMem_emotion();
+							System.out.println(key+":" + value);
+							break;
+						case "mem_contact" :
+							value = scond_memvo.getMem_contact();
+							System.out.println(key+":" + value);
+							break;
+						case "mem_interest" :
+							value = scond_memvo.getMem_interest();
+							System.out.println(key+":" + value);
+							break;
+						default:
+							break;
+						}
+					}
+//					System.out.println(map.get(key)[0]);
+					if(value != null){
+						if("mem_name".equals(key)){
+							if( !(value.trim().matches(mem_nameReg)))
+								errorMsgs.put("mem_name", "暱稱輸入錯誤");
+						}
+						else if("mem_phone".equals(key)){
+							System.out.println(66666);
+							if(!(value.trim().matches(mem_phoneReg)))
+								errorMsgs.put("mem_phone", "手機格式錯誤");
+							
+						}else if("mem_mail".equals(key)){
+							if(!(value.matches(mem_mailReg)))
+								errorMsgs.put("mem_mail", "電子郵件格式錯誤");
+							
+						}else if("mem_height".equals(key)){
+							int check_height = Integer.valueOf(value);
+							if((check_height > 220 || check_height < 120))
+								errorMsgs.put("mem_height", "身高格式錯誤");	
+						}else if("mem_weight".equals(key)){
+							int check_weight = Integer.valueOf(value);
+							if((check_weight > 220 || check_weight < 30))
+								errorMsgs.put("mem_weight","體重格式錯誤");
+						}else if("mem_emotion".equals(key)){
+							String[] s_emotion ={"單身","穩定交往中","已婚","離婚","一言難盡","保密"};
+							int count = 0;
+							for(int i=0; i < s_emotion.length; i++){
+								if(value.equals(s_emotion[i])){
+									 count = 1;
+									 break;
+								}
+							}
+							if(count == 0){
+								errorMsgs.put("mem_emotion","感情狀況格式錯誤");
+							}
+						}else if("mem_contact".equals(key)){
+							String[] s_contact ={"其他友誼","談心好友","男女朋友","結婚對象","網路情人"};
+							int count = 0;
+							for(int i=0; i < s_contact.length; i++){
+								if(value.equals(s_contact[i])){
+									count = 1;
+								}
+							}
+							if(count == 0){
+								errorMsgs.put("mem_contact","交往狀況格式錯誤");
+							}
+							
+						}else if("mem_interest".equals(key.substring(0, key.lastIndexOf("t") + 1))){
+							String[] s_interest = {"上網","聽音樂","看電影","健身","看書","打球","玩遊戲","旅行"};
+							int count = 0;
+							for(int i = 0; i < s_interest.length; i++){
+								if(value.equals(s_interest[i])){
+									value = value + ",";
+									count = 1;
+								}
+							}
+							if(count == 0){
+								errorMsgs.put("mem_interest", "興趣格式錯誤");
+							}
+							
+						}
+						if(!(errorMsgs.isEmpty())){
+							System.out.println("會員資料修改錯誤");
+							for(int i = 0 ; i < errorMsgs.size(); i++){
+								System.out.println(errorMsgs.keySet());
+								System.out.println(errorMsgs.get(i));
+							}
+							RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/modify_personal_data_main_page.jsp");
+							rd.forward(req, res);
+							return;
+						}
+					}
+							
+				}
+					
+					ms.uodateMember(map);
+			
+				
+				
+				
+				
+//				Part part = req.getPart("mem_photo");
+//				if(part.getSize() != 0){
+//					System.out.println(part.getName());
+//					System.out.println(part.getSize());
+//				}
+				
+				System.out.println("success");
+				res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+				return;
+			}catch(Exception e){
+				e.printStackTrace();
+				System.out.println("修改失敗");
+				res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+				return;
+			}	
+		}
+			
 	    /***********************************/
 		/*								   */
 		/*								   */
@@ -329,11 +504,9 @@ public class MemberServlet extends HttpServlet {
 		if("listMems_ByCompositeQuery".equals(action)){
 				
 			try{
-				Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();
-
+				Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();				
 				MemberService ms = new MemberService();
-				List<MemberVO>getallMemberData = ms.precise(map);
-						
+				List<MemberVO>getallMemberData = ms.precise(map);		
 				req.setAttribute("getallMemberData1", getallMemberData);
 				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
 				rd.forward(req, res);

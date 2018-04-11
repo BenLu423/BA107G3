@@ -14,7 +14,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,9 +53,12 @@ public class MemberDAO implements MemberDAO_interface{
 	static final String GETPIC = "SELECT MEM_PHOTO FROM MEMBER WHERE MEM_NO = ?";
 	/*修改自我介紹*/
 	static final String UPDATEINTRO ="UPDATE MEMBER SET MEM_INTRO = ? WHERE MEM_NO = ?";
-	
+	/*修改會員資料*/
+//	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ?, MEM_WEIGHT = ?, MEM_EMOTION = ?, MEM_CONTACT = ?, MEM_INTEREST = ? WHERE MEM_NO = ?";
+	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ? WHERE MEM_NO = ?";
+
 	/*基本查詢*/
-	static final String BLURSEARCH = "SELECT * FROM MEMBER WHERE UPPER(MEM_NAME) LIKE ?";
+	static final String BLURSEARCH = "SELECT * FROM MEMBER WHERE MEM_NAME LIKE ?";
 	
 	
 	/********驅動載入********/									
@@ -499,8 +504,38 @@ public class MemberDAO implements MemberDAO_interface{
 			}
 		}	
 	}
-	
-	
+	/*******修改個人資料********/
+	public void memModify(MemberVO member){
+		Connection con = null;
+		PreparedStatement ps = null;
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(UPDATAMEMBERDATA);
+			ps.setString(1, member.getMem_name());
+			System.out.println("member.getMem_name() = "+member.getMem_name());
+			ps.setString(2, member.getMem_phone());
+			System.out.println("member.getMem_phone() = "+ member.getMem_phone());
+			ps.setString(3, member.getMem_mail());
+			ps.setInt(4, member.getMem_height());
+//			ps.setInt(5, member.getMem_weight());
+//			ps.setString(6, member.getMem_emotion());
+//			ps.setString(7, member.getMem_contact());
+//			ps.setString(8, member.getMem_interest());
+			ps.setString(5, member.getMem_no());
+			System.out.println("member.getMem_no() =" + member.getMem_no());
+			ps.executeUpdate();
+			System.out.println("修改成功!");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}
+			}catch(SQLException e){
+			}
+		}
+	}
 	
 	
 	
@@ -517,6 +552,8 @@ public class MemberDAO implements MemberDAO_interface{
 			con = ds.getConnection();
 			ps = con.prepareStatement(BLURSEARCH);
 			ps.setString(1, "%"+mem_name+"%");
+			System.out.println(BLURSEARCH);
+			System.out.println(mem_name);
 			rs = ps.executeQuery();
 			while(rs.next()){
 				memvo = new MemberVO();
@@ -627,6 +664,30 @@ public class MemberDAO implements MemberDAO_interface{
 		String aCondition = null;
 		if("mem_gender".equals(columnName) || "mem_county".equals(columnName)){
 			aCondition = columnName + " = " +"'" + value + "'";
+			System.out.println(1);
+		}else if("mem_age".equals(columnName)){
+			System.out.println(2);
+			columnName = "mem_birthday";
+			int mem_age = Integer.valueOf(value);
+			SimpleDateFormat df = new SimpleDateFormat("yyyy");
+			String str_mem_date = df.format(new Date());
+			Integer int_mem_date = Integer.valueOf(str_mem_date);
+
+			
+			if(mem_age == 20){
+				aCondition = "to_char(" + columnName + ",'yyyy-mm-dd') >'" + (int_mem_date - 20)+"-01-01" + "'";
+			}else if(mem_age == 30){
+				aCondition = "to_char(" + columnName + ",'yyyy-mm-dd') >'" + (int_mem_date - 30)+"-01-01" + "'"
+							  +" AND to_char(" + columnName + ",'yyyy-mm-dd') <'" + (int_mem_date - 21)+"-01-01" + "'";
+			}else if(mem_age == 40){
+				aCondition = "to_char(" + columnName + ",'yyyy-mm-dd') >'" + (int_mem_date - 40)+"-01-01" + "'"
+						  +" AND to_char(" + columnName + ",'yyyy-mm-dd') <'" + (int_mem_date - 31)+"-01-01" + "'";
+			}else if(mem_age == 50){
+				aCondition = "to_char(" + columnName + ",'yyyy-mm-dd') <'" + (int_mem_date - 40)+"-01-01" + "'";
+			}else{
+				aCondition = "to_char(" + columnName + ",'yyyy-mm-dd') >'" + (int_mem_date)+"-01-01" + "'";
+			}
+			
 			
 		}else if(columnName.startsWith("mem_height")){
 			String str_h1 = null;
@@ -674,6 +735,7 @@ public class MemberDAO implements MemberDAO_interface{
 		int judge_where_emotion_key = 0;
 		int judge_where_contact_key = 0;
 		int c = 2;
+		int d = 2;
 
 		
 		mem_emotion_count = getStateCount(keys, mem_emotion_count,"mem_emotion");
@@ -681,15 +743,16 @@ public class MemberDAO implements MemberDAO_interface{
 	
 		System.out.println("mem_emotion_count = " + mem_emotion_count);
 		System.out.println("mem_contact_count = " + mem_contact_count);
-
+		
 		for(String key :keys){
 		try{
+
 			String value = map.get(key)[0];
 			if(value != null && value.trim().length() != 0 && !"action".equals(key)){
 			count++;
 			String aCondition = get_aCondition_For_Oracle(key,value.trim());
-			
-				if("mem_gender".equals(key) || "mem_county".equals(key)){
+
+				if("mem_gender".equals(key) || "mem_county".equals(key) || "mem_age".equals(key)){
 					mem_emotion_sum = 0;
 					mem_contact_sum = 0;
 				}else if("mem_height".equals(key.substring(0,10)) || "mem_weight".equals(key.substring(0,10))){
@@ -720,12 +783,12 @@ public class MemberDAO implements MemberDAO_interface{
 						}
 						System.out.println("c = "+c);
 				}else if(mem_contact_sum > 1){
-					if(c == mem_contact_count && judge_where_contact_key == 0){	
+					if(d == mem_contact_count && judge_where_contact_key == 0){	
 						whereCondition.append("OR " + aCondition + ")");
-						c = 2;
+						d = 2;
 					}else{
 						whereCondition.append("OR " + aCondition);
-						c++;
+						d++;
 					}
 
 				}else{

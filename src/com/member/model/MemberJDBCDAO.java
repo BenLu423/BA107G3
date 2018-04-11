@@ -365,5 +365,13 @@ public class MemberJDBCDAO implements MemberDAO_interface{
 	}
 
 
+
+	@Override
+	public void memModify(MemberVO member) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 }

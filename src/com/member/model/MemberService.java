@@ -4,8 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
+
+import com.sun.xml.internal.ws.api.model.MEP;
 
 public class MemberService {
 	private MemberDAO_interface memdao;
@@ -54,6 +57,62 @@ public class MemberService {
 		memdao.memIntro(memvo);
 		return memvo; 
 	}
+	
+	public void uodateMember(Map<String,String[]> map){
+		Set<String> keys = map.keySet();
+		MemberVO memvo = new MemberVO();
+		for(String key : keys){
+			String value = map.get(key)[0];
+			String interest = null;
+//			System.out.println(key+":"+value);
+				switch (key) {
+					case "mem_no" :
+						memvo.setMem_no(value);
+						System.out.println(memvo.getMem_no());
+						break;
+					case "mem_name" :
+						memvo.setMem_name(value);
+						System.out.println(memvo.getMem_name());
+						break;
+					case "mem_phone" :
+						memvo.setMem_phone(value);
+						System.out.println(memvo.getMem_phone());
+						System.out.println(123);
+						break;
+					case "mem_mail" :
+						memvo.setMem_mail(value);
+						System.out.println(memvo.getMem_mail());
+						break;
+					case "mem_height" :
+						Integer height = Integer.valueOf(value);
+						memvo.setMem_height(height);
+						System.out.println(memvo.getMem_height());
+						break;
+					case "mem_weight" :
+						Integer weight = Integer.valueOf(value);
+						memvo.setMem_weight(weight);
+						System.out.println(memvo.getMem_weight());
+						break;
+					case "mem_emotion" :
+						memvo.setMem_emotion(value);
+						System.out.println(memvo.getMem_emotion());
+						break;
+					case "mem_contact" :
+						memvo.setMem_contact(value);
+						System.out.println(memvo.getMem_contact());
+						break;
+					case "mem_interest" :	
+						interest = "";
+						memvo.setMem_interest(value);
+						System.out.println(memvo.getMem_interest());
+						break;	
+					default:
+						break;
+					}	
+		}
+		memdao.memModify(memvo);
+	}
+	
 	
 	public List<MemberVO> blur(String mem_name){
 		return memdao.blurSearch(mem_name);
