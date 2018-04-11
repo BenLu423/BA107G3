@@ -1,5 +1,6 @@
 package com.member.model;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,4 +16,8 @@ public interface MemberDAO_interface {
 	List<MemberVO> getAll(Map<String,String[]> map);
 	void memIntro(MemberVO member);
 	void memModify(MemberVO member);
+	
+	//紹永[禮物訂單使用]
+	void updateDeposit(String mem_no, Integer delDeposit, Connection con);
+	void updateRecGift(String mem_no, Integer addRecGift, Connection con);
 }

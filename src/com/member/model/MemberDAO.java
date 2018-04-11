@@ -28,6 +28,8 @@ import javax.sql.DataSource;
 
 import org.apache.catalina.ssi.ByteArrayServletOutputStream;
 
+import com.giftDiscount.model.GiftDiscountVO;
+
 
 
 public class MemberDAO implements MemberDAO_interface{
@@ -60,7 +62,9 @@ public class MemberDAO implements MemberDAO_interface{
 	/*基本查詢*/
 	static final String BLURSEARCH = "SELECT * FROM MEMBER WHERE MEM_NAME LIKE ?";
 	
-	
+	static final String UPDATE_DEPOSIT_STMT  = "UPDATE MEMBER SET MEM_DEPOSIT=? WHERE MEM_NO=? ";
+	static final String UPDATE_REC_GIFT_STMT = "UPDATE MEMBER SET MEM_RECEIVE_GIFT=? WHERE MEM_NO=? ";
+
 	/********驅動載入********/									
 	private static DataSource ds = null;
 	static {
@@ -824,6 +828,73 @@ public class MemberDAO implements MemberDAO_interface{
 				}
 			}
 		return count;
+	}
+	
+	//紹永[禮物訂單使用]
+	@Override
+	public void updateDeposit(String mem_no, Integer delDeposit, Connection con) {
+		/* con從GiftOrderDAO的insert()傳遞過來  */
+		PreparedStatement pstmt = null;
+		MemberVO memberVO = getOne(mem_no);
+		Integer oriDeposit = memberVO.getMem_deposit();
+		try {
+			pstmt = con.prepareStatement(UPDATE_DEPOSIT_STMT);
+			pstmt.setInt(1, oriDeposit-delDeposit);
+			pstmt.setString(2, mem_no);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			if(con != null){
+				try {
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-MemberDAO updateDeposit時");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured." + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally {
+			if(pstmt != null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void updateRecGift(String mem_no, Integer addRecGift, Connection con) {
+		/* con從GiftReceiveDAO的insert()傳遞過來  */
+		PreparedStatement pstmt = null;
+		MemberVO memberVO = getOne(mem_no);
+		Integer oriRecGift = memberVO.getMem_receive_gift();
+		try {
+			pstmt = con.prepareStatement(UPDATE_REC_GIFT_STMT);
+			pstmt.setInt(1, oriRecGift+addRecGift);
+			pstmt.setString(2, mem_no);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			if(con != null){
+				try {
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-GiftReceiveDAO updateDeposit時");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured." + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally {
+			if(pstmt != null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
 	}
 	
 }

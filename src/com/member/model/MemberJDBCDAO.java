@@ -372,6 +372,18 @@ public class MemberJDBCDAO implements MemberDAO_interface{
 		
 	}
 
+	@Override
+	public void updateDeposit(String mem_no, Integer delDeposit, Connection con) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateRecGift(String mem_no, Integer addRecGift, Connection con) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 }

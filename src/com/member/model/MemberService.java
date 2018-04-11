@@ -2,6 +2,7 @@ package com.member.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -122,4 +123,12 @@ public class MemberService {
 		return memdao.getAll(map);
 	}
 	
+	//紹永[禮物訂單使用]
+	public void updateDeposit(String mem_no, Integer delDeposit, Connection con){
+		memdao.updateDeposit(mem_no, delDeposit, con);
+	}
+	
+	public void updateRecGift(String mem_no, Integer addRecGift, Connection con) {
+		memdao.updateRecGift(mem_no, addRecGift, con);
+	}
 }
