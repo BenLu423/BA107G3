@@ -20,7 +20,7 @@ public class TalkJDBCDAO implements TalkDAO_interface{
 	private static final String INSERT_TALK = "INSERT INTO TALK(TALK_NO,MEM_NO_SEND,MEM_NO_GET,TALK_TIME,TALK_CNT)VALUES('T'||LPAD(to_char(TALK_SEQ.NEXTVAL),3,'0'),?,?,?,?)";
 	private static final String UPDATE_TALK = "UPDATE TALK SET MEM_NO_SEND=?,MEM_NO_GET=?,TALK_TIME=?,TALK_CNT=? WHERE MEM_NO_SEND=? AND MEM_NO_GET=?";
 	private static final String DELETE_TALK = "DELETE TALK WHERE MEM_NO_SEND=? AND MEM_NO_GET=?";
-	private static final String FIND_ONE_TALK = "SELECT*FROM TALK WHERE MEM_NO_SEND=? AND MEM_NO_GET=?";
+	private static final String FIND_ONE_TALK = "SELECT*FROM TALK WHERE (MEM_NO_SEND=? AND MEM_NO_GET=?) OR (MEM_NO_SEND=? AND MEM_NO_GET=?)";
 	private static final String GET_ALL = "SELECT*FROM TALK";
 
 	@Override
@@ -166,6 +166,8 @@ public class TalkJDBCDAO implements TalkDAO_interface{
 			
 			pstmt.setString(1, friends.getMem_no_self());
 			pstmt.setString(2, friends.getMem_no_other());
+			pstmt.setString(3, friends.getMem_no_other());
+			pstmt.setString(4, friends.getMem_no_self());
 			rs = pstmt.executeQuery();
 			rs.next();
 			talk = new TalkVO();
@@ -287,26 +289,26 @@ public class TalkJDBCDAO implements TalkDAO_interface{
 		
 		//FIND_ONE_TALK
 		
-//		FriendsListVO friends2 = new FriendsListVO();
-//		friends2.setMem_no_self("M001");
-//		friends2.setMem_no_other("M002");
-//		TalkVO talkvo = talk.findTalkByFriends(friends2);
-//		System.out.println(talkvo.getTalk_no());
-//		System.out.println(talkvo.getMem_no_send());
-//		System.out.println(talkvo.getMem_no_get());
-//		System.out.println(talkvo.getTalk_time());
-//		System.out.println(talkvo.getTalk_cnt());
+		FriendsListVO friends2 = new FriendsListVO();
+		friends2.setMem_no_self("M002");
+		friends2.setMem_no_other("M001");
+		TalkVO talkvo = talk.findTalkByFriends(friends2);
+		System.out.println(talkvo.getTalk_no());
+		System.out.println(talkvo.getMem_no_send());
+		System.out.println(talkvo.getMem_no_get());
+		System.out.println(talkvo.getTalk_time());
+		System.out.println(talkvo.getTalk_cnt());
 		
 		//get all
-		Set<TalkVO>set = talk.getAll();
-		for(TalkVO talks : set){
-			System.out.println(talks.getTalk_no());
-			System.out.println(talks.getMem_no_send());
-			System.out.println(talks.getMem_no_get());
-			System.out.println(talks.getTalk_time());
-			System.out.println(talks.getTalk_cnt());
-			System.out.println("========");
-		}
+//		Set<TalkVO>set = talk.getAll();
+//		for(TalkVO talks : set){
+//			System.out.println(talks.getTalk_no());
+//			System.out.println(talks.getMem_no_send());
+//			System.out.println(talks.getMem_no_get());
+//			System.out.println(talks.getTalk_time());
+//			System.out.println(talks.getTalk_cnt());
+//			System.out.println("========");
+//		}
 		
 		
 	}

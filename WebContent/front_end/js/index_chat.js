@@ -16,3 +16,11 @@ $(function() {
     });
   });
 });
+
+
+$(document).ready(function(){
+	//滾輪置底
+	var dh = $("div #chat-message").height();
+	$("div #chat-message").scrollTop(dh);
+
+});
