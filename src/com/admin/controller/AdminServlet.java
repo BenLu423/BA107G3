@@ -61,13 +61,7 @@ public class AdminServlet extends HttpServlet {
 					errorMsgs.add("員工帳號：帳號重複");
 				}
 				
-				String pwd = req.getParameter("pwd");
-				if(pwd==null || pwd.trim().length()==0){
-					errorMsgs.add("員工密碼：請勿空白");
-				}else if(!pwd.trim().matches(reg)){
-					errorMsgs.add("員工密碼：只能是英文字母和數字，且長度於2到10之間");
-				}
-				
+
 				String mail = req.getParameter("mail");
 				if(mail==null || mail.trim().length()==0){
 					errorMsgs.add("員工信箱：請勿空白");
@@ -93,13 +87,27 @@ public class AdminServlet extends HttpServlet {
 				}
 				
 				//開始新增資料
-				/*1.新增員工*/
-				adminSvc.addAdmin(account, pwd, adminName2,mail);
-				/*2.加入權限*/
+				/*1.亂數密碼*/
+				StringBuilder pwd = new StringBuilder() ;
+				int t;
+				for(int i = 0; i < 5 ;i++){
+					t = (int)(Math.random()*9)+1;
+					pwd.append(t);
+				}
+				String pwds = pwd.toString();
+				
+				/*2.新增員工*/
+				adminSvc.addAdmin(account, pwds, adminName2,mail);
+				/*3.加入權限*/
 				AdminVO admin = adminSvc.getOneByAcct(account);
 				AuthService authSvc = new AuthService();
 				authSvc.addAuth(admin.getAdm_no(), auths);
-				/*3.新增成功，跳轉到員工頁面*/
+				
+				/*4.寄送密碼*/
+				SendMail sendMail = new SendMail();
+				sendMail.sendMail(mail, pwds, adminName2);
+				
+				/*5.新增成功，跳轉到員工頁面*/
 				res.sendRedirect(req.getContextPath() + "/back_end/admin/all_admin-catchTag.jsp");
 			}catch(Exception e){
 				errorMsgs.add(e.getMessage());

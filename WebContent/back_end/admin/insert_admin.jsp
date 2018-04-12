@@ -34,12 +34,7 @@
 								name="account" value="${requestScope.admin['adm_acct']}">
 						</div>
 						<br>
-						<div class="form-group">
-							<label for="pwd">員工密碼</label> <input type="password"
-								class="form-control" id="pwd" placeholder="Enter password"
-								name="pwd">
-						</div>
-						<br>
+						
 						<div class="form-group">
 							<label for="mail">員工信箱</label> <input type="text"
 								class="form-control" id="mail" placeholder="Enter password"
