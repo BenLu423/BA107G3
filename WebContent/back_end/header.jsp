@@ -173,7 +173,7 @@
 							<td><a href="#">最新公告管理</a></td>
 						</tr>
 						<tr>
-							<td><a href="#">常見問題管理</a></td>
+							<td><a href="<%=request.getContextPath()%>/back_end/qa/select_page1.jsp">常見問題管理</a></td>
 						</tr>
 					</tbody>
 				</table>

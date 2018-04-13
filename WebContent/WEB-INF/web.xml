@@ -84,4 +84,25 @@
     <dispatcher>ERROR</dispatcher>
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
+  
+  <servlet>
+    <servlet-name>QaServlet</servlet-name>
+    <servlet-class>com.qa.controller.QaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QaServlet</servlet-name>
+    <url-pattern>/back_end/qa/qa.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>EventServlet</servlet-name>
+    <servlet-class>com.event.controller.EventServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>com.event.controller.ImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EventServlet</servlet-name>
+    <url-pattern>/back_end/event/event.do</url-pattern>
+  </servlet-mapping>  
 </web-app>
