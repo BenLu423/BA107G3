@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
-<%@ page autoFlush="true" buffer="1024kb"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -72,16 +71,16 @@
                 	</tbody>
         			</table>
         		</div>
-				<c:if test="${giftEdits != null}">
-				<jsp:include page="gift_listEdit.jsp"></jsp:include>
-				</c:if>
-				<hr style="width: 100%; height: 2px; background-color: black; margin: 10px 0px 0px 0px;">
-				<c:if test="${gifts==null}">
+        		<c:if test="${gifts==null}">
         			<jsp:forward page="/gift/gift.do">
         				<jsp:param name="action" value="searchGifts" />
         				<jsp:param name="requestURL" value="<%=request.getServletPath()%>" />
         			</jsp:forward>
 				</c:if>
+				<c:if test="${giftEdits != null}">
+				<jsp:include page="gift_listEdit.jsp"></jsp:include>
+				</c:if>
+				<hr style="width: 100%; height: 2px; background-color: black; margin: 10px 0px 0px 0px;">
 				<jsp:include page="gift_list.jsp"></jsp:include>
     		</div>
 		</div>	
