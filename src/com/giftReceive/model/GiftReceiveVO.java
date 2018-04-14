@@ -100,4 +100,41 @@ public class GiftReceiveVO implements Serializable {
 		this.giftr_message = giftr_message;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((giftr_no == null) ? 0 : giftr_no.hashCode());
+		result = prime * result + ((mem_no_other == null) ? 0 : mem_no_other.hashCode());
+		result = prime * result + ((mem_no_self == null) ? 0 : mem_no_self.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GiftReceiveVO other = (GiftReceiveVO) obj;
+		if (giftr_no == null) {
+			if (other.giftr_no != null)
+				return false;
+		} else if (!giftr_no.equals(other.giftr_no))
+			return false;
+		if (mem_no_other == null) {
+			if (other.mem_no_other != null)
+				return false;
+		} else if (!mem_no_other.equals(other.mem_no_other))
+			return false;
+		if (mem_no_self == null) {
+			if (other.mem_no_self != null)
+				return false;
+		} else if (!mem_no_self.equals(other.mem_no_self))
+			return false;
+		return true;
+	}
+
 }

@@ -1,5 +1,3 @@
-
-
 .gift-content{
 	padding-top: 2em;
 }
@@ -113,4 +111,8 @@
 
 .col-xs-12.col-sm-1.gift-side{
 	height:555px;
+}
+
+button{
+	width:auto;
 }

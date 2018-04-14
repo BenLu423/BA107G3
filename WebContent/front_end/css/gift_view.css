@@ -1,0 +1,37 @@
+.table > tbody > tr > td, .table > thead > tr > th{
+	text-align: left;
+}
+
+.orderView-empty{
+	width:5%;
+}
+.orderView-person{
+	width:20%;
+}
+
+.orderView-gift{
+	width:25%;
+}
+
+.orderView-amount{
+	width:15%;
+}
+
+.orderView-time{
+	width:40%;
+}
+
+.orderView-person p,
+.orderView-gift p,
+.orderView-amount p,
+.orderView-time p{
+	display: inline-block;
+	font-size: 25px;
+	margin-bottom: 0px;
+}
+
+.orderView-person img,
+.orderView-gift img{
+	height:50px;
+	width:50px;
+}

@@ -1,5 +1,6 @@
 package com.giftOrderView.model;
 
+import java.sql.Date;
 import java.util.*;
 
 public class GiftOrderViewService {
@@ -16,7 +17,11 @@ public class GiftOrderViewService {
 	public List<GiftOrderViewVO> getAll() {
 		return dao.getAll();
 	}
-
+	
+	public List<GiftOrderViewVO> getAll(String mem_no_self, Date start, Date end) {
+		return dao.getAll(mem_no_self, start, end);
+		
+	}
 	public List<GiftOrderViewVO> getAll(Map<String, String[]> map) {
 		return dao.getAll(map);
 	}

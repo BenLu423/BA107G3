@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
     <script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/index_chat.js"></script>
@@ -25,7 +25,6 @@
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/index_friends.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/index_diary.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/index_chat.css">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/gift.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/event.css">
     
 
@@ -106,7 +105,7 @@
                                  </c:forEach>
                                  <li role="separator" class="divider"></li>
                                  <li>total: $${orderMoney}</li>
-                                 <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_order.jsp">前往結帳</a></li>
+                                 <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_order.jsp">前往購物車</a></li>
                              </ul>                                
                          </div>
                          
@@ -131,7 +130,7 @@
                                     <li><a href="#">好友管理</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">收禮清單</a></li>
-                                    <li><a href="#">贈禮管理</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_history.jsp"">贈禮紀錄</a></li>
                                     <li><a href="#">加值服務</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">我的日記</a></li>

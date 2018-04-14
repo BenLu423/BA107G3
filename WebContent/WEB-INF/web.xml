@@ -15,6 +15,8 @@
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
+  
+<!-- 紹永 -->
   <servlet>
     <servlet-name>GiftServlet</servlet-name>
     <servlet-class>com.gift.controller.GiftServlet</servlet-class>
@@ -23,6 +25,7 @@
     <servlet-name>GiftServlet</servlet-name>
     <url-pattern>/gift/gift.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>GiftDiscountServlet</servlet-name>
     <servlet-class>com.giftDiscount.controller.GiftDiscountServlet</servlet-class>
@@ -31,6 +34,7 @@
     <servlet-name>GiftDiscountServlet</servlet-name>
     <url-pattern>/gift/giftDiscount.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>GiftOrderServlet</servlet-name>
     <servlet-class>com.giftOrder.controller.GiftOrderServlet</servlet-class>
@@ -39,6 +43,20 @@
     <servlet-name>GiftOrderServlet</servlet-name>
     <url-pattern>/gift/giftOrder.do</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>GiftOrderViewServlet</servlet-name>
+    <servlet-class>com.giftOrderView.controller.GiftOrderViewServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GiftOrderViewServlet</servlet-name>
+    <url-pattern>/gift/giftOrderView.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+<!-- 彥之   -->
   <servlet>
     <servlet-name>MemberServlet</servlet-name>
     <servlet-class>com.member.controller.MemberServlet</servlet-class>
@@ -55,6 +73,10 @@
     <servlet-name>MemberGetPicServlet</servlet-name>
     <url-pattern>/memgetpic/mem.do</url-pattern>
   </servlet-mapping>
+  
+  
+  
+<!-- 竹潁   -->
   <servlet>
     <servlet-name>AdminServlet</servlet-name>
     <servlet-class>com.admin.controller.AdminServlet</servlet-class>
@@ -85,6 +107,9 @@
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
   
+  
+  
+<!-- 沛臻 -->
   <servlet>
     <servlet-name>QaServlet</servlet-name>
     <servlet-class>com.qa.controller.QaServlet</servlet-class>
@@ -104,5 +129,12 @@
   <servlet-mapping>
     <servlet-name>EventServlet</servlet-name>
     <url-pattern>/back_end/event/event.do</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
+  
+  
+<!-- 靖為 -->
+
+
+
+<!-- 剛辰 -->
 </web-app>

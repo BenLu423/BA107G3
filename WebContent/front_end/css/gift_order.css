@@ -48,8 +48,29 @@ td.order-name{
 }
 .giftr_message{
 	position: absolute;
-	width: 200px;
-	height: 40px;
+	width: 170px;
+	height: 44px;
+	margin-top: 3px;
 	margin-left: 10px;
 	
+}
+.giftr_del{
+	position: absolute;
+	margin-top: 15px;
+	margin-left: 185px;
+	vertical-align: middle;
+	width: 25px;
+}
+
+.gift-order-submit{
+	display: inline-block;
+	width: 247px;
+	height: 38px;
+	color: #FFF;
+	background: linear-gradient(120deg, #f39347c7 0%, #ea3c0ac7 100%);
+	text-align: center;
+	font-weight: 700;
+	cursor: pointer;
+	font-size: 19px;
+	line-height: 36px;
 }
