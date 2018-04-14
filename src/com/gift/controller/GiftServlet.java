@@ -152,9 +152,10 @@ System.out.println("Gift action: " + action);
 				}
 				giftSvc.addGift(giftVO, deatilList);
 				
-				
-				RequestDispatcher successView = req.getRequestDispatcher(requestURL);
-				successView.forward(req, res);				
+				String indexPage = req.getContextPath() + "/back_end/gift/gift_index.jsp";
+				res.sendRedirect(indexPage);
+//				RequestDispatcher successView = req.getRequestDispatcher(requestURL);
+//				successView.forward(req, res);				
 			}catch(Exception e){
 System.out.println("安安又爆炸惹");
 				errorMsgs.put("Exception","新增資料失敗: "+e.getMessage());
@@ -420,7 +421,8 @@ System.out.println("前端顯示爆炸啦!!!");
 				Map<String, String[]> giftStrQuery = (Map<String, String[]>)session.getAttribute("giftStrQuery");
 				
 				//如果為每次請求搜尋[即不是換頁]
-				if(req.getParameter("whichPage") == null ){
+				String whichPage = req.getParameter("whichPage");
+				if(whichPage == null || giftStrQuery==null){
 					Map<String, String[]> map = new HashMap<String, String[]> (req.getParameterMap());
 					session.setAttribute("giftStrQuery", map);
 					giftStrQuery = map;
@@ -448,16 +450,16 @@ System.out.println("前端顯示爆炸啦!!!");
 		
 		//來自gift_index.jsp請求到新增網頁
 		if("gift_add".equals(action)){
-			RequestDispatcher successView = req.getRequestDispatcher("/back_end/gift/gift_add.jsp");
-			successView.forward(req, res);
+			String addPage = req.getContextPath() + "/back_end/gift/gift_add.jsp";
+			res.sendRedirect(addPage);
 		}
 		
 		//來自gift_index.jsp請求到禮物網頁
 		if("gift_show".equals(action)){
 			GiftService giftSvc = new GiftService();
 			show(req,giftSvc);
-			RequestDispatcher successView = req.getRequestDispatcher("/back_end/gift/gift_index.jsp");
-			successView.forward(req, res);
+			String indexPage = req.getContextPath() + "/back_end/gift/gift_index.jsp";
+			res.sendRedirect(indexPage);
 		}
 	}
 

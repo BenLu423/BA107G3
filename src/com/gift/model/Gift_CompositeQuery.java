@@ -39,7 +39,8 @@ public class Gift_CompositeQuery {
 		for(String key: keys){
 			String value = map.get(key)[0];
 			if(value != null && value.trim().length() != 0 && !"tabWho".equals(key)
-					&& !"action".equals(key) && !"requestURL".equals(key)){
+					&& !"action".equals(key) && !"requestURL".equals(key) 
+					&& !"whichPage".equals(key) && !"edit_gift_no".equals(key)){
 				String aCondition = get_aCondition_For_Oracle(key, value.trim());
 				if (count++ == 0)
 					whereCondition.append(" where " + aCondition);

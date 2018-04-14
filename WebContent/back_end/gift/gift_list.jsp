@@ -16,7 +16,6 @@
 		<%@ include file="giftPage1.file" %>
 		<table class="table table-filter gift-management">
 			<tbody>
-				
 				<c:forEach var="gift" items="${(gifts!=null) ? gifts : (gift.giftAll)}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 					<c:choose>
 						<c:when test='${gift.key.gift_is_on == "尚未上架"}'>
@@ -125,5 +124,7 @@
 		<p style="text-align:right;">頁數:<%=whichPage%> / <%=pageNumber%></p>	
 		
 	</div>
+	目前筆數:${gifts.size()}
+	修改筆數:${giftEdits.size()}
 </body>
 </html>

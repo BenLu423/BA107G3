@@ -215,7 +215,8 @@ System.out.println("Hen爆炸!!!");
 				Map<String, String[]> giftDiscountQuery = (Map<String, String[]>)session.getAttribute("giftDiscountQuery");
 				
 				//如果為每次請求搜尋[即不是換頁]
-				if(req.getParameter("whichPage") == null ){
+				String whichPage = req.getParameter("whichPage");
+				if( whichPage == null || giftDiscountQuery == null){
 					Map<String, String[]> map = new HashMap<String, String[]> (req.getParameterMap());
 					session.setAttribute("giftDiscountQuery", map);
 					giftDiscountQuery = map;

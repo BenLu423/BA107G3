@@ -35,7 +35,9 @@ public class GiftDiscount_CompositeQueryTotal {
 		int count=0;
 		for(String key: keys){
 			String value = map.get(key)[0];
-			if(value != null && value.trim().length() != 0 && !"action".equals(key) && !"requestURL".equals(key)){
+			if(value != null && value.trim().length() != 0 && !"action".equals(key) 
+					&& !"requestURL".equals(key) && !"edit_giftd_no".equals(key)
+					&& !"whichPage".equals(key)){
 				String aCondition = get_aCondition_For_Oracle(key, value.trim());
 				if (count++ == 0)
 					whereCondition.append(" where " + aCondition);

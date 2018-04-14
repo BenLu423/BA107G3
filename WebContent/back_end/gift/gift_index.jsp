@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ page autoFlush="true" buffer="1024kb"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.gift.model.*" %>
@@ -74,15 +76,19 @@
 				<jsp:include page="gift_listEdit.jsp"></jsp:include>
 				</c:if>
 				<hr style="width: 100%; height: 2px; background-color: black; margin: 10px 0px 0px 0px;">
+				<c:if test="${gifts==null}">
+        			<jsp:forward page="/gift/gift.do">
+        				<jsp:param name="action" value="searchGifts" />
+        				<jsp:param name="requestURL" value="<%=request.getServletPath()%>" />
+        			</jsp:forward>
+				</c:if>
 				<jsp:include page="gift_list.jsp"></jsp:include>
-				目前筆數:${gifts.size()}
-				修改筆數:${giftEdits.size()}
     		</div>
 		</div>	
 		</div>							
 	</div>
 	<div class="col-xs-12 col-sm-1">
-		<a href="<%=request.getContextPath()%>/gift/gift.do?action=gift_add&requestURL=<%=request.getServletPath()%>">
+		<a href="<%=request.getContextPath()%>/gift/gift.do?action=gift_add">
 			<img src="<%=request.getContextPath()%>/back_end/res/img/gift/addPage.ico" alt="Add" id="addPage">
 		</a>
 	</div>
