@@ -109,7 +109,8 @@
 	transition:0.5s all;
 }
 
-.col-xs-12.col-sm-1.gift-side{
+.col-xs-12.col-sm-1.gift-side,
+.col-xs-12.col-sm-1.gift-side2{
 	height:555px;
 }
 

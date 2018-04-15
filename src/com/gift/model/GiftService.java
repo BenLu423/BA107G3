@@ -76,6 +76,10 @@ public class GiftService {
 		dao.update(giftVO, giftLabelDetailList);
 	}
 
+	public void updateStatus(String gift_no, String gift_is_on) {
+		dao.updateStatus(gift_no, gift_is_on);
+	}
+	
 	public void updateGiftTrack(String gift_no, Integer gift_track_qty, Connection con) {
 		dao.updateTrackQty(gift_no, gift_track_qty, con);
 	}

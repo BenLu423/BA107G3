@@ -14,12 +14,12 @@
 <title>禮物商城</title>
 </head>
 <body>
-<div class="col-xs-12 col-sm-12">
+<div class="col-xs-12 col-sm-12 gift-div">
 	<div class="row">
 	<c:forEach var="discount" items="${giftDiscountSvc.all}" varStatus="status">
-      	<c:if test="${(status.count)%5 == 1}">
-       	<div class="col-xs-12 col-sm-1 gift-side"></div>
-      	</c:if>
+<%--       	<c:if test="${(status.count)%5 == 1}"> --%>
+<!--        	<div class="col-xs-12 col-sm-1 gift-side"></div> -->
+<%--       	</c:if> --%>
 		<div class="col-xs-12 col-sm-2 gift-side">
 			<div class="gift-item">
 				<div class="item-img">
@@ -56,9 +56,9 @@
 				</div>
         	</div>
 		</div>
-		<c:if test="${(status.count)%5 == 0}">
-       	<div class="col-xs-12 col-sm-1 gift-side"></div>
-      	</c:if>
+<%-- 		<c:if test="${(status.count)%5 == 0}"> --%>
+<!--        	<div class="col-xs-12 col-sm-1 gift-side"></div> -->
+<%--       	</c:if> --%>
     </c:forEach>
     <div class="col-xs-12 col-sm-12">
 	</div> 
@@ -67,7 +67,110 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function() {
-	$('.addToCart').click(function(){
+	//gs : giftSatus
+    connectgs();
+    
+	function connectgs() {
+		var gsPoint = "/GiftStatusServer";
+	    var host = window.location.host;
+	    var path = window.location.pathname;
+	    var webCtx = path.substring(0, path.indexOf('/', 1));
+	    var gsendPointURL = "ws://" + window.location.host + webCtx + gsPoint;
+		
+	    console.log("connect ws:giftStatus");
+		// 建立 websocket 物件
+		gsWebSocket = new WebSocket(gsendPointURL);
+		
+		gsWebSocket.onopen = function(event) {
+			console.log("gsWebSocket 成功連線");
+		};
+
+		gsWebSocket.onmessage = function(event) {
+	        var jsonObj = JSON.parse(event.data);
+	        var giftVO = jsonObj[0];
+	        var giftLabelList = jsonObj[1];
+	        var giftDiscountVO = jsonObj[2];
+	        var allGift = $('div.col-xs-12.col-sm-2.gift-side');
+	        
+	        if(giftVO.gift_is_on == "上架中"){
+	        	var isExists = "no";
+	        	allGift.find('div:eq(4) input[name=gift_no]').each(function (index) {
+	        		var gift_no = $(this)[0].value;
+	        		if(gift_no == giftVO.gift_no){
+	        			isExists= "yes";
+	        			return;
+	        		}
+	        	});
+				if(isExists == "yes")
+					return;
+	        	//複製禮物樣板與修改資訊
+				var clone = allGift.clone()[0];
+				
+				//修改圖片
+				$(clone).find('div.item-img img').attr('src','${pageContext.request.contextPath}/DBGifReader4?table=GIFT&gift_no='+giftVO.gift_no);
+				//修改折扣數
+				if(giftDiscountVO != null){
+					$(clone).find('div.item-img div.gift-discount')[0].innerText = giftDiscountVO.giftd_percent + "折";
+				}
+				//修改標籤
+				var labels = "";
+				for(var i=0; i<giftLabelList.length; i++){
+					labels += '<p>' + giftLabelList[i].giftl_name + '</p>'; 
+				}
+				$(clone).find('div.item-img div.gift-labels')[0].innerHTML = labels;
+				//修改名稱
+				$(clone).find('div:eq(4) h3')[0].innerText = giftVO.gift_name;
+				$(clone).find('div:eq(4) input[name=gift_no]')[0].value = giftVO.gift_no;
+				//修改內容
+				var cnt = giftVO.gift_cnt;
+				var length = cnt.length>=35 ? 35 : cnt.length;
+				$(clone).find('div:eq(4) p.JQellipsis')[0].innerText = cnt.substring(0,length-1) + "...";
+				$(clone).find('div:eq(4) p.JQellipsis').attr('title',cnt);
+				//修改價格
+				if(giftDiscountVO != null){
+					var price = parseInt(giftVO.gift_price) * parseFloat(giftDiscountVO.giftd_percent);
+					$(clone).find('div:eq(4) p:eq(1) span:eq(0)')[0].innerText = "$"+ parseInt(price);
+					$(clone).find('div:eq(4) p:eq(1) span:eq(1)')[0].innerHTML = "<s>$"+ giftVO.gift_price + "</s>";
+				}else{
+					$(clone).find('div:eq(4) p:eq(1) span')[0].innerText = '$' + giftVO.gift_price;
+				}
+				//修改可選擇數量
+				var optionValue = "";
+				var count = 10;
+				if(giftDiscountVO != null){
+					count = parseInt(giftDiscountVO.giftd_amount);
+				}
+				for(var i=1; i<=count; i++){
+					optionValue += "<option value="+i+">"+i+"</option>";
+				}
+				$(clone).find('div:eq(4) select')[0].innerHTML = optionValue;
+				
+				//顯示在頁面上
+				var clone2 = $(clone).clone()[0];
+				if(giftDiscountVO != null){
+					$('div.col-xs-12.col-sm-12.gift-div:eq(0)').find(allGift)[0].before(clone2);
+				}
+
+	        	$('div.col-xs-12.col-sm-12.gift-div:eq(1)').find(allGift)[0].before(clone);
+				
+				console.log("gsWebSocket上架禮物　:" + giftVO.gift_no);
+	        }//end if. [gift_is_on=="上架中"]
+	        else if(giftVO.gift_is_on == "已下架"){
+	        	allGift.find('div:eq(4) input[name=gift_no]').each(function (index) {
+	        		var gift_no = $(this)[0].value;
+	        		if(gift_no == giftVO.gift_no){
+	        			$(this).parents('div.col-xs-12.col-sm-2.gift-side').remove();
+	        		}
+	        	});
+	        }//end if. [gift_is_on=="已下架"]
+		};
+
+		gsWebSocket.onclose = function(event) {
+			console.log("gsWebSocket 已離線");
+		};
+	}
+	
+	$('body').on('click', '.addToCart',function() {
 		var addGift = $(this).parent('div').children().serializeArray();
 		$.ajax({
 			  type: 'POST',
@@ -97,7 +200,10 @@ $(document).ready(function() {
 			  error:(function() { alert("second error"); })
 			}); 
 	});
-
+});
+$(window).on('beforeunload',function(){
+	console.log("disconnect ws:giftStatus");
+	gsWebSocket.close();
 });
 </script>
 </html>

@@ -8,6 +8,7 @@ import com.giftLabelDetail.model.GiftLabelDetailVO;
 public interface GiftDAO_interface {
 	public void insert(GiftVO giftVO, List<GiftLabelDetailVO> giftLabelDetailList);
 	public void update(GiftVO giftVO, List<GiftLabelDetailVO> giftLabelDetailList);
+	public void updateStatus(String gift_no, String gift_is_on);
 	public void updateTrackQty(String gift_no, Integer gift_track_qty, Connection con);
 	public void updateBuyQty(GiftVO giftVO, Integer gift_buy_qty, Connection con);
 	public void delete(String gift_no);

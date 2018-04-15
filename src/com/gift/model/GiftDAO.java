@@ -26,6 +26,7 @@ public class GiftDAO implements GiftDAO_interface{
 	
 	private static final String INSERT_STMT = "INSERT INTO GIFT(GIFT_NO,GIFT_NAME,GIFT_CNT,GIFT_PRICE,GIFT_PIC) VALUES('G'||LPAD(to_char(GIFT_SEQ.NEXTVAL),3,'0'), ?, ?, ?, ?)";
 	private static final String UPDATE_STMT = "UPDATE GIFT SET GIFT_NAME=?, GIFT_CNT=?, GIFT_PRICE=?, GIFT_PIC=?, GIFT_IS_ON=?, GIFT_TRACK_QTY=?, GIFT_BUY_QTY=? WHERE GIFT_NO=?";
+	private static final String UPDATE_STATUS_STMT = "UPDATE GIFT SET GIFT_IS_ON=? WHERE GIFT_NO=?";
 	private static final String UPDATE_TRACK_QTY_STMT = "UPDATE GIFT SET GIFT_TRACK_QTY=? WHERE GIFT_NO=?";
 	private static final String UPDATE_BUY_QTY_STMT = "UPDATE GIFT SET GIFT_BUY_QTY=? WHERE GIFT_NO=?";
 	private static final String DELETE_STMT = "DELETE FROM GIFT WHERE GIFT_NO=?";
@@ -234,6 +235,38 @@ public class GiftDAO implements GiftDAO_interface{
 					e.printStackTrace(System.err);
 				}
 			}			
+		}
+	}
+
+	@Override
+	public void updateStatus(String gift_no, String gift_is_on) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_STATUS_STMT);
+			pstmt.setString(1, gift_is_on);
+			pstmt.setString(2, gift_no);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally{
+			if(pstmt != null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			
 		}
 	}
 
