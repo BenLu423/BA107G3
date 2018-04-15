@@ -308,7 +308,9 @@ td.giftd-end p,
 td.giftd-time p{
 	font-size: 18px;
 }
-
+td.giftd-time div{
+	font-size: 20px;
+}
 td.giftd-pic{
 	width: 20%;
 }

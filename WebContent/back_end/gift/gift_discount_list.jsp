@@ -4,11 +4,15 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="giftDiscount" class="com.giftDiscount.model.GiftDiscountService" scope="page"/>
+<c:set var = "now" value = "<%= new java.util.Date()%>" />
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>後端禮物管理</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/css/gift_index.css"> 
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/css/jquery.countdown.css"> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/countdown-2.2.0/jquery.countdown.js"></script> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/countdown-2.2.0/jquery.plugin.js"></script> 
 </head>
 <body>
 	<div class="table-container giftAll">
@@ -64,10 +68,18 @@
 							<p>${gift.key.giftd_amount}</p>
 						</div>
 					</td>
-					<td class="time">
-						<div>
-							<p></p>
-						</div>
+					<td class="giftd-time" style="text-align:center;">
+						<c:choose>
+							<c:when test='${gift.key.giftd_start > now}'>
+								<div style="color:green;">尚未開始</div>
+							</c:when>
+							<c:when test='${gift.key.giftd_end < now}'>
+								<div style="color:#BBB;">已結束</div>
+							</c:when>
+							<c:otherwise>
+								<div style="color:red;" data-countdown="${gift.key.giftd_end}"></div>
+							</c:otherwise>
+						</c:choose>
 					</td>					
 				</tr>
 				</c:forEach>
@@ -79,4 +91,17 @@
 		
 	</div>
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('[data-countdown]').each(function() {
+		  var $this = $(this), finalDate = $(this).data('countdown');
+		  $this.countdown(finalDate, function(event) {
+		    $this.html(event.strftime('%D days %H:%M:%S'));
+		  }).on('finish.countdown', function() {
+			  $(this).css('color','#BBB');
+			  $(this)[0].innerText = "已結束";
+		  });
+	});
+});
+</script>
 </html>

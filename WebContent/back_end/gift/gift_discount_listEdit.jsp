@@ -111,6 +111,7 @@ $(function(){
 	  format:'Y-m-d H:i',
 	  onShow:function(){
 	   this.setOptions({
+		minDate:new Date(),  
 	    maxDate:$('#end_dateTime').val()?$('#end_dateTime').val():false
 	   })
 	  },

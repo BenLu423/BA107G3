@@ -86,7 +86,6 @@ public class GiftOrderDetailVO implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((gift_no == null) ? 0 : gift_no.hashCode());
-		result = prime * result + ((giftd_no == null) ? 0 : giftd_no.hashCode());
 		result = prime * result + ((gifto_no == null) ? 0 : gifto_no.hashCode());
 		result = prime * result + ((giftod_no == null) ? 0 : giftod_no.hashCode());
 		return result;
@@ -105,11 +104,6 @@ public class GiftOrderDetailVO implements Serializable {
 			if (other.gift_no != null)
 				return false;
 		} else if (!gift_no.equals(other.gift_no))
-			return false;
-		if (giftd_no == null) {
-			if (other.giftd_no != null)
-				return false;
-		} else if (!giftd_no.equals(other.giftd_no))
 			return false;
 		if (gifto_no == null) {
 			if (other.gifto_no != null)

@@ -10,6 +10,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/gift.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/css/jquery.countdown.css"> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/countdown-2.2.0/jquery.countdown.js"></script> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/countdown-2.2.0/jquery.plugin.js"></script> 
 <%-- <script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/gift_list.js"></script> --%>
 <title>禮物商城</title>
 </head>
@@ -43,11 +46,11 @@
 						<span>$<fmt:formatNumber type="number" value="${giftD.gift_price*discount.giftd_percent}" maxFractionDigits="0"/></span>　
 						<span><s>$${giftD.gift_price}</s></span>
 					</p>
+					<div style="color:red;text-align:center;font-size:20px;" data-countdown="${discount.giftd_end}"></div>
 					<button type="button" style="margin-right: 0px;">FOLLOW</button>
 					<button type="button" class="addToCart" style="margin: 0px;">ADD TO CART</button>
 					<select name="giftod_amount" style="height: 30px;width: 45px;">
 						<c:forEach var="count" begin="1" end="${giftSvc.getAmount(giftD.gift_no)}" step="1">
-<%-- 						<c:forEach var="count" begin="1" end="${giftSvc.getAmount(giftD.gift_no)}" step="1"> --%>
 							<option value="${count}">${count}</option>
 						</c:forEach>
 					</select>  
@@ -65,6 +68,24 @@
 	</div>
 </div> 		
 </body>
+<style>
+.blink {
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+    font-weight: 700;
+}
+@keyframes blink {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
 	//gs : giftSatus
@@ -126,14 +147,19 @@ $(document).ready(function() {
 				var length = cnt.length>=35 ? 35 : cnt.length;
 				$(clone).find('div:eq(4) p.JQellipsis')[0].innerText = cnt.substring(0,length-1) + "...";
 				$(clone).find('div:eq(4) p.JQellipsis').attr('title',cnt);
-				//修改價格
 				if(giftDiscountVO != null){
 					var price = parseInt(giftVO.gift_price) * parseFloat(giftDiscountVO.giftd_percent);
 					$(clone).find('div:eq(4) p:eq(1) span:eq(0)')[0].innerText = "$"+ parseInt(price);
 					$(clone).find('div:eq(4) p:eq(1) span:eq(1)')[0].innerHTML = "<s>$"+ giftVO.gift_price + "</s>";
 				}else{
 					$(clone).find('div:eq(4) p:eq(1) span')[0].innerText = '$' + giftVO.gift_price;
+					$(clone).find('div:eq(4) p:eq(1) span:eq(1)')[0].innerHTML = "<s></s>";
 				}
+				//修改價格
+				//修改倒數計時
+				$($(clone).find('div:eq(4) div:eq(0)')[0]).css('color','#FFF500');
+				$($(clone).find('div:eq(4) div:eq(0)')[0])[0].innerText = "最新上架商品";
+				$($(clone).find('div:eq(4) div:eq(0)')[0]).addClass('blink');
 				//修改可選擇數量
 				var optionValue = "";
 				var count = 10;
@@ -199,6 +225,14 @@ $(document).ready(function() {
 			  }),
 			  error:(function() { alert("second error"); })
 			}); 
+	});
+	$('[data-countdown]').each(function() {
+		  var $this = $(this), finalDate = $(this).data('countdown');
+		  $this.countdown(finalDate, function(event) {
+		    $this.html('剩餘 ' + event.strftime('%D days %H:%M:%S'));
+		  }).on('finish.countdown', function() {
+			  $(this)[0].innerText = "";
+		  });
 	});
 });
 $(window).on('beforeunload',function(){
