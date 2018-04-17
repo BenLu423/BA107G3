@@ -203,6 +203,10 @@ $(document).ready(function() {
 	}
 	
 	$('body').on('click', '.addToCart',function() {
+		var img = $(this).parents('div[class=gift-item]').find('div.item-img img').clone();
+		$(img).css('width','100px').css('height','100px').css('border-radius','50%').css('border','2px solid black');
+		var oriPosition = $(this).offset();
+		console.log($(this));
 		var addGift = $(this).parent('div').children().serializeArray();
 		$.ajax({
 			type: 'POST',
@@ -236,6 +240,20 @@ $(document).ready(function() {
 						$('#myCart').find('ul li:eq('+position+') a span:eq(1)')[0].innerHTML = json.gift_name+"¡@"+json.giftod_amount+"­Ó";
 					}
 					$('#myCart').children('ul').children('li:contains("total")')[0].innerText = 'total: '+json.orderMoney;
+					var cart = $('#myCart').offset();
+					flyer = $(img).addClass('u-flyer');
+					flyer.fly({
+					    start: {
+					        left: oriPosition.left-$('html').scrollLeft(),
+					        top: oriPosition.top-$('html').scrollTop()
+					    },
+					    end: {
+					        left: cart.left-$('html').scrollLeft(),
+					        top: cart.top-$('html').scrollTop(),
+					        width: 0,
+					        height: 0
+					    }
+					});
 				}//end success
 				else if(json.status == 'failure'){
 					alert("GGWP");
