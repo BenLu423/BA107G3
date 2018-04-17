@@ -12,7 +12,10 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/gift.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/css/jquery.countdown.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/countdown-2.2.0/jquery.countdown.js"></script> 
-<script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/countdown-2.2.0/jquery.plugin.js"></script> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/back_end/js/countdown-2.2.0/jquery.plugin.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/fly/fly.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/fly/requestAnimationFrame.js"></script>
+ 
 <%-- <script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/gift_list.js"></script> --%>
 <title>Â§ª«°Ó«°</title>
 </head>
