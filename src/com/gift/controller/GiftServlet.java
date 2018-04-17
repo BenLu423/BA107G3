@@ -13,8 +13,10 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.gift.model.*;
+import com.gift.ws.GiftStatusWS;
 import com.giftLabel.model.*;
 import com.giftLabelDetail.model.*;
+import com.google.gson.Gson;
 
 @MultipartConfig
 public class GiftServlet extends HttpServlet {
@@ -42,7 +44,6 @@ public class GiftServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
 		req.setCharacterEncoding("BIG5");
 		String action = req.getParameter("action");
 System.out.println("Gift action: " + action);		
@@ -460,6 +461,38 @@ System.out.println("前端顯示爆炸啦!!!");
 			show(req,giftSvc);
 			String indexPage = req.getContextPath() + "/back_end/gift/gift_index.jsp";
 			res.sendRedirect(indexPage);
+		}
+		
+		//來自後台gift_list.jsp的修改上架下
+		if("updateStatus".equals(action)){	
+			String gift_no = req.getParameter("gift_no");
+			res.setContentType("application/json;charset=UTF-8");
+			PrintWriter out = res.getWriter();			
+			String gift_is_on_Eng = req.getParameter("gift_is_on");
+			String gift_is_on = null;
+			if("never".equals(gift_is_on_Eng)){
+				gift_is_on = "尚未上架";
+			}else if("added".equals(gift_is_on_Eng)){
+				gift_is_on = "上架中";
+			}else if("off".equals(gift_is_on_Eng)){
+				gift_is_on = "已下架";
+			}
+			Map<String,String> map = new HashMap<>();
+			//更新[禮物VO的狀態]
+			GiftService giftSvc = new GiftService();
+			giftSvc.updateStatus(gift_no, gift_is_on);
+			
+			GiftStatusWS giftStatusWS = new GiftStatusWS();
+			if("added".equals(gift_is_on_Eng)){
+				giftStatusWS.broadcast(gift_no, "insertGift");
+			}else if("off".equals(gift_is_on_Eng)){
+				giftStatusWS.broadcast(gift_no, "deleteGift");				
+			}
+			Gson gson = new Gson();
+			map.put("status", "success");
+			map.put("gift_no", gift_no);
+			map.put("gift_is_on", gift_is_on);
+			out.print(gson.toJson(map));
 		}
 	}
 

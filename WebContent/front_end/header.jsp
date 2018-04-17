@@ -98,7 +98,9 @@
                                  <c:set var="gift" value="${giftSvc.getOneGift(detail.key.gift_no)}" scope="page"/>
                                  <li>
 	                                 <a href="#">
-		                                 <img style="height:30px;" src="<%=request.getContextPath()%>/DBGifReader4?table=GIFT&gift_no=${gift.gift_no}">
+		                                 <span>
+			                                 <img style="height:30px;" src="<%=request.getContextPath()%>/DBGifReader4?table=GIFT&gift_no=${gift.gift_no}">
+		                                 </span>
 		                                 <span>¡@${gift.gift_name}¡@${detail.key.giftod_amount}­Ó</span>
 	                                 </a>
                                  </li>

@@ -133,40 +133,40 @@
 	修改筆數:${giftEdits.size()}
 </body>
 <script type="text/javascript">
-$( document ).ready(function() {
-	//gs : giftSatus
-    connectgs();
+// $( document ).ready(function() {
+//	//gs : giftSatus
+//     connectgs();
     
-	function connectgs() {
-		var gsPoint = "/GiftStatusServer";
-	    var host = window.location.host;
-	    var path = window.location.pathname;
-	    var webCtx = path.substring(0, path.indexOf('/', 1));
-	    var gsendPointURL = "ws://" + window.location.host + webCtx + gsPoint;
+// 	function connectgs() {
+// 		var gsPoint = "/GiftStatusServer";
+// 	    var host = window.location.host;
+// 	    var path = window.location.pathname;
+// 	    var webCtx = path.substring(0, path.indexOf('/', 1));
+// 	    var gsendPointURL = "ws://" + window.location.host + webCtx + gsPoint;
 		
-	    console.log("connect ws:giftStatus");
-		// 建立 websocket 物件
-		gsWebSocket = new WebSocket(gsendPointURL);
+// 	    console.log("connect ws:giftStatus");
+// 		// 建立 websocket 物件
+// 		gsWebSocket = new WebSocket(gsendPointURL);
 		
-		gsWebSocket.onopen = function(event) {
-			console.log("gsWebSocket 成功連線");
-		};
+// 		gsWebSocket.onopen = function(event) {
+// 			console.log("gsWebSocket 成功連線");
+// 		};
 
-		gsWebSocket.onmessage = function(event) {
-	        var jsonObj = JSON.parse(event.data);
-	        console.log("onmessage: " + jsonObj);
-		};
+// 		gsWebSocket.onmessage = function(event) {
+// 	        var jsonObj = JSON.parse(event.data);
+// 	        console.log("onmessage: " + jsonObj);
+// 		};
 
-		gsWebSocket.onclose = function(event) {
-			console.log("gsWebSocket 已離線");
-		};
-	}
+// 		gsWebSocket.onclose = function(event) {
+// 			console.log("gsWebSocket 已離線");
+// 		};
+// 	}
     
-});
-$(window).on('beforeunload',function(){
-	console.log("disconnect ws:giftStatus");
-	gsWebSocket.close();
-});
+// });
+// $(window).on('beforeunload',function(){
+// 	console.log("disconnect ws:giftStatus");
+// 	gsWebSocket.close();
+// });
 
 $('.gift-status button').click(function(){
 	var status = $(this)[0].innerText;
@@ -179,9 +179,32 @@ $('.gift-status button').click(function(){
 			never.remove();
 		}
 	}
+	var statusEng = "";
+	if(status == "尚未上架"){
+		statusEng = "never";
+	}else if(status == "上架中"){
+		statusEng = "added";
+	}else if(status == "已下架"){
+		statusEng = "off";
+	}
 	var obj = $(this).parents('tr').children('td[class=gift-no]').children().serializeArray();
-	obj[obj.length] = {name: "gift_is_on",  value: status};   
-	gsWebSocket.send(JSON.stringify(obj));
+	obj[obj.length] = {name: "gift_is_on",  value: statusEng};   
+	obj[obj.length] = {name: "action",  value: "updateStatus"};
+	obj[obj.length] = {name: "fromJSON",  value: "true"};
+console.log(JSON.stringify(obj));
+// 	gsWebSocket.send(JSON.stringify(obj));
+	$.ajax({
+		  type: 'POST',
+		  url: '${pageContext.request.contextPath}/gift/gift.do',
+		  data: obj,
+		  dataType: 'json',
+		  success: (function(json) {
+			if(json.status == 'success'){
+				console.log("成功修改禮物");
+			}
+		  }),
+		  error:(function() { alert("second error"); })
+	});
 });
 </script>
 </html>

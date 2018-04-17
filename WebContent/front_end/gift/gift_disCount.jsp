@@ -108,12 +108,13 @@ $(document).ready(function() {
 
 		gsWebSocket.onmessage = function(event) {
 	        var jsonObj = JSON.parse(event.data);
-	        var giftVO = jsonObj[0];
-	        var giftLabelList = jsonObj[1];
-	        var giftDiscountVO = jsonObj[2];
+	        var giftAction = jsonObj[0];
+	        var giftVO = jsonObj[1];
+	        var giftLabelList = jsonObj[2];
+	        var giftDiscountVO = jsonObj[3];
 	        var allGift = $('div.col-xs-12.col-sm-2.gift-side');
 	        
-	        if(giftVO.gift_is_on == "上架中"){
+	        if(giftAction.action == "insertGift"){
 	        	var isExists = "no";
 	        	allGift.find('div:eq(4) input[name=gift_no]').each(function (index) {
 	        		var gift_no = $(this)[0].value;
@@ -132,6 +133,8 @@ $(document).ready(function() {
 				//修改折扣數
 				if(giftDiscountVO != null){
 					$(clone).find('div.item-img div.gift-discount')[0].innerText = giftDiscountVO.giftd_percent + "折";
+				}else{
+					$(clone).find('div.item-img div.gift-discount')[0].innerText = "";
 				}
 				//修改標籤
 				var labels = "";
@@ -181,7 +184,7 @@ $(document).ready(function() {
 				
 				console.log("gsWebSocket上架禮物　:" + giftVO.gift_no);
 	        }//end if. [gift_is_on=="上架中"]
-	        else if(giftVO.gift_is_on == "已下架"){
+	        else if(giftAction.action == "deleteGift"){
 	        	allGift.find('div:eq(4) input[name=gift_no]').each(function (index) {
 	        		var gift_no = $(this)[0].value;
 	        		if(gift_no == giftVO.gift_no){
@@ -199,33 +202,48 @@ $(document).ready(function() {
 	$('body').on('click', '.addToCart',function() {
 		var addGift = $(this).parent('div').children().serializeArray();
 		$.ajax({
-			  type: 'POST',
-			  url: '/BA107G3/gift/giftOrder.do',
-			  data: addGift,
-			  dataType: 'json',
-			  success: (function(data) {
-	 			  var contextPath = '${pageContext.request.contextPath}';
-	 			  var servletPath = '${pageContext.request.servletPath}';
-	 			  var tabWho = '${(param.tabWho!=null) ? param.tabWho : "tab1"}';
-	 			  var whichPage = '${param.whichPage}';
-	 			  console.log(contextPath + '/gift/gift.do?action=searchGifts&tabWho='+tabWho+'&requestURL='+servletPath+'&whichPage='+whichPage);
-				  window.location = contextPath + '/gift/gift.do?action=serachFrontGifts&tabWho='+tabWho+'&requestURL='+servletPath+'&whichPage='+whichPage;
-// 				if(data.isExist != 'yes'){
-// 				  $('#cartSum')[0].innerText = parseInt($('#cartSum')[0].innerText) + 1;
-// 			  	}
+			type: 'POST',
+			url: '/BA107G3/gift/giftOrder.do',
+			data: addGift,
+			dataType: 'json',
+			success: (function(json) {
+				if(json.status == 'success'){
+					var isExists = "false";
+			  		var position = "-1";
+					$('#myCart').find('ul li').each(function (index) {
+						var gift_no_HTML = $(this).find('a span:eq(0) img');
+						if(gift_no_HTML.length != 0){
+							var str = gift_no_HTML.attr('src');
+							var len = str.length;
+							var no = str.substring(len-4,len);
+							if(no == json.gift_no){
+							  	isExists = "true";
+							  	position = index;
+							}
+						}
+					});
+					if(isExists == "false"){
+						var context = "<li><a href='#'>"+
+									  "<span><img style='height:30px;' src=${pageContext.request.contextPath}/DBGifReader4?table=GIFT&gift_no="+json.gift_no+"></span>"+
+						        	  "<span>　 "+json.gift_name+"　"+json.giftod_amount+"個</span>"+
+						        	  "</a></li>";
+						$('#myCart').find('ul li:eq(-3)').before(context);
+						$('#cartSum')[0].innerText = parseInt($('#cartSum')[0].innerText) + 1;
+					}else{
+						$('#myCart').find('ul li:eq('+position+') a span:eq(1)')[0].innerHTML = json.gift_name+"　"+json.giftod_amount+"個";
+					}
+					$('#myCart').children('ul').children('li:contains("total")')[0].innerText = 'total: '+json.orderMoney;
+				}//end success
+				else if(json.status == 'failure'){
+					alert("GGWP");
+				}
 				
-// 				var requestURL = '${pageContext.request.contextPath}';
-// 				var requestURL = '${pageContext.request.contextPath}';
-// 				$('#cartSum').parent().siblings('ul')[0].innerHTML =
-// 				  	'<li><a href="#"><img style="height:30px;" src="'+requestURL+'/DBGifReader4?table=GIFT&gift_no='+data.gift_no+'">'+
-// 				  	'<span>　'+data.gift_name+'　'+data.gift_amount+'個</span></a></li>'+
-// 					$('#cartSum').parent().siblings('ul')[0].innerHTML;
 				
-// 			  	$('#cartSum').parent().siblings('ul').find('li:eq(-2)')[0].innerText = 'total: $888';  
-			  }),
-			  error:(function() { alert("second error"); })
-			}); 
+			}),
+			error:(function() { console.log("second error"); })
+		}); 
 	});
+	
 	$('[data-countdown]').each(function() {
 		  var $this = $(this), finalDate = $(this).data('countdown');
 		  $this.countdown(finalDate, function(event) {

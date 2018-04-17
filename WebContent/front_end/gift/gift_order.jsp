@@ -184,6 +184,7 @@ $('.deleteOrder').click(function(){
 					  detail.remove();
 					  $('#myCart').children('ul').find('span:contains("'+json.gift_name+'")').parent().remove();
 					  $('#myCart').children('ul').children('li:contains("total")')[0].innerText = 'total: '+json.orderMoney;
+					  $('#cartSum')[0].innerText = parseInt($('#cartSum')[0].innerText) - 1;
 					  $('#checkoutMoney').find('p')[0].innerText = json.orderMoney;
 				  }
 // 				  window.location = '${pageContext.request.contextPath}/front_end/gift/gift_order.jsp';

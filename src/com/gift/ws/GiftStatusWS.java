@@ -90,4 +90,38 @@ System.out.println(data);
 		allSessions.remove(userSession);
 		System.out.println(userSession.getId() + "號的gs已離線 : " + Integer.toString(reason.getCloseCode().getCode()));
 	}
+	
+	public void broadcast(String gift_no, String action) {
+		GiftService giftSvc = new GiftService();
+		//取得對應的[禮物VO/禮物標籤VO]與[限時優惠VO←可能為null]
+		Map<GiftVO, List<GiftLabelVO>> gift = giftSvc.getOne(gift_no);
+		GiftDiscountService gdSvc = new GiftDiscountService();
+		GiftDiscountVO giftDiscountVO = gdSvc.getCurrentValidGift(gift_no);
+		
+		//建立一個list來存放[{action},{限時優惠VO},{禮物VO},{List<禮物標籤VO>}]
+		List<Object> list = new ArrayList<Object>();
+		Map<String,String> actionMap = new HashMap<>();
+		actionMap.put("action", action);
+		list.add(actionMap);
+		for(Entry<GiftVO, List<GiftLabelVO>> vo :gift.entrySet()){
+			GiftVO giftVO = vo.getKey();
+			//清除gftVO內的圖片內容，簡化傳遞的資訊
+			giftVO.setGift_pic(null);
+			list.add(giftVO);			
+			List<GiftLabelVO> giftLabelVO = vo.getValue();
+			list.add(giftLabelVO);
+		}
+		if(giftDiscountVO != null)
+			list.add(giftDiscountVO);
+		
+		//將list轉換成json傳遞出去
+		Type listType = new TypeToken<List<Object>>() {}.getType();
+		Gson gson = new Gson();
+		String data = gson.toJson(list, listType);	
+System.out.println(data);	
+		for (Session session : allSessions) {
+			if (session.isOpen())
+				session.getAsyncRemote().sendText(data);
+		}
+	}
 }
