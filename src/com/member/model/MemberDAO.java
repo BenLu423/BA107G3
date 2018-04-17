@@ -30,6 +30,8 @@ import org.apache.catalina.ssi.ByteArrayServletOutputStream;
 
 import com.giftDiscount.model.GiftDiscountVO;
 
+import oracle.jdbc.proxy.annotation.Pre;
+
 
 
 public class MemberDAO implements MemberDAO_interface{
@@ -53,12 +55,15 @@ public class MemberDAO implements MemberDAO_interface{
 			+ "VALUES ('M'||LPAD(to_char(MEMBER_SEQ.NEXTVAL),3,'0'),? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
 	/*測試處理圖片*/
 	static final String GETPIC = "SELECT MEM_PHOTO FROM MEMBER WHERE MEM_NO = ?";
+	/*修改密碼*/
+	static final String UPDATEPASS = "UPDATE MEMBER SET MEM_PASSWORD = ? WHERE MEM_NO = ?";
 	/*修改自我介紹*/
 	static final String UPDATEINTRO ="UPDATE MEMBER SET MEM_INTRO = ? WHERE MEM_NO = ?";
 	/*修改會員資料*/
-//	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ?, MEM_WEIGHT = ?, MEM_EMOTION = ?, MEM_CONTACT = ?, MEM_INTEREST = ? WHERE MEM_NO = ?";
-	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ? WHERE MEM_NO = ?";
-
+	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ?, MEM_WEIGHT = ?, MEM_EMOTION = ?, MEM_CONTACT = ?, MEM_INTEREST = ? WHERE MEM_NO = ?";
+//	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ? WHERE MEM_NO = ?";
+	/*新增大頭貼*/
+	static final String INSERTPHOTO = "UPDATE MEMBER SET MEM_PHOTO = ? WHERE MEM_NO = ?";
 	/*基本查詢*/
 	static final String BLURSEARCH = "SELECT * FROM MEMBER WHERE MEM_NAME LIKE ?";
 	
@@ -486,6 +491,31 @@ public class MemberDAO implements MemberDAO_interface{
 		return ismem;
 	}
 	
+	/********會員修改密碼********/
+	public void memUpdatePassword(String mem_password,String mem_no){
+		Connection con = null;
+		PreparedStatement ps = null;
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(UPDATEPASS);
+			ps.setString(1, mem_password);
+			ps.setString(2, mem_no);
+			ps.executeQuery();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}
 	/********修改自我介紹********/
 	public void memIntro(MemberVO member){
 		Connection con = null;
@@ -521,12 +551,12 @@ public class MemberDAO implements MemberDAO_interface{
 			System.out.println("member.getMem_phone() = "+ member.getMem_phone());
 			ps.setString(3, member.getMem_mail());
 			ps.setInt(4, member.getMem_height());
-//			ps.setInt(5, member.getMem_weight());
-//			ps.setString(6, member.getMem_emotion());
-//			ps.setString(7, member.getMem_contact());
-//			ps.setString(8, member.getMem_interest());
-			ps.setString(5, member.getMem_no());
-			System.out.println("member.getMem_no() =" + member.getMem_no());
+			ps.setInt(5, member.getMem_weight());
+			ps.setString(6, member.getMem_emotion());
+			ps.setString(7, member.getMem_contact());
+			ps.setString(8, member.getMem_interest());
+			ps.setString(9, member.getMem_no());
+			System.out.println("member.getMem_interest() =" + member.getMem_interest());
 			ps.executeUpdate();
 			System.out.println("修改成功!");
 		}catch(SQLException e){
@@ -540,10 +570,29 @@ public class MemberDAO implements MemberDAO_interface{
 			}
 		}
 	}
-	
-	
-	
-	
+	/***********上傳大頭貼***********/
+	public void memInsertPic(MemberVO member){
+		Connection con = null;
+		PreparedStatement ps = null;
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(INSERTPHOTO);
+			ps.setBytes(1, member.getMem_photo());
+			ps.setString(2, member.getMem_no());
+			ps.executeUpdate();
+			System.out.println("ok");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(con != null){
+					con.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	/********基本搜尋(模糊查詢)********/
 	public List<MemberVO> blurSearch(String mem_name){
@@ -730,7 +779,6 @@ public class MemberDAO implements MemberDAO_interface{
 	public static String get_WhereCondition(Map<String,String[]> map){
 		Set<String> keys = map.keySet();
 		StringBuffer whereCondition = new StringBuffer();
-		StringBuffer orCondition = new StringBuffer();
 		int count = 0;
 		int mem_emotion_sum = 0;
 		int mem_contact_sum = 0;
@@ -740,11 +788,14 @@ public class MemberDAO implements MemberDAO_interface{
 		int judge_where_contact_key = 0;
 		int c = 2;
 		int d = 2;
+	
 
+		
 		
 		mem_emotion_count = getStateCount(keys, mem_emotion_count,"mem_emotion");
 		mem_contact_count = getStateCount(keys, mem_contact_count,"mem_contact");
 	
+
 		System.out.println("mem_emotion_count = " + mem_emotion_count);
 		System.out.println("mem_contact_count = " + mem_contact_count);
 		
@@ -778,7 +829,7 @@ public class MemberDAO implements MemberDAO_interface{
 						judge_where_contact_key++;
 					}
 				}else if(mem_emotion_sum > 1){						
-						if(c == mem_emotion_count && judge_where_emotion_key == 0){	
+						if(c == mem_emotion_count && judge_where_emotion_key == 0 && mem_emotion_count != 1){	
 							whereCondition.append("OR " + aCondition + ")");
 							c = 2;
 						}else{
@@ -797,8 +848,14 @@ public class MemberDAO implements MemberDAO_interface{
 
 				}else{
 					if(key.length() >= 11){
-							if("mem_emotion".equals(key.substring(0, 11)) || "mem_contact".equals(key.substring(0,11))){
+							if(("mem_emotion".equals(key.substring(0, 11))) && mem_emotion_count > 1){
 								whereCondition.append("AND " + "("+ aCondition);	
+							}else if(("mem_emotion".equals(key.substring(0, 11))) && mem_emotion_count == 1){
+								whereCondition.append("AND " + "("+ aCondition + ")");
+							}else if("mem_contact".equals(key.substring(0,11)) && mem_contact_count > 1){
+								whereCondition.append("AND " + "("+ aCondition);
+							}else if("mem_contact".equals(key.substring(0,11)) && mem_contact_count == 1){
+								whereCondition.append("AND " + "("+ aCondition + ")");
 							}else{
 								whereCondition.append("AND " + aCondition);
 							}

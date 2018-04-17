@@ -1,6 +1,9 @@
 package com.member.controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ import org.apache.catalina.deploy.ContextService;
 
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.sun.xml.internal.stream.buffer.sax.Properties;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class MemberServlet extends HttpServlet {
@@ -81,8 +85,8 @@ public class MemberServlet extends HttpServlet {
 					return;
 				}
 
-		
-				
+				/*拿到個人瀏覽頁面編號*/
+				HttpSession personal_mem_no = req.getSession();
 				/***************得到會員Session資訊**************/
 				HttpSession memSession = req.getSession();
 				Object isNullSession = memSession.getAttribute("memSelf");
@@ -91,6 +95,16 @@ public class MemberServlet extends HttpServlet {
 				if(isNullSession == null){	
 					memSession.setAttribute("memSelf", memSelf);
 					System.out.println("登入:"+memSession.getId());
+				
+				
+					if(personal_mem_no != null && (location.equals(req.getContextPath()+"/front_end/member/personal_page.jsp"))){
+						String str_personal_mem_no = (String)personal_mem_no.getAttribute("personal_mem_no");
+						personal_mem_no.removeAttribute("personal_mem_no");
+						System.out.println(location+"?mem_no="+str_personal_mem_no);
+						res.sendRedirect(location+"?mem_no="+str_personal_mem_no);
+						return;
+					}
+					
 					if(location != null){
 						memSession.removeAttribute("location");
 						res.sendRedirect(location);
@@ -248,9 +262,37 @@ public class MemberServlet extends HttpServlet {
 			}
 			
 		}
-		
-		
-		
+		/**************轉換個人頁面**************/
+			
+			if("selfpage".equals(action)){
+				Map<String,String> myself_page = new HashMap<String,String>();
+					
+				String selfp = req.getParameter("selfp");
+			
+				if("selfintro".equals(selfp)){
+					String selfintro_path = req.getContextPath()+"/front_end/member/member_intro.jsp";
+					myself_page.put(selfp, selfintro_path);	
+				}else if("selfdata".equals(selfp)){
+					String selfintro_path = req.getContextPath()+"/front_end/member/member_modify_page.jsp";
+					myself_page.put(selfp, selfintro_path);	
+				}else if("selfpass".equals(selfp)){
+					String selfintro_path = req.getContextPath()+"/front_end/member/member_modify_password.jsp";
+					myself_page.put(selfp, selfintro_path);
+				}
+
+				Set<String> keys = myself_page.keySet();
+				for(String key : keys){
+					String value = myself_page.get(key);
+					System.out.println("key = " + key);
+					System.out.println("value = " + value);
+				}
+				
+				HttpSession myself_page_path = req.getSession();
+				myself_page_path.setAttribute("myself_page", myself_page);
+				
+				res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+				return;
+			}
 		
 		/****************自我介紹***************/
 		if("getintro_judge".equals(action)){
@@ -263,8 +305,7 @@ public class MemberServlet extends HttpServlet {
 			memvo = (MemberVO) memintro.getAttribute("memSelf");
 			if(mem_intro.trim().length() == 0 || mem_intro == null || memintro == null){
 				System.out.println(mem_intro.isEmpty());
-				String referer = req.getHeader("referer");
-				res.sendRedirect(referer);
+				res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
 				return;
 			}
 			MemberService ms = new MemberService();
@@ -286,29 +327,79 @@ public class MemberServlet extends HttpServlet {
 				return;
 			}
 		}
+		/***************修改密碼***************/
+		if("getmodify_password".equals(action)){
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			MemberService ms = new MemberService();
+			String mem_passwordReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,15}$";
+			String old_pass = req.getParameter("old_pass");
+			String new_pass = req.getParameter("new_pass");
+			String new_pass_s = req.getParameter("new_pass_s");
+			String mem_no = req.getParameter("mem_no");
+			System.out.println("old_pass = " + old_pass);
+			System.out.println("new_pass = " + new_pass);
+			System.out.println("new_pass_s =" + new_pass_s);
+			
+			
+			if(old_pass == null || old_pass.trim().length() == 0){
+				errorMsgs.put("mem_old", "密碼: 請勿空白");
+			}else if(!old_pass.trim().matches(mem_passwordReg)){
+				errorMsgs.put("mem_old", "密碼: 只能是中、英文字母、數字和_ , 且長度必需在2到15之間");
+			}
+			MemberVO memvo = ms.getOneMem(mem_no);
+			if(!(old_pass.equals(memvo.getMem_password()))){
+				errorMsgs.put("mem_old", "密碼: 輸入錯誤");
+			}
+			if(new_pass == null || new_pass.trim().length() == 0){
+				errorMsgs.put("mem_new", "密碼: 請勿空白");
+			}else if(!new_pass.trim().matches(mem_passwordReg)){
+				errorMsgs.put("mem_new", "密碼: 只能是中、英文字母、數字和_ , 且長度必需在2到15之間");
+			}
+			
+			if(!(new_pass.equals(new_pass_s))){
+				errorMsgs.put("mem_new", "密碼:不一致");
+			}	
+			
+			ms.getOneMem(mem_no);
+			if(!(errorMsgs.isEmpty())){
+				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/modify_personal_data_main_page.jsp");
+				rd.forward(req, res);
+				return;
+			}
+		
+			ms.updatePass(new_pass,mem_no);
+			res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
+			return;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		/***************會員修改***************/
 		if("getmodify_data_judge".equals(action)){
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
+			req.setAttribute("errorMsgs", errorMsgs);
 			String mem_nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,15}$";
-			String mem_phoneReg = "[0-9]{9}";
+			String mem_phoneReg = "[0-9]{10}";
 			String mem_mailReg = "^[_a-z0-9-]+([.][_a-z0-9-]+)*@[a-z0-9-]+([.][a-z0-9-]+)*$";
 			try{
 				Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();
 				Set<String> keys = map.keySet();
-				HttpSession memData = req.getSession();
-				MemberVO memvo = (MemberVO)memData.getAttribute("memSelf");
+				HttpSession memSelf = req.getSession();
+				MemberVO memvo = (MemberVO)memSelf.getAttribute("memSelf");
 				MemberService ms = new MemberService();
-				System.out.println(memvo.getMem_no());
-				MemberVO scond_memvo = ms.getOneMem(memvo.getMem_no());
-				
-		
+
 				for(String key : keys){
 					String value = map.get(key)[0];
 			
 					if(value == null || value.trim().length() == 0){
-						System.out.println(key+":" + value);
 						switch(key){
 						case "mem_no" :
 							if(!(value.equals(memvo.getMem_no()))){
@@ -316,61 +407,38 @@ public class MemberServlet extends HttpServlet {
 								return;
 							}
 						case "mem_name" :
-							value = scond_memvo.getMem_name();
-							System.out.println(key+":" + value);
+							errorMsgs.put("mem_name", "請輸入暱稱");
+							System.out.println("test");
 							break;
 						case "mem_phone" :
-							if(scond_memvo.getMem_phone() != null){
-								value = String.valueOf(scond_memvo.getMem_phone());
-								System.out.println(scond_memvo.getMem_phone());
-								System.out.println(key+":" + value);
-							}else{
-								value = "000000000";
-							}
+							errorMsgs.put("mem_phone", "請輸入手機");
 							break;
 						case "mem_mail" :
-							if(scond_memvo.getMem_mail() != null){
-							value = scond_memvo.getMem_mail();
-							System.out.println(key+":" + value);
-							}else{
-								value = "1@gmail.com";
-							}
-							
+							errorMsgs.put("mem_mail", "請輸入信箱");
 							break;
 						case "mem_height" :
-							String height = String.valueOf(scond_memvo.getMem_height());
-							value = height;
-							System.out.println(key+":" + value);
+							errorMsgs.put("mem_height", "請輸入身高");
 							break;
 						case "mem_weight" :
-							String weight = String.valueOf(scond_memvo.getMem_weight());
-							value = weight;
-							System.out.println(key+":" + value);
+							errorMsgs.put("mem_weight", "請輸入體重");
 							break;
 						case "mem_emotion" :
-							value = scond_memvo.getMem_emotion();
-							System.out.println(key+":" + value);
+							errorMsgs.put("mem_emotion", "請輸入感情狀況");
 							break;
 						case "mem_contact" :
-							value = scond_memvo.getMem_contact();
-							System.out.println(key+":" + value);
-							break;
-						case "mem_interest" :
-							value = scond_memvo.getMem_interest();
-							System.out.println(key+":" + value);
+							errorMsgs.put("mem_contact", "請輸入交往關係");
 							break;
 						default:
 							break;
 						}
 					}
-//					System.out.println(map.get(key)[0]);
+
 					if(value != null){
 						if("mem_name".equals(key)){
 							if( !(value.trim().matches(mem_nameReg)))
 								errorMsgs.put("mem_name", "暱稱輸入錯誤");
 						}
 						else if("mem_phone".equals(key)){
-							System.out.println(66666);
 							if(!(value.trim().matches(mem_phoneReg)))
 								errorMsgs.put("mem_phone", "手機格式錯誤");
 							
@@ -424,31 +492,37 @@ public class MemberServlet extends HttpServlet {
 							}
 							
 						}
-						if(!(errorMsgs.isEmpty())){
-							System.out.println("會員資料修改錯誤");
-							for(int i = 0 ; i < errorMsgs.size(); i++){
-								System.out.println(errorMsgs.keySet());
-								System.out.println(errorMsgs.get(i));
-							}
-							RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/modify_personal_data_main_page.jsp");
-							rd.forward(req, res);
-							return;
-						}
-					}
-							
+					
+					}			
 				}
+					if(!(errorMsgs.isEmpty())){
+						System.out.println("會員資料修改錯誤");
+						for(int i = 0 ; i < errorMsgs.size(); i++){
+							System.out.println(errorMsgs.keySet());
+							System.out.println(errorMsgs.get(i));
+						}
+						RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/modify_personal_data_main_page.jsp");
+						rd.forward(req, res);
+						return;
+					}
 					
 					ms.uodateMember(map);
-			
+					
+						
+				Part part = req.getPart("mem_photo");
+				if(part.getSize() > 0){
+					System.out.println(part.getName());
+					System.out.println(part.getSize());
+					System.out.println(part.getContentType());
+					
+					byte[] pic = uploadPic(part);
+					ms.uploadPic(pic,memvo.getMem_no());
+				}
 				
 				
-				
-				
-//				Part part = req.getPart("mem_photo");
-//				if(part.getSize() != 0){
-//					System.out.println(part.getName());
-//					System.out.println(part.getSize());
-//				}
+				memvo = ms.getOneMem(memvo.getMem_no());
+				memSelf.setAttribute("memSelf", memvo);
+				memSelf.getAttribute("memSelf");
 				
 				System.out.println("success");
 				res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
@@ -460,7 +534,6 @@ public class MemberServlet extends HttpServlet {
 				return;
 			}	
 		}
-			
 	    /***********************************/
 		/*								   */
 		/*								   */
@@ -476,7 +549,6 @@ public class MemberServlet extends HttpServlet {
 		if("blur_search".equals(action)){
 			
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-				req.setAttribute("errorMsgs", errorMsgs);
 			try{
 				String mem_name = req.getParameter("mem_name");
 				if(mem_name == null || mem_name.trim().length() == 0){
@@ -521,6 +593,28 @@ public class MemberServlet extends HttpServlet {
 		
 		
 		
+	}
+		/***************處理圖片***************/
+	public static byte[] uploadPic(Part part){
+		InputStream is = null;
+		byte[] buff=null;
+		try{
+			is = part.getInputStream();
+			buff = new byte[is.available()];
+			is.read(buff);
+			is.close();
+		}catch(IOException e){
+			System.out.println("圖片上傳失敗");
+		}finally{
+			try{
+				if( is != null){
+					is.close();
+				}
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
+		return buff;
 	}
 
 }

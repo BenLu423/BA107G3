@@ -16,6 +16,9 @@ public interface MemberDAO_interface {
 	List<MemberVO> getAll(Map<String,String[]> map);
 	void memIntro(MemberVO member);
 	void memModify(MemberVO member);
+	void memInsertPic(MemberVO member);
+	void memUpdatePassword(String mem_password,String mem_no);
+	
 	
 	//紹永[禮物訂單使用]
 	void updateDeposit(String mem_no, Integer delDeposit, Connection con);

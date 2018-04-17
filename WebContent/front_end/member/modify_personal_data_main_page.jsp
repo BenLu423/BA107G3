@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.member.model.*"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="java.util.Set"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<script src="<%=request.getContextPath()%>/front_end/member/mem_modify_page/ckeditor/ckeditor.js"></script>
+
 <title>Insert title here</title>
 <style type="text/css">
 
@@ -18,23 +21,7 @@
 	<%
 		String mem_no = (String)request.getParameter("mem_no");
 	%>
-
-	<script type="text/javascript">
 	
-		$(document).ready(function(){
-			$("#intro").click(function() {
-				$.ajax({
-					
-					
-				});
-			});
-		});
-			
-	
-	
-	
-	
-	</script>
 	<div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-1"></div>
@@ -55,9 +42,9 @@
                           </div>
                           <div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="panel1">
                             <div class="panel-body">
-                                <div><button type="button" id="pass" class="btn btn-default" onclick="pass()">修改密碼</button></div><br>
-                                <div><button type="button" id="data" class="btn btn-default" onclick="data()">個人資料</button></div><br>
-                                <div><button type="button" id="intro" class="btn btn-default" >自我介紹</button></div><br>
+                                <div><a href="<%=request.getContextPath()%>/member/mem.do?action=selfpage&selfp=selfpass">修改密碼</a></div><br>
+                                <div><a href="<%=request.getContextPath()%>/member/mem.do?action=selfpage&selfp=selfdata">個人資料</a></div><br>
+                                <div><a href="<%=request.getContextPath()%>/member/mem.do?action=selfpage&selfp=selfintro">自我介紹</a></div><br>
                             </div>
                           </div>
                         </div>
@@ -98,30 +85,36 @@
                       <div class="col-xs-12 col-sm-1"></div>
                       
                       	<div class="col-xs-12 col-sm-10" id="modify-area">
-<%--                    	
-                      	<!-- 修改密碼-->
-                      		<div id="modify_pass_area" style="display: none">
-        				 	<p>pass</p>
-        				 	</div>
-                      	<!-- 個人資料-->
-        				 	<div id="modify_data_area" style="display: none">
-        				 	<p>modify</p>
-        				 	</div>
- 						<!-- 自我介紹-->
-                          <div id="intro_area" style="display: none">
-                           <form name = "form" action="/BA107G3/member/mem.do" method="post">
-					        	<textarea name="mem_intro" id="content" rows="10" cols="80"></textarea>
-					            <div>
-					            <input type = 'submit' value = '提交' class="btn btn-info">
-								</div>
-								<div>
-								<input type="hidden" name="action" value = "getintro_judge">
-								</div>
-					        </form>
-                          </div>
---%>                      
+                   	
+               			<%--------------------------------需要改動路徑變BA107G3時--------------------------------%>
+  
+        				 
+        				<%--chang_page = value.substring(value.indexOf("k")+1);修改value.indexOf值 --%>
+ 						<% 
+ 							String chang_page = "";
+ 							Map<String,String> myself_page = (Map<String,String>)session.getAttribute("myself_page");
+ 							if(myself_page != null){
+ 								Set<String> keys = myself_page.keySet();
+ 								for(String key : keys){
+ 									String value = myself_page.get(key);
+ 									if(key.equals("selfintro")){
+ 										chang_page = value.substring(value.indexOf("k")+1);
+ 									}else if(key.equals("selfdata")){
+ 										chang_page = value.substring(value.indexOf("k")+1);
+ 									}else if(key.equals("selfpass")){
+ 										chang_page = value.substring(value.indexOf("k")+1);
+ 									}
+ 								}
+ 						%>
+ 					
+ 					
+ 						<%} %>
+ 						<%if(myself_page != null){ %>
+                 		<jsp:include page="<%=chang_page%>"></jsp:include>
+                 		<%}%>
                      	 </div>
-                      <div class="col-xs-12 col-sm-1"></div>
+                     <%---------------------------------------------------------------------------------%> 
+                      <div class="col-xs-12 col-sm-2"></div>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-1"></div>   
@@ -133,62 +126,57 @@
 	<!-- FOOTER -->
 	<jsp:include page="/front_end/footer.jsp"></jsp:include>
 	<!-- FOOTER END-->
-<%-- 
-	<script type="text/javascript">
+
 	
-		<!--個人資料-->
-		function pass(){
-			var pass = document.getElementById('pass');
-			var intro_area = document.getElementById("intro_area");
-        	var modify_data_area = document.getElementById('modify_data_area');
-    		var modify_pass_area = document.getElementById('modify_pass_area');
-    			pass.onclick = function(){
-    				if(modify_pass_area.style.display == "none"){
-    					intro_area.style.display = "none";
-    					modify_data_area.style.display = "none";
-    					modify_pass_area.style.display = "block";
-    				}	
-    			}
-		}
-	
-	
-	
-		<!--自我介紹-->
-        function intro() {
-        	var intro = document.getElementById('intro');
-			var intro_area = document.getElementById("intro_area");
-        	var modify_data_area = document.getElementById('modify_data_area');
-    		var modify_pass_area = document.getElementById('modify_pass_area');
-				intro.onclick = function(){	
-				if(intro_area.style.display == "none"){
-					modify_pass_area.style.display="none";
-					modify_data_area.style.display="none";
-					intro_area.style.display="block";
-				}
-			}
-		}
-        <!--個人資料-->
-        function data() {
-        	var data = document.getElementById('data');
-        	var intro_area = document.getElementById("intro_area");
-			var modify_data_area = document.getElementById('modify_data_area');
-			var modify_pass_area = document.getElementById('modify_pass_area');
-        			data.onclick = function(){
-					if(modify_data_area.style.display == "none"){
-						intro_area.style.display="none";
-						modify_pass_area.style.display = "none";
-						modify_data_area.style.display="block";
-					}
-        		
-			}
-		}
-        
-        
-     </script>
---%>
-	<script>
-		CKEDITOR.replace( 'content', {});
-	</script>
+	  <script type="text/javascript">
+    
+	  
+
+		   
+			  $(function (){		  
+				    function format_float(num, pos)
+				    {
+				        var size = Math.pow(10, pos);
+				        return Math.round(num * size) / size;
+				    }
+				 
+				    function preview(input) {
+				 
+				        if (input.files && input.files[0]) {
+				            var reader = new FileReader();
+				            
+				            reader.onload = function (e) {
+				                $('.preview').attr('src', e.target.result);
+				            }
+				            reader.readAsDataURL(input.files[0]);
+				        }
+				    }
+				    $("body").on("change", ".mem_photo", function (){
+				        preview(this);
+				    })    
+				})
+
+
+				       window.onload = function(){
+              var height = document.getElementById("height");
+                  for(var i = 120; i <= 220; i++){
+                    var text = i + "公分";
+                    var value = i;
+                    var opt = new Option(text,value);
+                    height.add(opt);
+                  }
+              var weight = document.getElementById("weight");
+                for(var i = 30; i <= 220; i++){
+                  var text = i + "公斤";
+                  var value = i;
+                  var opt = new Option(text,value);
+                  weight.add(opt);
+                }              
+            }
+	  
+   
+    
+    </script>    
 
 </body>
 </html>

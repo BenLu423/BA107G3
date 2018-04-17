@@ -51,6 +51,11 @@ public class MemberService {
 		return memdao.getOne(mem_no);
 	}
 	
+	/*修改密碼*/
+	public void updatePass(String mem_password,String mem_no){
+		memdao.memUpdatePassword(mem_password, mem_no);
+	}
+	/*自我介紹*/
 	public MemberVO updateIntro(String mem_intro, String mem_no){
 		MemberVO memvo = new MemberVO();
 		memvo.setMem_intro(mem_intro);
@@ -58,27 +63,22 @@ public class MemberService {
 		memdao.memIntro(memvo);
 		return memvo; 
 	}
-	
+	/*會員修改*/
 	public void uodateMember(Map<String,String[]> map){
 		Set<String> keys = map.keySet();
 		MemberVO memvo = new MemberVO();
+		StringBuffer sb = new StringBuffer();
 		for(String key : keys){
-			String value = map.get(key)[0];
-			String interest = null;
-//			System.out.println(key+":"+value);
+			String value = map.get(key)[0];	
 				switch (key) {
 					case "mem_no" :
 						memvo.setMem_no(value);
-						System.out.println(memvo.getMem_no());
 						break;
 					case "mem_name" :
 						memvo.setMem_name(value);
-						System.out.println(memvo.getMem_name());
 						break;
 					case "mem_phone" :
 						memvo.setMem_phone(value);
-						System.out.println(memvo.getMem_phone());
-						System.out.println(123);
 						break;
 					case "mem_mail" :
 						memvo.setMem_mail(value);
@@ -87,38 +87,48 @@ public class MemberService {
 					case "mem_height" :
 						Integer height = Integer.valueOf(value);
 						memvo.setMem_height(height);
-						System.out.println(memvo.getMem_height());
 						break;
 					case "mem_weight" :
 						Integer weight = Integer.valueOf(value);
 						memvo.setMem_weight(weight);
-						System.out.println(memvo.getMem_weight());
 						break;
 					case "mem_emotion" :
 						memvo.setMem_emotion(value);
-						System.out.println(memvo.getMem_emotion());
 						break;
 					case "mem_contact" :
 						memvo.setMem_contact(value);
-						System.out.println(memvo.getMem_contact());
 						break;
-					case "mem_interest" :	
-						interest = "";
-						memvo.setMem_interest(value);
+					case "mem_interest1":
+					case "mem_interest2":
+					case "mem_interest3":
+					case "mem_interest4":
+					case "mem_interest5":
+					case "mem_interest6":
+					case "mem_interest7":
+					case "mem_interest8":
+						sb.append(value + ",");
+						memvo.setMem_interest(sb.toString());
 						System.out.println(memvo.getMem_interest());
 						break;	
 					default:
 						break;
-					}	
+					}
 		}
 		memdao.memModify(memvo);
 	}
+	/*上傳大頭貼*/
+	public void uploadPic(byte[] mem_photo,String mem_no){
+		MemberVO memvo = new MemberVO();
+		memvo.setMem_photo(mem_photo);
+		memvo.setMem_no(mem_no);
+		memdao.memInsertPic(memvo);
+	}
 	
-	
+	/*基本查詢*/
 	public List<MemberVO> blur(String mem_name){
 		return memdao.blurSearch(mem_name);
 	}
-	
+	/*進階查詢*/
 	public List<MemberVO> precise(Map<String,String[]> map){
 		return memdao.getAll(map);
 	}

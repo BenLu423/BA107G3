@@ -91,7 +91,7 @@
                           <div class="form-group">
                             <label for="mem_bloodtype">血型:</label> 
                             <select class="" name="mem_bloodtype" id="mem_bloodtype">
-                              <option selected>請選擇:</option>
+                              <option value="" selected>請選擇:</option>
                               <option value="A">A型</option>
                               <option value="B">B型</option>
                               <option value="AB">AB型</option>
@@ -103,7 +103,7 @@
                           <div class="form-group">
                             <label for="mem_county">地區:</label> 
                             <select class="" name="mem_county" id="mem_county">
-                              <option selected>請選擇:</option>
+                              <option value="" selected>請選擇:</option>
                               <option value="基隆市">基隆市</option>
                               <option value="台北市">台北市</option>
                               <option value="新北市">新北市</option>
@@ -130,14 +130,14 @@
                           <div class="form-group">
                             <label for="mem_height">身高:</label> 
                             <select class="" name="mem_height" id="height">
-                              <option selected>請選擇:</option>
+                              <option value="" selected>請選擇:</option>
                             </select>
                           </div>
 
                           <div class="form-group">
                             <label for="mem_weight">體重:</label> 
                             <select class="" name="mem_weight" id="weight">
-                              <option selected>請選擇:</option>
+                              <option value="" selected>請選擇:</option>
                             </select>
                           </div>
 
@@ -145,7 +145,7 @@
                            <div class="form-group">
                             <label for="mem_emotion">感情狀況:</label> 
                             <select class="" name="mem_emotion" id="mem_emotion">
-                              <option selected>請選擇:</option>
+                              <option value="" selected>請選擇:</option>
                               <option value="單身">單身</option>
                               <option value="穩定交往中">穩定交往中</option>
                               <option value="已婚">已婚</option>

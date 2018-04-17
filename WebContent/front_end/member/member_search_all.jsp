@@ -11,27 +11,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>Insert title here</title>
 <!--交友搜尋頁面-->
+<style>
+<!--
+.btn-group .btn{
+height: 34px;
+}
+
+-->
+</style>
 </head>
 <body>
 		
 		
 		
 	
-			<%-- 
-			
-			
-			if((List<MemberVO>) request.getAttribute("getallMemberData") != null){
-				request.getAttribute("getallMemberData");
-			}else{
-				MemberService ms = new MemberService();
-				List<MemberVO> getallMemberData = new ArrayList<MemberVO>();
-				getallMemberData = ms.getallMem();
-				application.setAttribute("getallMemberData", getallMemberData);
-			}
-			--%>
-			
 			<%
-				request.getAttribute("getallMemberData1");
+				MemberService ms = new MemberService();
+				List<MemberVO> getallMember = new ArrayList<MemberVO>();
+				getallMember = ms.getallMem();
+				application.setAttribute("getallMember", getallMember);
 			%>
 			
 	
@@ -43,23 +41,23 @@
 	  <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-1"></div>
-            <div class="col-xs-12 col-sm-10 content">
+            <div class="col-xs-12 col-sm-10 content set-center">
                 <div class="content-top"></div>
                	  <div class="col-xs-12 col-sm-8 col-sm-offset-2 set-login">
                	  <div class="col-xs-12 col-sm-12">
 					        <div class="input-group searchBar" id="adv-search">
 					  
 			                <div class="input-group-btn">
-			                    <div class="btn-group" role="group">
+			                    <div class="btn-group set-search" role="group" style="margin-left:25%">
 			                        <div class="dropdown dropdown-lg">
-			                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+			                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret" height="34px"></span></button>
 			                            <div class="dropdown-menu dropdown-menu-right" role="menu">
 			                            <%--複合查詢--%>
 			                            <form class="form-horizontal" role="form" action="<%=request.getContextPath()%>/member/mem.do" method="post">
 			                                 <h3>複合查詢</h3>
 			                                 
 			                                  <div class="form-group">
-			                                    <label for="">性別:</label>
+			                                    <label for="">性別</label>
 			                                    	男<input class="" type="radio" name="mem_gender" id="mem_gender" value="男" selected>
 					                         		女<input class="" type="radio" name="mem_gender" id="mem_gender" value="女">
 			                                  </div>
@@ -68,10 +66,10 @@
 			                                    <label for="">年齡</label>
 			                               			  <select class="" name="mem_age">
 			                                        <option value="" selected>請選擇:</option>
-			                                        <option value="二十歲以下">二十歲以下</option>
-					                                <option value="二十歲至三十歲">二十歲至三十歲</option>
-					                                <option value="三十歲至四十歲">三十歲至四十歲</option>
-					                                <option value="四十歲以上">四十歲以上</option>
+			                                        <option value="20">二十歲以下</option>
+					                                <option value="30">二十歲至三十歲</option>
+					                                <option value="40">三十歲至四十歲</option>
+					                                <option value="50">四十歲以上</option>
 			                                    </select>
 			                                  </div>
 			                                  
@@ -174,7 +172,7 @@
                	  <br><br><br><br><br>
              
                	  
-               	<div class="col-xs-12 col-sm-12">
+               	<div class="col-xs-12 col-sm-12" align ="center">
                		 		<c:if test="${not empty memSelf.mem_no}">
 	    						<%--
 	    							MemberVO memvo = (MemberVO)session.getAttribute("memSelf");
@@ -195,9 +193,46 @@
 	    							--%>
 	    						
     						</c:if>
-					
-       					<c:forEach var="memData" items="${getallMemberData1}">
     						
+    					
+		
+		
+		
+						<c:if test="${empty getallMemberData1 && empty getallMemberData}">
+       					<c:forEach var="memData" items="${getallMember}">	
+       						<div class="col-xs-12 col-sm-4">
+								<div class="item">
+			
+									<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
+									<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
+									</a>
+									<P>暱稱:${memData.mem_name}</P>
+									<p>性別:${memData.mem_gender}</p>	
+									<p>禮物:${memData.mem_receive_gift}</p>		
+								</div>
+							</div>
+						</c:forEach>
+					</c:if>
+		
+	
+					<c:if test="${empty getallMemberData1}">
+       					<c:forEach var="memData" items="${getallMemberData}">	
+       						<div class="col-xs-12 col-sm-4">
+								<div class="item">
+				
+									<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
+									<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
+									</a>
+									<P>暱稱:${memData.mem_name}</P>
+									<p>性別:${memData.mem_gender}</p>	
+									<p>禮物:${memData.mem_receive_gift}</p>		
+								</div>
+							</div>
+						</c:forEach>
+					</c:if>	
+					
+					<c:if test="${(not empty getallMemberData1)}">
+       					<c:forEach var="memData" items="${getallMemberData1}">	
        						<div class="col-xs-12 col-sm-4">
 								<div class="item">
 									<p>編號:${memData.mem_no}</p>
@@ -206,17 +241,16 @@
 									</a>
 									<P>暱稱:${memData.mem_name}</P>
 									<p>性別:${memData.mem_gender}</p>	
-									<p>禮物:${memData.mem_receive_gift}</p>
-									
+									<p>禮物:${memData.mem_receive_gift}</p>		
 								</div>
 							</div>
 						</c:forEach>
-						
-						
-				
-
+					</c:if>		
+					
+					
+					
+					
        			</div>
-       			
 				</div>
 		    </div> 
 		    <div class="col-xs-12 col-sm-1"></div>		
