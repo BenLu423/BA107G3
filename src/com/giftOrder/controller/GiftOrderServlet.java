@@ -15,6 +15,7 @@ import com.giftDiscount.model.GiftDiscountService;
 import com.giftDiscount.model.GiftDiscountVO;
 import com.giftOrder.model.GiftOrderService;
 import com.giftOrder.model.GiftOrderVO;
+import com.giftOrder.ws.GiftOrderWS;
 import com.giftOrderDetail.model.GiftOrderDetailVO;
 import com.giftReceive.model.GiftReceiveVO;
 import com.google.gson.Gson;
@@ -146,6 +147,10 @@ System.out.println("Order action: " + action);
 			
 			GiftOrderService giftOrderSvc = new GiftOrderService();
 			giftOrderSvc.insert(giftOrderVO, orderDetail);
+			
+			//webSocket進行即時通知
+			GiftOrderWS giftOrderWS = new GiftOrderWS();
+			giftOrderWS.multipleSendGift("receiveGift", orderDetail);
 			
 			session.setAttribute("orderDetail", null);
 			session.setAttribute("orderMoney", null);

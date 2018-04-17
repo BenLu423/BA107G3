@@ -484,9 +484,9 @@ System.out.println("«eºÝÅã¥ÜÃz¬µ°Õ!!!");
 			
 			GiftStatusWS giftStatusWS = new GiftStatusWS();
 			if("added".equals(gift_is_on_Eng)){
-				giftStatusWS.broadcast(gift_no, "insertGift");
+				giftStatusWS.broadcast("insertGift", gift_no);
 			}else if("off".equals(gift_is_on_Eng)){
-				giftStatusWS.broadcast(gift_no, "deleteGift");				
+				giftStatusWS.broadcast("deleteGift", gift_no);				
 			}
 			Gson gson = new Gson();
 			map.put("status", "success");

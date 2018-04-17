@@ -56,7 +56,7 @@ public class GiftStatusWS {
 		GiftDiscountService gdSvc = new GiftDiscountService();
 		GiftDiscountVO giftDiscountVO = gdSvc.getCurrentValidGift(gift_no);
 		
-		//建立一個list來存放[{限時優惠VO},{禮物VO},{List<禮物標籤VO>}]
+		//建立一個list來存放[{action},{禮物VO},{List<禮物標籤VO>},{限時優惠VO}]
 		List<Object> list = new ArrayList<Object>();
 		for(Entry<GiftVO, List<GiftLabelVO>> vo :gift.entrySet()){
 			GiftVO giftVO = vo.getKey();
@@ -91,14 +91,14 @@ System.out.println(data);
 		System.out.println(userSession.getId() + "號的gs已離線 : " + Integer.toString(reason.getCloseCode().getCode()));
 	}
 	
-	public void broadcast(String gift_no, String action) {
+	public void broadcast(String action, String gift_no) {
 		GiftService giftSvc = new GiftService();
 		//取得對應的[禮物VO/禮物標籤VO]與[限時優惠VO←可能為null]
 		Map<GiftVO, List<GiftLabelVO>> gift = giftSvc.getOne(gift_no);
 		GiftDiscountService gdSvc = new GiftDiscountService();
 		GiftDiscountVO giftDiscountVO = gdSvc.getCurrentValidGift(gift_no);
 		
-		//建立一個list來存放[{action},{限時優惠VO},{禮物VO},{List<禮物標籤VO>}]
+		//建立一個list來存放[{action},{禮物VO},{List<禮物標籤VO>},{限時優惠VO}]
 		List<Object> list = new ArrayList<Object>();
 		Map<String,String> actionMap = new HashMap<>();
 		actionMap.put("action", action);

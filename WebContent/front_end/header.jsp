@@ -191,4 +191,38 @@
 </nav>   
 <!-- //header-->
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+	//go : giftOrder
+    connectOrder();
+    
+	function connectOrder() {
+		var goPoint = "/GiftOrderServer/${memSelf.mem_no}";
+	    var host = window.location.host;
+	    var path = window.location.pathname;
+	    var webCtx = path.substring(0, path.indexOf('/', 1));
+	    var goendPointURL = "ws://" + window.location.host + webCtx + goPoint;
+		
+	    console.log("connect ws:giftOrder");
+		// 建立 websocket 物件
+		goWebSocket = new WebSocket(goendPointURL);
+		
+		goWebSocket.onopen = function(event) {
+			console.log("goWebSocket 成功連線");
+		};
+
+		goWebSocket.onmessage = function(event) {
+// 	        var jsonObj = JSON.parse(event.data);
+		};
+
+		goWebSocket.onclose = function(event) {
+			console.log("goWebSocket 已離線");
+		};
+	}
+});
+$(window).on('beforeunload',function(){
+	console.log("disconnect ws:giftOrder");
+	goWebSocket.close();
+});
+</script>
 </html>
