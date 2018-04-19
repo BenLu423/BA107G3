@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:useBean id="giftSvc" scope="page" class="com.gift.model.GiftService"/>
+<jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,8 +28,11 @@
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/index_chat.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/event.css">
     
-
-
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/css/jquery.countdown.css"> 
+	<script src="<%=request.getContextPath()%>/front_end/js/custombox/custombox.min.js"></script>
+	<script src="<%=request.getContextPath()%>/front_end/js/custombox/custombox.legacy.min.js"></script>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/front_end/css/custombox/custombox.min.css">
+	
 </head>
 <body>
 <%
@@ -190,12 +194,60 @@
 </div>
 </nav>   
 <!-- //header-->
+ <div class="receive-modal init-modal">
+      <a href="javascript:void(0);" onclick="Custombox.modal.close();" class="receive-close"><i class="fa fa-times"></i></a>
+      <table>
+      	<tr>
+      		<td colspan="2" class="receiveFlash receiveHeader"><h1>送　　禮　　通　　知</h1></td>
+      	</tr>
+      	<tr>
+      		<td style="width:100px;text-align:center;">
+      			<img class="receiver" src="">
+      		</td>
+      		<td rowspan="3">
+      			<div class="receiveAmount"></div>
+				<img class="receiveGift" src="">
+      		</td>
+      	</tr>
+      	<tr>
+      		<td style="padding:0px 5px 0px 5px;text-align:center;"></td>
+      	</tr>
+      	<tr>
+      		<td>
+      			<p></p>
+      		</td>
+      	</tr>
+      	<tr>
+      		
+      	</tr>
+      </table>
+</div>
 </body>
+<style>
+.custombox-lock{
+	overflow:inherit;
+}
+.receiveFlash {
+    animation-duration: 1.5s;
+    animation-name: receiveFlash;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+@keyframes receiveFlash {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
+	var i = "0";
 	//go : giftOrder
     connectOrder();
-    
 	function connectOrder() {
 		var goPoint = "/GiftOrderServer/${memSelf.mem_no}";
 	    var host = window.location.host;
@@ -212,7 +264,42 @@ $(document).ready(function() {
 		};
 
 		goWebSocket.onmessage = function(event) {
-// 	        var jsonObj = JSON.parse(event.data);
+	        var jsonObj = JSON.parse(event.data);
+	        var giftAction = jsonObj[0];
+	        var giftVO = jsonObj[1];
+	        var giftLabelList = jsonObj[2];
+	        var giftReceiveVO = jsonObj[3];
+	        var giftDiscountVO = jsonObj[4];
+	        var modal = $('.init-modal').clone()[0];
+			$( "body" ).append(modal);
+	        if(giftAction.action == "receiveGift"){
+// 	        	//設置新的class名稱
+				$(modal).removeClass('init-modal');
+	        	$(modal).addClass('new'+i);
+// 	        	//設置送禮人照片與名稱
+	        	$(modal).find('img:eq(0)').attr('src','${pageContext.request.contextPath}/memgetpic/mem.do?mem_no='+giftReceiveVO.mem_no_self);
+// 	        	$(modal).find('table tr:eq(2) td')[0].innerText = $(memberSvc.getOneMem(giftReceiveVO.mem_no_self).mem_name);
+// 	        	//設置收贈禮留言訊息
+	        	$(modal).find('table tr:eq(3) p')[0].innerText = giftReceiveVO.giftr_message;
+// 	        	//設置收贈禮物的照片
+	        	$(modal).find('img:eq(1)').attr('src','${pageContext.request.contextPath}/DBGifReader4?table=GIFT&gift_no='+giftVO.gift_no);
+// 	        	//設置收贈禮的數量
+	        	$(modal).find('div')[0].innerText = 'X'+giftReceiveVO.giftr_amount;
+	        	// Instantiate new modal
+	        	var modalJS = new Custombox.modal({
+	        		content: {
+	        			effect: 'newspaper',
+	        			overlay: false,
+	        			width:  '400px',
+	        	    	target: '.new'+i
+	        		},
+	        		overlay: {
+	        			active: false,
+	        		  }
+	        	});
+	        	modalJS.open();
+	        	i = parseInt(i) + 1;
+	        }
 		};
 
 		goWebSocket.onclose = function(event) {

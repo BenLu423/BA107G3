@@ -111,6 +111,7 @@ $(document).ready(function() {
 
 		gsWebSocket.onmessage = function(event) {
 	        var jsonObj = JSON.parse(event.data);
+	        console.log(jsonObj);
 	        var giftAction = jsonObj[0];
 	        var giftVO = jsonObj[1];
 	        var giftLabelList = jsonObj[2];
