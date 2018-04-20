@@ -16,6 +16,7 @@ import com.giftDiscount.model.GiftDiscountVO;
 import com.giftOrder.model.GiftOrderService;
 import com.giftOrder.model.GiftOrderVO;
 import com.giftOrder.ws.GiftOrderWS;
+import com.giftOrderDetail.model.GiftOrderDetailService;
 import com.giftOrderDetail.model.GiftOrderDetailVO;
 import com.giftReceive.model.GiftReceiveVO;
 import com.google.gson.Gson;
@@ -128,7 +129,37 @@ public class GiftOrderServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 System.out.println("Order action: " + action);	
-
+		
+		//判斷是否可以結帳
+		if("canCheckout".equals(action)){
+			res.setContentType("application/json;charset=UTF-8");
+			PrintWriter out = res.getWriter();
+			HttpSession session = req.getSession();
+			Map<String,String> map = new HashMap<>();
+			Gson gson = new Gson();
+			GiftDiscountService giftDiscountSvc = new GiftDiscountService();
+			//預設為可以結帳
+			Boolean canBuy = true;
+			//取得所有訂單明細
+			Set<GiftOrderDetailVO> giftOrderDetailList = ((Map<GiftOrderDetailVO, List<GiftReceiveVO>>) session.getAttribute("orderDetail")).keySet();
+			for(GiftOrderDetailVO giftOrderDetailVO: giftOrderDetailList){
+				String giftd_no = giftOrderDetailVO.getGiftd_no();
+				if(giftd_no != null && !giftd_no.isEmpty()){
+					GiftDiscountVO oriVO = giftDiscountSvc.getOneGD(giftd_no);
+					if(oriVO.getGiftd_amount() < giftOrderDetailVO.getGiftod_amount()){
+						map.put(oriVO.getGift_no(), oriVO.getGiftd_amount().toString());
+						canBuy = false;
+					}
+				}
+			}
+			if(canBuy == false)
+	    		map.put("status", "failure");
+			else
+				map.put("status", "success");
+			
+			
+			out.print(gson.toJson(map));
+		}
 		//結帳請求
 		if("checkoutOrder".equals(action)){
 			HttpSession session = req.getSession();

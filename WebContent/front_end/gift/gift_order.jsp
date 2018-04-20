@@ -13,11 +13,11 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front_end/css/gift_order.css">
 	<script type="text/javascript" src="<%=request.getContextPath()%>/front_end/js/gift.js"></script>
 </head>
-<body>
+<body onload="connectCheck();">
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 col-sm-1"></div>
-        <div class="col-xs-12 col-sm-10 content">
+        <div class="col-xs-12 col-sm-10 content" id="giftOrder-context">
             <div class="content-top"></div>  
             <div style="height:0px;"></div>
  			<div class="col-xs-12 col-sm-1">
@@ -75,6 +75,7 @@
 				                	<img src="<%=request.getContextPath()%>/DBGifReader4?table=GIFT&gift_no=${gift.gift_no}">
 				                </td>
 				                <td class="order-amount">
+				                	<p class="notEnough"></p>
 				                	<select name="giftod_amount" style="height: 30px;width: 45px;">
 										<c:forEach var="count" begin="1" end="${giftSvc.getAmount(gift.gift_no)}" step="1">
 											<option value="${count}" ${(detail.key.giftod_amount==count) ? 'selected' : ''}>${count}</option>
@@ -117,9 +118,6 @@
 					</span>
 					<a href="<%=request.getContextPath()%>/front_end/gift/gift_checkout.jsp">
 						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout_ok.jpg" style="height:60px;">結帳
-					</a>
-					<a style="display:none;" href="#">
-						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout_stop.jpg" style="height:60px;">結帳
 					</a>
 				</div>         
 			</div>   
@@ -164,6 +162,101 @@ a{
 </style>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+	//gs : giftSatus
+    connectgs();
+    
+	function connectgs() {
+		var gsPoint = "/GiftStatusServer/${memSelf.mem_no}";
+	    var host = window.location.host;
+	    var path = window.location.pathname;
+	    var webCtx = path.substring(0, path.indexOf('/', 1));
+	    var gsendPointURL = "ws://" + window.location.host + webCtx + gsPoint;
+		
+		// 建立 websocket 物件
+		gsWebSocket = new WebSocket(gsendPointURL);
+		
+		gsWebSocket.onopen = function(event) {
+			console.log("gsWebSocket 成功連線");
+		};
+
+		gsWebSocket.onmessage = function(event) {
+	        var jsonObj = JSON.parse(event.data);
+	        console.log(jsonObj);
+	        var giftAction = jsonObj[0];
+// 	        var giftVO = jsonObj[1];
+// 	        var giftLabelList = jsonObj[2];
+// 	        var giftDiscountVO = jsonObj[3];
+	        
+	        if(giftAction.action == "insertGift"){
+	        	connectCheck();
+	        }//end if. [gift_is_on=="上架中"]
+	        else if(giftAction.action == "deleteGift"){
+	        	connectCheck();
+	        }//end if. [gift_is_on=="已下架"]
+	        else if(giftAction.action == "updateGift"){
+	        	connectCheck();
+	        }//end if. [禮物的限時優惠數量有所變更時]
+		};
+
+		gsWebSocket.onclose = function(event) {
+			console.log("gsWebSocket 已離線");
+		};
+	}	
+	
+});
+
+
+function connectCheck() {
+	var obj = [{name: "action",value: "canCheckout"}];
+	console.log(obj);
+	$.ajax({
+		type: 'POST',
+		url: '/BA107G3/gift/giftOrder.do',
+		data: obj,
+		dataType: 'json',
+		success: (function(json) {
+			console.log(json);
+			if(json.status == 'failure'){	
+				var objKey = Object.keys(json);
+				var objValue = Object.values(json);
+				for(var i=0;i<objKey.length-1;i++){
+					$('#giftOrder-context').find('tr').each(function (index) {
+		        		var findGift = $(this).find('td[class=order-name] input:eq(1)');
+		        		if(findGift.length != 0 && objKey[i] == findGift.val()){
+		        			$(this).find('td[class=order-amount] p')[0].innerText = '請調整購買數';
+		        			var optionValue = "";
+		        			optionValue += "<option value=0 selected></option>";
+		        			for(var j=1; j<=objValue[i]; j++){
+		    					optionValue += "<option value="+j+">"+j+"</option>";
+		    				}
+		        			$(this).find('td[class=order-amount] select')[0].innerHTML = optionValue;
+		        			$(this).find('td[class=order-inventory-enough]').css('color','red');
+		        			$(this).find('td[class=order-inventory-enough]')[0].innerText = '不足夠';
+		        		}
+		        	});
+					
+				}
+				$('#checkoutMoney').next().find('img')[0].src = '${pageContext.request.contextPath}/front_end/res/img/gift/ckeckout_stop.jpg';
+				$('#checkoutMoney').next().attr('href','javascript:void(0)');
+			}//end failure
+			else{
+				$('#giftOrder-context').find('tr').each(function (index) {
+	        		var findGift = $(this).find('td[class=order-name] input:eq(1)');
+	        		if(findGift.length != 0){
+	        			$(this).find('td[class=order-amount] p')[0].innerText = '';
+	        			$(this).find('td[class=order-inventory-enough]').css('color','green');
+	        			$(this).find('td[class=order-inventory-enough]')[0].innerText = '足夠';
+	        		}
+	        	});
+				$('#checkoutMoney').next().find('img')[0].src = '${pageContext.request.contextPath}/front_end/res/img/gift/ckeckout_ok.jpg';
+				$('#checkoutMoney').next().attr('href','${pageContext.request.contextPath}/front_end/gift/gift_checkout.jsp');
+			}//end success
+		}),
+		error:(function() { console.log("second error"); })
+	}); 
+}
+
 function giftOrderDetail(thisDetail) {
 	//0: mem_no_self[String]
 	//1: gift_no[Sting]
@@ -189,6 +282,7 @@ $('.deleteOrder').click(function(){
 					  $('#myCart').children('ul').children('li:contains("total")')[0].innerText = 'total: '+json.orderMoney;
 					  $('#cartSum')[0].innerText = parseInt($('#cartSum')[0].innerText) - 1;
 					  $('#checkoutMoney').find('p')[0].innerText = json.orderMoney;
+					  connectCheck();
 				  }
 // 				  window.location = '${pageContext.request.contextPath}/front_end/gift/gift_order.jsp';
 			  }),
@@ -217,6 +311,7 @@ $('select[name=giftod_amount]').change(function(){
 				  $('#checkoutMoney').find('p')[0].innerText = json.orderMoney;
 				  giftod_money.innerText = json.giftod_money;
 	 			  giftod_inventory.value = json.giftod_inventory;
+	 			  connectCheck();
 				  console.log(giftod_inventory.value);
 				}else{
 					alert("低於已贈送的禮物數量");
@@ -371,4 +466,22 @@ $('body').on('click', '.giftr_del',function() {
 	});
 });
 </script>
+<style>
+.notEnough {
+    animation-duration: 1.5s;
+    animation-name: notEnough;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+    font-weight: 700;
+}
+@keyframes notEnough {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+</style>
 </html>

@@ -274,7 +274,7 @@ $(document).ready(function() {
 	
 	$('body').on('click', '.addToCart',function() {
 		var img = $(this).parents('div[class=gift-item]').find('div.item-img img').clone();
-		$(img).css('width','100px').css('height','100px').css('border-radius','50%').css('border','2px solid black');
+		$(img).css('width','229px').css('height','229px').css('border-radius','50%').css('border','0px solid black').css('background-color','transparent');
 		var oriPosition = $(this).offset();
 		console.log($(this));
 		var addGift = $(this).parent('div').children().serializeArray();
@@ -315,7 +315,7 @@ $(document).ready(function() {
 					flyer.fly({
 					    start: {
 					        left: oriPosition.left-$('html').scrollLeft(),
-					        top: oriPosition.top-$('html').scrollTop()
+					        top: oriPosition.top-$('html').scrollTop()-450
 					    },
 					    end: {
 					        left: cart.left-$('html').scrollLeft(),

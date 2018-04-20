@@ -280,7 +280,8 @@ $(document).ready(function() {
 	        	$(modal).find('img:eq(0)').attr('src','${pageContext.request.contextPath}/memgetpic/mem.do?mem_no='+giftReceiveVO.mem_no_self);
 // 	        	$(modal).find('table tr:eq(2) td')[0].innerText = $(memberSvc.getOneMem(giftReceiveVO.mem_no_self).mem_name);
 // 	        	//設置收贈禮留言訊息
-	        	$(modal).find('table tr:eq(3) p')[0].innerText = giftReceiveVO.giftr_message;
+				if(giftReceiveVO.giftr_message != null)
+		        	$(modal).find('table tr:eq(3) p')[0].innerText = giftReceiveVO.giftr_message;
 // 	        	//設置收贈禮物的照片
 	        	$(modal).find('img:eq(1)').attr('src','${pageContext.request.contextPath}/DBGifReader4?table=GIFT&gift_no='+giftVO.gift_no);
 // 	        	//設置收贈禮的數量
