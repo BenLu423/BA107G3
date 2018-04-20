@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.gift.model.*;
+import com.gift.ws.GiftStatusWS;
 import com.giftDiscount.model.GiftDiscountService;
 import com.giftDiscount.model.GiftDiscountVO;
 
@@ -137,7 +138,10 @@ System.out.println("GD action: " + action);
 				/***************************2.開始更新禮物資料***************************************/
 				//建立標籤明細物件
 				giftDiscountSvc.update(giftDiscountVO);
-
+				//呼叫webSocket即時通知使用者，限時優惠數量已變更
+				GiftStatusWS giftStatusWS = new GiftStatusWS();
+				giftStatusWS.broadcast("updateGift", gift_no);
+				//移除可修改的限時優惠VO
 				giftDiscountEdits.remove(giftDiscountVO);
 				session.setAttribute("giftDiscountEdits", giftDiscountEdits);
 

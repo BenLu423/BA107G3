@@ -116,7 +116,10 @@
 						Total: $<p>${orderMoney}</p>
 					</span>
 					<a href="<%=request.getContextPath()%>/front_end/gift/gift_checkout.jsp">
-						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout.jpg" style="height:60px;">µ²±b
+						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout_ok.jpg" style="height:60px;">µ²±b
+					</a>
+					<a style="display:none;" href="#">
+						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout_stop.jpg" style="height:60px;">µ²±b
 					</a>
 				</div>         
 			</div>   

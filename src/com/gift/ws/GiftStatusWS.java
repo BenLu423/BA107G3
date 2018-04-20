@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import org.json.*;
@@ -17,18 +18,18 @@ import com.giftLabel.model.GiftLabelVO;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
-@ServerEndpoint("/GiftStatusServer")
+@ServerEndpoint("/GiftStatusServer/{mem_no}")
 public class GiftStatusWS {
 	private static final Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
 	
 	@OnOpen
-	public void onOpen(Session userSession) throws IOException {
+	public void onOpen(@PathParam("mem_no") String mem_no, Session userSession) throws IOException {
 		allSessions.add(userSession);
 		System.out.println(userSession.getId() + "的gs已連線");
 	}
 	
 	@OnMessage
-	public void onMessage(Session userSession, String giftInformation){
+	public void onMessage(@PathParam("mem_no") String mem_no, Session userSession, String giftInformation){
 		//將接收到的jsonArr轉換成map
 		Map<String,String> map = new HashMap<>();
 		try {
@@ -81,12 +82,12 @@ System.out.println(data);
 	}
 	
 	@OnError
-	public void onError(Session userSession, Throwable e){
+	public void onError(@PathParam("mem_no") String mem_no, Session userSession, Throwable e){
 		e.printStackTrace(System.err);
 	}
 	
 	@OnClose
-	public void onClose(Session userSession, CloseReason reason) {
+	public void onClose(@PathParam("mem_no") String mem_no, Session userSession, CloseReason reason) {
 		allSessions.remove(userSession);
 		System.out.println(userSession.getId() + "號的gs已離線 : " + Integer.toString(reason.getCloseCode().getCode()));
 	}

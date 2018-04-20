@@ -69,6 +69,7 @@
     <div class="col-xs-12 col-sm-12">
 	</div> 
 	</div>
+	<img id="alertGift" src="${pageContext.request.contextPath}/front_end/res/img/gift/not_enough.jpg" style="width:500px" alt="" >
 </div> 		
 </body>
 <style>
@@ -95,7 +96,7 @@ $(document).ready(function() {
     connectgs();
     
 	function connectgs() {
-		var gsPoint = "/GiftStatusServer";
+		var gsPoint = "/GiftStatusServer/${memSelf.mem_no}";
 	    var host = window.location.host;
 	    var path = window.location.pathname;
 	    var webCtx = path.substring(0, path.indexOf('/', 1));
@@ -156,6 +157,7 @@ $(document).ready(function() {
 				$(clone).find('div:eq(4) p.JQellipsis').attr('title',cnt);
 				if(giftDiscountVO != null){
 					var price = parseInt(giftVO.gift_price) * parseFloat(giftDiscountVO.giftd_percent);
+					$(clone).find('div:eq(4) input[name=giftd_no]')[0].value = giftDiscountVO.giftd_no;
 					$(clone).find('div:eq(4) p:eq(1) span:eq(0)')[0].innerText = "$"+ parseInt(price);
 					$(clone).find('div:eq(4) p:eq(1) span:eq(1)')[0].innerHTML = "<s>$"+ giftVO.gift_price + "</s>";
 				}else{
@@ -196,6 +198,73 @@ $(document).ready(function() {
 	        		}
 	        	});
 	        }//end if. [gift_is_on=="已下架"]
+	        else if(giftAction.action == "updateGift"){
+				//如果限時優惠，正在進行中	      
+	        	if(giftDiscountVO != null){
+					$('div.col-xs-12.col-sm-12.gift-div').find(allGift).each(function (index) {
+		        		var gift_no = $(this).find('div:eq(4) input[name=gift_no]')[0].value;
+		        		console.log(gift_no);
+		        		console.log(giftVO.gift_no);
+		        		console.log(gift_no == giftVO.gift_no);
+		        		if(gift_no == giftVO.gift_no){
+		       				//修改折扣數
+		  					$(this).find('div.item-img div.gift-discount')[0].innerText = giftDiscountVO.giftd_percent + "折";
+		       				//修改售價
+		       				var price = parseInt(giftVO.gift_price) * parseFloat(giftDiscountVO.giftd_percent);
+		       				$(this).find('div:eq(4) p:eq(1) span:eq(0)')[0].innerText = "$"+ parseInt(price);
+							//修改倒數計時
+							var GDdateE = new Date(giftDiscountVO.giftd_end);
+							var GDdateFormat = GDdateE.getFullYear()+'-'+(GDdateE.getMonth()+1)+'-'+GDdateE.getDate()+' '+GDdateE.getHours()+':'+GDdateE.getMinutes()+':'+GDdateE.getSeconds()+'.0';
+							var time = $($(this).find('div:eq(4) div:eq(0)')[0]).clone();
+							var $this = $(time[0]);
+								$this.countdown(GDdateFormat, function(event) {
+								$this.html('剩餘 ' + event.strftime('%D days %H:%M:%S'));
+							  }).on('finish.countdown', function() {
+								  var index = $(this).parents('.col-xs-12.col-sm-12.gift-div').index();
+								  if(index == 3){
+									  var gift = $(this).parents('div.col-xs-12.col-sm-2.gift-side');
+									  var oriValue = gift.find('div:eq(4) p:eq(1) span:eq(1)')[0].innerText;
+									  gift.find('div:eq(4) p:eq(1) span:eq(0)')[0].innerText = oriValue;
+									  gift.find('div:eq(4) p:eq(1) span:eq(1)')[0].innerHTML = '';
+									  gift.find('div:eq(4) input[name=giftd_no]')[0].remove();
+									  gift.find('div.item-img div.gift-discount')[0].innerText = "";
+									  var optionValue = "";
+									  for(var i=1; i<=10; i++){
+											optionValue += "<option value="+i+">"+i+"</option>";
+										}
+									  gift.find('div:eq(4) select')[0].innerHTML = optionValue;
+									  $(this)[0].innerText = "";
+								  }else if(index == 8){
+									  $(this).parents('div.col-xs-12.col-sm-2.gift-side').remove();
+								  }
+							  });
+							$(this).find('div:eq(4) div:eq(0)')[0].after(time[0]);	
+							$(this).find('div:eq(4) div:eq(0)')[0].remove();
+							//修改可選擇數量
+							var optionValue = "";
+							var count = 10;
+							if(giftDiscountVO != null){
+								count = parseInt(giftDiscountVO.giftd_amount);
+							}
+							for(var i=1; i<=count; i++){
+								optionValue += "<option value="+i+">"+i+"</option>";
+							}
+							$(this).find('div:eq(4) select')[0].innerHTML = optionValue;
+		        			return;
+		        		}
+		        	});
+	        	}else{
+	        		//限時優惠已結束
+	        		allGift.find('div:eq(4) input[name=gift_no]').each(function (index) {
+		        		var gift_no = $(this)[0].value;
+		        		if(gift_no == giftVO.gift_no){
+		        			$(this).parents('div.col-xs-12.col-sm-2.gift-side').remove();
+		        		}
+		        	});
+	        	}
+	        	
+	        	
+	        }//end if. [禮物的限時優惠數量有所變更時]
 		};
 
 		gsWebSocket.onclose = function(event) {
@@ -257,7 +326,7 @@ $(document).ready(function() {
 					});
 				}//end success
 				else if(json.status == 'failure'){
-					alert("GGWP");
+					alertModal.open();
 				}
 				
 				
@@ -271,8 +340,34 @@ $(document).ready(function() {
 		  $this.countdown(finalDate, function(event) {
 		    $this.html('剩餘 ' + event.strftime('%D days %H:%M:%S'));
 		  }).on('finish.countdown', function() {
-			  $(this)[0].innerText = "";
+			  var index = $(this).parents('.col-xs-12.col-sm-12.gift-div').index();
+			  if(index == 3){
+				  var gift = $(this).parents('div.col-xs-12.col-sm-2.gift-side');
+				  var oriValue = gift.find('div:eq(4) p:eq(1) span:eq(1)')[0].innerText;
+				  gift.find('div:eq(4) p:eq(1) span:eq(0)')[0].innerText = oriValue;
+				  gift.find('div:eq(4) p:eq(1) span:eq(1)')[0].innerHTML = '';
+				  gift.find('div:eq(4) input[name=giftd_no]')[0].remove();
+				  gift.find('div.item-img div.gift-discount')[0].innerText = "";
+				  var optionValue = "";
+				  for(var i=1; i<=10; i++){
+						optionValue += "<option value="+i+">"+i+"</option>";
+					}
+				  gift.find('div:eq(4) select')[0].innerHTML = optionValue;
+				  $(this)[0].innerText = "";
+			  }else if(index == 8){
+				  $(this).parents('div.col-xs-12.col-sm-2.gift-side').remove();
+			  }
 		  });
+	});
+	var alertModal = new Custombox.modal({
+		content: {
+// 			effect: 'Slide',
+			overlay: false,
+	    	target: '#alertGift'
+		},
+		overlay: {
+			active: false,
+		  }
 	});
 });
 $(window).on('beforeunload',function(){

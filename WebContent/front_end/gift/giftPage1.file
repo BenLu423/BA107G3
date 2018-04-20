@@ -1,5 +1,5 @@
 <c:set var="rowNumber" value="${(gifts!=null) ? gifts.size() : fn:length(giftSvc.canBuy)}" scope="request"></c:set>	
-<%  int rowsPerPage = 10;  //–掸计    
+<%  int rowsPerPage = 12;  //–掸计    
     int rowNumber=0;      //羆掸计
     int pageNumber=0;     //羆计      
     int whichPage=1;      //材碭
