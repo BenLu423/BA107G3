@@ -14,6 +14,8 @@ public interface GiftOrderViewDAO_interface {
 	
 	public List<GiftOrderViewVO> getAll(Map<String, String[]> map);
 
+	public List<GiftOrderViewVO> getAll(String mem_no_self);
+	
 	public byte[] getPic(String giftr_no, String columnName);
 
 }

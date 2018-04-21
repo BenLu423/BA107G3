@@ -26,6 +26,11 @@ public class GiftOrderViewService {
 		return dao.getAll(map);
 	}
 
+	public List<GiftOrderViewVO> getAll(String mem_no_self) {
+		return dao.getAll(mem_no_self);
+		
+	}
+	
 	public byte[] getPic(String giftr_no, String columnName) {
 		return dao.getPic(giftr_no, columnName);
 	}

@@ -10,6 +10,7 @@ public class GiftOrderView_CompositeQuery {
 		switch(columnName){
 			case "giftr_no":// 收贈禮編號
 			case "mem_no_self":// 贈禮會員編號
+				aCondition = columnName + "='" + value +"'";
 			case "mem_name_self":// 贈禮會員姓名
 			case "mem_no_other":// 收禮會員編號
 			case "mem_name_other":// 收禮會員姓名

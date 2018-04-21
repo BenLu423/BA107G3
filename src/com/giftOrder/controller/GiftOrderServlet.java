@@ -18,6 +18,8 @@ import com.giftOrder.model.GiftOrderVO;
 import com.giftOrder.ws.GiftOrderWS;
 import com.giftOrderDetail.model.GiftOrderDetailService;
 import com.giftOrderDetail.model.GiftOrderDetailVO;
+import com.giftOrderView.model.GiftOrderViewService;
+import com.giftOrderView.model.GiftOrderViewVO;
 import com.giftReceive.model.GiftReceiveVO;
 import com.google.gson.Gson;
 import com.member.model.MemberVO;
@@ -187,6 +189,12 @@ System.out.println("Order action: " + action);
 			GiftOrderWS giftOrderWS = new GiftOrderWS();
 			giftOrderWS.multipleSendGift("receiveGift", orderDetail);
 			
+			//查詢該次新增的訂單紀錄
+			GiftOrderViewService giftOrderViewSvc = new GiftOrderViewService();
+			Map<String,String[]> map = new HashMap<>();
+			List<GiftOrderViewVO> orderViewList = giftOrderViewSvc.getAll(mem_no);
+			
+			session.setAttribute("orderViewList", orderViewList);
 			session.setAttribute("orderDetail", null);
 			session.setAttribute("orderMoney", null);
 			res.sendRedirect(contextPath+"/front_end/gift/gift_history.jsp");

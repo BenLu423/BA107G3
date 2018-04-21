@@ -5,6 +5,7 @@
 <jsp:useBean id="giftSvc" scope="page" class="com.gift.model.GiftService"/>
 <jsp:useBean id="friendsListSvc" scope="page" class="com.friends_list.model.FriendsListService"/>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService"/>
+<jsp:useBean id="giftOrderViewSvc" scope="page" class="com.giftOrderView.model.GiftOrderViewService"/>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
@@ -62,7 +63,7 @@
 				            </tr>
 				        </thead>
 				        <tbody>
-				        <c:forEach	var="recGift" items="${orderViewList}">
+				        <c:forEach	var="recGift" items="${(orderViewList!=null) ? orderViewList : giftOrderViewSvc.getAll(memSelf.mem_no)}">
 				            <tr>
 				            	<td class="orderView-empty"></td>
 				                <td class="orderView-person">
