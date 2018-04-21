@@ -80,25 +80,6 @@
 				                <td class="orderView-time">
 				                	<p><fmt:formatDate value="${recGift.gifto_time}" pattern="yyyy-MM-dd a HH:mm:ss"/></p>
 				                </td>
-<!-- 				                <td class="order-pic"> -->
-<%-- 				                	<img src="<%=request.getContextPath()%>/DBGifReader4?table=GIFT&gift_no=${gift.gift_no}"> --%>
-<!-- 				                </td> -->
-<%-- 				                <td class="order-amount">${detail.key.giftod_amount}</td> --%>
-<%-- 				                <td class="order-unit">${detail.key.giftod_unit}</td> --%>
-<%-- 				                <td class="order-money">${detail.key.giftod_money}</td> --%>
-<!-- 				                <td class="order-inventory-enough" style="font-size:25px;">¨¬°÷</td> -->
-<!--     							<td class="order-person" style="font-size:15px;"> -->
-<!--         							<div class="sortgroup3" style="min-height:117px;border:0px solid black;text-align:left;"> -->
-<%--         								<c:forEach var="gift_receive" items="${detail.value}"> --%>
-<!--         								<div> -->
-<%-- 											<p style="line-height:2.5;display:inline-block;border-left:2px solid rgba(255,194,194,1);border-right:2px solid rgba(255,194,194,1);padding:5px;margin-bottom:0px;">${gift_receive.giftr_amount}­Ó</p> --%>
-<%-- 											<p style="display:inline-block;padding:5px;width:210px;margin-bottom:0px;">${gift_receive.giftr_message}</p> --%>
-<!-- 										</div> -->
-<!-- 										<hr style="width: 100%; height: 2px; background-color: black; margin: 5px 0px 5px 0px;"> -->
-<%--         								</c:forEach> --%>
-<!--         							</div> -->
-<!--     							</td> -->
-<%-- 				                <td class="order-delete">${detail.key.giftod_inventory}</td> --%>
 				            </tr>
 				        </c:forEach>
 				        </tbody>

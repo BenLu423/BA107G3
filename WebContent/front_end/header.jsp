@@ -135,8 +135,8 @@
                                     <li><a href="<%=request.getContextPath()%>/front_end/member/modify_personal_data_main_page.jsp?mem_no=${memSelf.mem_no}&mem_account=${memSelf.mem_account}">帳號設定</a></li>
                                     <li><a href="#">好友管理</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">收禮清單</a></li>
-                                    <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_history.jsp"">贈禮紀錄</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_receive.jsp">收禮清單</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_history.jsp">贈禮紀錄</a></li>
                                     <li><a href="#">加值服務</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">我的日記</a></li>
