@@ -31,8 +31,8 @@ public class GiftDiscountServlet extends HttpServlet {
 		Map<String, String[]> giftDiscountQuery = (Map<String, String[]>)session.getAttribute("giftDiscountQuery");
 		//取得查詢的禮物
 		Map<GiftDiscountVO, GiftVO> giftDiscounts = null;
-		if(giftDiscountQuery != null)
-			giftDiscounts = giftDiscountSvc.getGiftDiscountTotal(giftDiscountQuery);
+//		if(giftDiscountQuery != null)
+			giftDiscounts = giftDiscountSvc.getGiftDiscountTotal();
 		//取得欲修改的禮物
 		Map<GiftDiscountVO, GiftVO> giftDiscountEdits = (Map<GiftDiscountVO, GiftVO>) session.getAttribute("giftDiscountEdits");
 		if(giftDiscountEdits != null && !giftDiscountEdits.isEmpty()){
@@ -225,7 +225,7 @@ System.out.println("Hen爆炸!!!");
 					session.setAttribute("giftDiscountQuery", map);
 					giftDiscountQuery = map;
 				}
-				Map<GiftDiscountVO, GiftVO> giftDiscounts = giftDiscountSvc.getGiftDiscountTotal(giftDiscountQuery);
+				Map<GiftDiscountVO, GiftVO> giftDiscounts = giftDiscountSvc.getGiftDiscountTotal();
 
 				//將查詢的禮物扣除要修改的禮物，避免重複出現
 				if(giftDiscountEdits!=null || !giftDiscountEdits.isEmpty()){

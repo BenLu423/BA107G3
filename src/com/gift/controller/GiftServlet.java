@@ -343,7 +343,7 @@ System.out.println("Hen爆炸!!!");
 				
 				//如果為每次請求搜尋[即不是換頁]
 				String whichPage = req.getParameter("whichPage");
-				if(whichPage == null || "".equals(whichPage) ){
+				if(whichPage == null || "".equals(whichPage) || giftFrontQuery== null){
 					Map<String, String[]> map = new HashMap<String, String[]> (req.getParameterMap());
 					session.setAttribute("giftFrontQuery", map);
 					giftFrontQuery = map;
@@ -494,6 +494,21 @@ System.out.println("前端顯示爆炸啦!!!");
 			map.put("gift_is_on", gift_is_on);
 			out.print(gson.toJson(map));
 		}
+		
+		//來自gift_index.jsp請求到新增網頁
+		if("gift_discount_add".equals(action)){
+			String addPage = req.getContextPath() + "/back_end/gift/gift_discount_add.jsp";
+			res.sendRedirect(addPage);
+		}
+		
+		//來自gift_index.jsp請求到禮物網頁
+		if("gift_discount_show".equals(action)){
+			GiftService giftSvc = new GiftService();
+			show(req,giftSvc);
+			String indexPage = req.getContextPath() + "/back_end/gift/gift_discount.jsp";
+			res.sendRedirect(indexPage);
+		}
+		
 	}
 
 }

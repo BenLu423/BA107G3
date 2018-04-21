@@ -15,7 +15,8 @@ public interface GiftDAO_interface {
 	public GiftVO getByPrimaryKey(String gift_no);
 	public List<GiftVO> getSome(List<String> giftNoList);
 	public List<GiftVO> getAll();
-	public List<GiftVO> getAll(Map<String, String[]> map); 
+	public List<GiftVO> getAll(Map<String, String[]> map);
+	public List<GiftVO> getAll(String keyword);
 	public List<GiftVO> getCanBuy();
 	public byte[] getPic(String gift_no);
 }

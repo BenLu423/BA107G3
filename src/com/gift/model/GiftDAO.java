@@ -34,6 +34,7 @@ public class GiftDAO implements GiftDAO_interface{
 	private static final String GET_ALL_STMT = "SELECT * FROM GIFT ORDER BY GIFT_NO";
 	private static final String GET_CAN_BUY_STMT = "SELECT * FROM GIFT WHERE GIFT_IS_ON='¤W¬[¤¤' ORDER BY GIFT_NO";
 	private static final String GET_PIC_STMT = "SELECT GIFT_PIC FROM¡@GIFT WHERE GIFT_NO=?";
+	private static final String GET_ALL_KEYWORD_STMT = "SELECT * FROM GIFT WHERE GIFT_NAME LIKE ? ORDER BY GIFT_NO DESC";
 	
 	@Override
 	public void insert(GiftVO giftVO, List<GiftLabelDetailVO> giftLabelDetailList) {
@@ -525,6 +526,62 @@ public class GiftDAO implements GiftDAO_interface{
 			String finalSQL = Gift_CompositeQuery.get_WhereCondition(map);
 			pstmt = con.prepareStatement(finalSQL);
 			rs = pstmt.executeQuery();
+			while(rs.next()){
+				giftVO = new GiftVO();
+				giftVO.setGift_no(rs.getString("gift_no"));
+				giftVO.setGift_name(rs.getString("gift_name"));
+				giftVO.setGift_cnt(rs.getString("gift_cnt"));
+				giftVO.setGift_price(rs.getInt("gift_price"));
+				giftVO.setGift_pic(rs.getBytes("gift_pic"));
+				giftVO.setGift_is_on(rs.getString("gift_is_on"));
+				giftVO.setGift_track_qty(rs.getInt("gift_track_qty"));
+				giftVO.setGift_buy_qty(rs.getInt("gift_buy_qty"));
+				list.add(giftVO);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally{
+			if(rs != null){
+				try {
+						rs.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				};
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<GiftVO> getAll(String keyword) {
+		List<GiftVO> list = new ArrayList<>();
+		GiftVO giftVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_KEYWORD_STMT);
+			pstmt.setString(1,"%"+keyword+"%");
+			rs = pstmt.executeQuery();
+			
 			while(rs.next()){
 				giftVO = new GiftVO();
 				giftVO.setGift_no(rs.getString("gift_no"));

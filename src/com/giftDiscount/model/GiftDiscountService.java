@@ -112,6 +112,10 @@ public class GiftDiscountService {
 		return daoGD.getTotal();
 	}
 	
+	public List<GiftDiscountVO> getNotStartAll() {
+		return daoGD.getNotStartAll();
+	}
+	
 	public Map<GiftDiscountVO,GiftVO> getGiftDiscountAll(Map<String, String[]> map){
 		List<GiftDiscountVO> list = daoGD.getAll(map);
 		return getLabelList(list);

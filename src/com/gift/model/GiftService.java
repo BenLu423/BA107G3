@@ -137,11 +137,15 @@ public class GiftService {
 		return dao.getAll();
 	}
 
+	public List<GiftVO> getAll(String keyword){
+		return dao.getAll(keyword);
+	}
+	
 	public Map<GiftVO, List<GiftLabelVO>> getGiftAll() {
 		List<GiftVO> list = dao.getAll();
 		return getLabelList(list);
 	}
-
+	
 	public Map<GiftVO, List<GiftLabelVO>> getGiftAll(Map<String, String[]> map) {
 		List<GiftVO> list = dao.getAll(map);
 		return getLabelList(list);

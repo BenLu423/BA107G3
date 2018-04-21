@@ -22,27 +22,7 @@
 		<div class="col-xs-12 col-sm-12">
 		<div class="panel panel-default">
     		<div class="panel-body">
-    			<div class="col-xs-12 col-sm-8 gift-search">
-    				<%-- Exception資訊 --%>
-    				${errorMsgs.Exception}
-					<form method="post" action="<%=request.getContextPath()%>/gift/giftDiscount.do" class="form-inline">
-						<div class="form-group">
-							<select class="form-control" id="selectWord">
-  								<option value="keyWord">關鍵字</option>
-  								<option value="gift_name">禮物名稱</option>
-  								<option>禮物價格</option>
-							</select>
-						</div>
-						<div class="form-group">
-						<input type="text" name ="keyWord" class="form-control" placeholder="優惠編號/禮物編號" id="searchContext">
-						</div>
-						<div class="form-group">
-						<button class="btn btn-default form-control" type="submit">Go!</button>
-						<input type="hidden" name="action" value="searchGiftDiscounts">
-						<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>">
-						</div>
-					</form>
-    			</div>
+
     			
 		        <div class="col-xs-12 col-sm-6 pull-right gift-menu">
 <!-- 		            <div class="btn-group pull-right"> -->
@@ -53,12 +33,14 @@
 <!-- 		            </div> -->
 		        </div>
 				<div class="table-container giftAll gift-metadata">
+<!-- 					<p style="color:red;font-size:20px;margin:0px;">※禮物須為[上架中]才出現在禮物商城<p> -->
         			<table style="width:100%">
         			<tbody>
         			<tr>
                 		<td class="giftd-edit"><div>限時優惠</div></td>
-                		<td class="giftd-no"><div>優惠編號</div></td>	
-                		<td class="giftd-pic"><div>禮物</div></td>	
+<!--                 		<td class="giftd-no"><div>優惠編號</div></td>	 -->
+                		<td class="giftd-no"><div>禮物狀態</div></td>	
+                		<td class="giftd-pic"><div>禮物敘述</div></td>	
                 		<td class="giftd-percent"><div>折扣</div></td>
                 		<td class="giftd-start"><div>開始時間</div></td>	
                 		<td class="giftd-end"><div>結束時間</div></td>
@@ -85,7 +67,7 @@
 		</div>							
 	</div>
 	<div class="col-xs-12 col-sm-1">
-		<a href="<%=request.getContextPath()%>/gift/gift.do?action=gift_add&requestURL=<%=request.getServletPath()%>">
+		<a href="<%=request.getContextPath()%>/gift/gift.do?action=gift_discount_add&requestURL=<%=request.getServletPath()%>">
 			<img src="<%=request.getContextPath()%>/back_end/res/img/gift/addPage.ico" alt="Add" id="addPage">
 		</a>
 	</div>

@@ -270,7 +270,7 @@ button[data-target=all]:hover{
 }
 
 #searchContext{
-	width:500px;	
+	width:542px;	
 }
 
 td.giftd-edit,
@@ -351,4 +351,16 @@ td.giftd-percent input{
 	font-size: 2em;
 	width: 100%;
 	text-align: center;
+}
+
+#successGift {
+	top: -250px;
+	border-radius: 5%;
+/* 	background-color: #FFF; */
+/* 	box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12); */
+	padding: 0px;
+	width: 500px;
+	height:300px;
+	position: relative;
+	display: none;
 }

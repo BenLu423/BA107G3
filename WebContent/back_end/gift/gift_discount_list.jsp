@@ -36,7 +36,8 @@
 					</td>
 					<td class="giftd-no">
 						<div>
-							<p>${gift.key.giftd_no}</p>
+<%-- 							<p>${gift.key.giftd_no}</p> --%>
+							<p>${gift.value.gift_is_on}</p>
 						</div>
 					</td>
 					<td class="giftd-pic-1">

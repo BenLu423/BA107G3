@@ -30,55 +30,6 @@ public class GiftStatusWS {
 	
 	@OnMessage
 	public void onMessage(@PathParam("mem_no") String mem_no, Session userSession, String giftInformation){
-		//將接收到的jsonArr轉換成map
-		Map<String,String> map = new HashMap<>();
-		try {
-			JSONArray jsonArr = new JSONArray(giftInformation);
-			for(int i=0; i<jsonArr.length(); i++){
-				JSONObject jsonObj = jsonArr.getJSONObject(i);
-				String name  = (String) jsonObj.get("name");
-				String value = (String) jsonObj.get("value"); 
-				map.put(name, value);
-			}
-//			for(Entry<String, String> str: map.entrySet())
-//				System.out.println(str.getKey() + " : " + str.getValue());
-		} catch (JSONException e) {
-			e.printStackTrace(System.err);
-		}
-		
-		//更新[禮物VO的狀態]
-		String gift_no = map.get("gift_no");
-		String gift_is_on = map.get("gift_is_on");
-		GiftService giftSvc = new GiftService();
-		giftSvc.updateStatus(gift_no, gift_is_on);
-		
-		//取得對應的[禮物VO/禮物標籤VO]與[限時優惠VO←可能為null]
-		Map<GiftVO, List<GiftLabelVO>> gift = giftSvc.getOne(gift_no);
-		GiftDiscountService gdSvc = new GiftDiscountService();
-		GiftDiscountVO giftDiscountVO = gdSvc.getCurrentValidGift(gift_no);
-		
-		//建立一個list來存放[{action},{禮物VO},{List<禮物標籤VO>},{限時優惠VO}]
-		List<Object> list = new ArrayList<Object>();
-		for(Entry<GiftVO, List<GiftLabelVO>> vo :gift.entrySet()){
-			GiftVO giftVO = vo.getKey();
-			//清除gftVO內的圖片內容，簡化傳遞的資訊
-			giftVO.setGift_pic(null);
-			list.add(giftVO);			
-			List<GiftLabelVO> giftLabelVO = vo.getValue();
-			list.add(giftLabelVO);
-		}
-		if(giftDiscountVO != null)
-			list.add(giftDiscountVO);
-		
-		//將list轉換成json傳遞出去
-		Type listType = new TypeToken<List<Object>>() {}.getType();
-		Gson gson = new Gson();
-		String data = gson.toJson(list, listType);
-System.out.println(data);
-		for (Session session : allSessions) {
-			if (session.isOpen() && !session.equals(userSession))
-				session.getAsyncRemote().sendText(data);
-		}
 	}
 	
 	@OnError
@@ -92,7 +43,7 @@ System.out.println(data);
 		System.out.println(userSession.getId() + "號的gs已離線 : " + Integer.toString(reason.getCloseCode().getCode()));
 	}
 	
-	public void broadcast(String action, String gift_no) {
+	synchronized public void broadcast(String action, String gift_no) {
 		GiftService giftSvc = new GiftService();
 		//取得對應的[禮物VO/禮物標籤VO]與[限時優惠VO←可能為null]
 		Map<GiftVO, List<GiftLabelVO>> gift = giftSvc.getOne(gift_no);
@@ -122,7 +73,11 @@ System.out.println(data);
 System.out.println(data);	
 		for (Session session : allSessions) {
 			if (session.isOpen())
-				session.getAsyncRemote().sendText(data);
+				try {
+					session.getBasicRemote().sendText(data);
+				} catch (IOException e) {
+					e.printStackTrace(System.err);
+				}
 		}
 	}
 }

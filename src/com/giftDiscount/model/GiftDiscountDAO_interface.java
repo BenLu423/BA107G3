@@ -15,5 +15,6 @@ public interface GiftDiscountDAO_interface {
 	public List<GiftDiscountVO> getTotal(Map<String, String[]> map);
 	public List<GiftDiscountVO> getAll();
 	public List<GiftDiscountVO> getAll(Map<String, String[]> map);
+	public List<GiftDiscountVO> getNotStartAll();
 	
 }

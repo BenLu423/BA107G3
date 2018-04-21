@@ -142,6 +142,7 @@ System.out.println("Order action: " + action);
 			Boolean canBuy = true;
 			//取得所有訂單明細
 			Set<GiftOrderDetailVO> giftOrderDetailList = ((Map<GiftOrderDetailVO, List<GiftReceiveVO>>) session.getAttribute("orderDetail")).keySet();
+			
 			for(GiftOrderDetailVO giftOrderDetailVO: giftOrderDetailList){
 				String giftd_no = giftOrderDetailVO.getGiftd_no();
 				if(giftd_no != null && !giftd_no.isEmpty()){
@@ -152,6 +153,9 @@ System.out.println("Order action: " + action);
 					}
 				}
 			}
+			if(giftOrderDetailList.size()==0)
+				canBuy = false;
+			
 			if(canBuy == false)
 	    		map.put("status", "failure");
 			else

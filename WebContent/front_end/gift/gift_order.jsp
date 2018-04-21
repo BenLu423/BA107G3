@@ -349,7 +349,7 @@ $('body').on('change', 'input[name=giftr_amount],textarea[name=giftr_message]',f
 		  
 //			  window.location = contextPath + '/gift/gift.do?action=serachFrontGifts&tabWho='+tabWho+'&requestURL='+servletPath+'&whichPage='+whichPage;
 	  }),
-	  error:(function() { alert("second error"); })
+	  error:(function() { alert("已超過可贈送的禮物數量"); })
 	});
 });
 
