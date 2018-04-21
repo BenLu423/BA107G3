@@ -143,21 +143,22 @@ System.out.println("Order action: " + action);
 			//預設為可以結帳
 			Boolean canBuy = true;
 			//取得所有訂單明細
-			Set<GiftOrderDetailVO> giftOrderDetailList = ((Map<GiftOrderDetailVO, List<GiftReceiveVO>>) session.getAttribute("orderDetail")).keySet();
-			
-			for(GiftOrderDetailVO giftOrderDetailVO: giftOrderDetailList){
-				String giftd_no = giftOrderDetailVO.getGiftd_no();
-				if(giftd_no != null && !giftd_no.isEmpty()){
-					GiftDiscountVO oriVO = giftDiscountSvc.getOneGD(giftd_no);
-					if(oriVO.getGiftd_amount() < giftOrderDetailVO.getGiftod_amount()){
-						map.put(oriVO.getGift_no(), oriVO.getGiftd_amount().toString());
-						canBuy = false;
+			Map<GiftOrderDetailVO, List<GiftReceiveVO>> orderDetail = (Map<GiftOrderDetailVO, List<GiftReceiveVO>>) session.getAttribute("orderDetail");
+			if(orderDetail != null){
+				Set<GiftOrderDetailVO> giftOrderDetailList = orderDetail.keySet();
+				for(GiftOrderDetailVO giftOrderDetailVO: giftOrderDetailList){
+					String giftd_no = giftOrderDetailVO.getGiftd_no();
+					if(giftd_no != null && !giftd_no.isEmpty()){
+						GiftDiscountVO oriVO = giftDiscountSvc.getOneGD(giftd_no);
+						if(oriVO.getGiftd_amount() < giftOrderDetailVO.getGiftod_amount()){
+							map.put(oriVO.getGift_no(), oriVO.getGiftd_amount().toString());
+							canBuy = false;
+						}
 					}
 				}
-			}
-			if(giftOrderDetailList.size()==0)
+			}else if( orderDetail==null || orderDetail.size()==0){
 				canBuy = false;
-			
+			}
 			if(canBuy == false)
 	    		map.put("status", "failure");
 			else
