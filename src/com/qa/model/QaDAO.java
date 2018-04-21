@@ -21,7 +21,7 @@ public class QaDAO implements QaDAO_interface {
 		}
 	}
 	private static final String INSERT_STMT = 
-			"INSERT INTO qa (qa_no , qa_date , qa_title , qa_cnt) VALUES (? , ? , ? , ?)";
+			"INSERT INTO qa (qa_no , qa_date , qa_title , qa_cnt) VALUES ('Q'||LPAD(TO_CHAR(QA_SEQ.NEXTVAL),3,'0') , ? , ? , ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT qa_no,qa_date,qa_title,qa_cnt FROM qa order by Qa_no";
 		private static final String GET_ONE_STMT = 
@@ -42,15 +42,15 @@ public class QaDAO implements QaDAO_interface {
 				con = ds.getConnection();
 				pstmt = con.prepareStatement(INSERT_STMT);
 				
-				pstmt.setString(1, qaVO.getQa_no());
-				pstmt.setDate(2, qaVO.getQa_date());
-				pstmt.setString(3, qaVO.getQa_title());
-				pstmt.setString(4, qaVO.getQa_cnt());
+				
+				pstmt.setDate(1, qaVO.getQa_date());
+				pstmt.setString(2, qaVO.getQa_title());
+				pstmt.setString(3, qaVO.getQa_cnt());
 		
 				pstmt.executeUpdate();
 				
 			}catch (SQLException se) {
-				se.printStackTrace();
+				throw new RuntimeException("A database error occured. " + se.getMessage());
 //				throw new RuntimeException("A database error occured. "
 //						+ se.getMessage());
 				// Clean up JDBC resources

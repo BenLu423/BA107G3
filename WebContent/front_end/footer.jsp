@@ -90,7 +90,7 @@
 		<div class="col-xs-12 col-sm-4">
 			<p>Service</p>
 			<p>關於我們</p>
-			<p>常見問題</p>
+			<p><a href="<%=request.getContextPath()%>/front_end/qa/listAllQa.jsp" style="color:#FFF;">常見問題</a></p>
 		</div>
 		<div class="col-xs-12 col-sm-4">
 			<p>Follow us</p>

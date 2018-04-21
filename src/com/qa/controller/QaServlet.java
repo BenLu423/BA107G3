@@ -21,7 +21,7 @@ public class QaServlet extends HttpServlet {
 		String action = req.getParameter("action");
 
 
-		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+		if ("getOne_For_Display".equals(action)) { // 來自select_page1.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -71,9 +71,9 @@ public class QaServlet extends HttpServlet {
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("qaVO", qaVO); // 資料庫取出的empVO物件,存入req
+				req.setAttribute("qaVO", qaVO); // 資料庫取出的qaVO物件,存入req
 				String url = "/back_end/qa/listOneQa.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneQa.jsp
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
@@ -86,7 +86,7 @@ public class QaServlet extends HttpServlet {
 		}
 		
 		
-		if ("getOne_For_Update".equals(action)) { // 來自listAllEmp.jsp的請求
+		if ("getOne_For_Update".equals(action)) { // 來自listAllQa.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -102,7 +102,7 @@ public class QaServlet extends HttpServlet {
 				QaVO qaVO = qaSvc.getOneQa(qa_no);
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
-				req.setAttribute("qaVO", qaVO);         // 資料庫取出的empVO物件,存入req
+				req.setAttribute("qaVO", qaVO);         // 資料庫取出的qaVO物件,存入req
 				String url = "/back_end/qa/update_qa_input.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 				successView.forward(req, res);
@@ -117,7 +117,7 @@ public class QaServlet extends HttpServlet {
 		}
 		
 		
-		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
+		if ("update".equals(action)) { // 來自update_qa_input.jsp的請求
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -150,7 +150,7 @@ public class QaServlet extends HttpServlet {
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("qaVO", qaVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					req.setAttribute("qaVO", qaVO); // 含有輸入格式錯誤的qaVO物件,也存入req
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/back_end/qa/update_qa_input.jsp");
 					failureView.forward(req, res);
@@ -162,7 +162,7 @@ public class QaServlet extends HttpServlet {
 				qaVO = qaSvc.updateQa(qa_no,qa_date,qa_title,qa_cnt);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("qaVO", qaVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				req.setAttribute("qaVO", qaVO); // 資料庫update成功後,正確的的qaVO物件,存入req
 				String url = "/back_end/qa/listOneQa.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
@@ -176,7 +176,7 @@ public class QaServlet extends HttpServlet {
 			}
 		}
 
-        if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
+        if ("insert".equals(action)) { // 來自addQa.jsp的請求  
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -185,7 +185,7 @@ public class QaServlet extends HttpServlet {
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				String qa_no = req.getParameter("qa_no");
+				String qa_no =new String (req.getParameter("qa_no").trim());
 				
 				java.sql.Date qa_date = null;
 				try {
@@ -194,8 +194,8 @@ public class QaServlet extends HttpServlet {
 					qa_date=new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期!");
 				}
-				String qa_title = req.getParameter("qa_title");
-				String qa_cnt = req.getParameter("qa_cnt");
+				String qa_title =new String(req.getParameter("qa_title").trim());
+				String qa_cnt =new String(req.getParameter("qa_cnt").trim());
 				
 				
 				QaVO qaVO = new QaVO();
@@ -206,7 +206,7 @@ public class QaServlet extends HttpServlet {
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("qaVO", qaVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					req.setAttribute("qaVO", qaVO); // 含有輸入格式錯誤的qaVO物件,也存入req
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/back_end/qa/addQa.jsp");
 					failureView.forward(req, res);
@@ -219,7 +219,7 @@ public class QaServlet extends HttpServlet {
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/back_end/qa/listAllQa.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllQa.jsp
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
@@ -232,7 +232,7 @@ public class QaServlet extends HttpServlet {
 		}
 		
 		
-		if ("delete".equals(action)) { // 來自listAllEmp.jsp
+		if ("delete".equals(action)) { // 來自listAllQa.jsp
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
