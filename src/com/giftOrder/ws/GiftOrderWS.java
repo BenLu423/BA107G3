@@ -50,7 +50,7 @@ public class GiftOrderWS {
 	
 	@OnClose
 	public void onClose(@PathParam("mem_no") String mem_no, Session userSession, CloseReason reason) {
-		allUsers.remove(userSession);
+		allUsers.remove(mem_no);
 		System.out.println(mem_no + "號的go已離線 : " + Integer.toString(reason.getCloseCode().getCode()));
 	}
 	
