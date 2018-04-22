@@ -116,7 +116,7 @@
 					<span id="checkoutMoney">
 						Total: $<p>${orderMoney}</p>
 					</span>
-					<a href="<%=request.getContextPath()%>/front_end/gift/gift_checkout.jsp">
+					<a id="ckeckoutText" href="<%=request.getContextPath()%>/front_end/gift/gift_checkout.jsp">
 						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout_ok.jpg" style="height:60px;">µ²±b
 					</a>
 				</div>         
@@ -139,11 +139,12 @@ ul {
     width: 150px;
     height: 50px;
   }
-a:focus, a:hover{
+#ckeckoutText:focus,
+#ckeckoutText:hover{
 	color: black;
 	text-decoration: none;
 }  
-a{
+#ckeckoutText{
 	color:black;
 	font-size: 20px;
 	font-weight: 600;
