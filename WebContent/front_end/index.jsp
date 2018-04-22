@@ -145,7 +145,7 @@
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="index-friend-text row">
-                    <img src="res/img/index-friend.jpg">
+                    <img src="<%=request.getContextPath()%>/front_end/res/img/index/index-friend.jpg">
                 </div>
             </div>
             <!-- //friends -->
@@ -155,7 +155,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         <div class="index-diary-text row">
-                            <img src="res/img/index-diary.jpg">
+                            <img src="<%=request.getContextPath()%>/front_end/res/img/index/index-diary.jpg">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
