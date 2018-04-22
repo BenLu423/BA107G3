@@ -22,6 +22,13 @@
 		session.setAttribute("nowFriNo", nowFriNo);
 	}
 	
+	TalkVO holdTalk = (TalkVO)session.getAttribute("holdTalk");
+	if(holdTalk==null){
+		holdTalk = null;
+	}else{
+		session.setAttribute("holdTalk",holdTalk);
+	}
+	
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -32,6 +39,31 @@
 
 </head>
 <body onload="connect();" onunload="disconnect();">
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <img src="" id="showBigPic">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  
 	<!-- chat -->
 	<div id="index-chat" class="container">
 		<div class="row index-chat-title">
@@ -45,9 +77,10 @@
 				<div class="pre-scrollable" style="height: 110px">
 
 					<c:forEach var="friends" items="${friends}">
-						<div id="${friends.mem_no}">
+						<div id="${friends.mem_no}" style="margin:5px">
 							<img src="<%=request.getContextPath()%>/front_end/res/img/footer/close.jpg"> 
 							<a href="#" onclick="getTalk('${friends.mem_no}')">${friends.mem_name}</a>
+							
 						</div>
 					</c:forEach>
 
@@ -62,7 +95,8 @@
 			</div>
 			<div class="col-xs-12 col-sm-12" style="background-color: #FFF;">
 				<input type="text" placeholder="type message..." id="inputMessage" onkeydown="if (event.keyCode == 13) sendMessage();"/>
-				<div id="sendIcon" onclick="sendMessage();" style="float:right"><span class="fa fa-commenting-o"></span></div>
+				<span><label class="glyphicon glyphicon-picture"><input id="upImg" type="file" style="display:none;"/></label></span>
+				<span id="sendIcon" onclick="sendMessage();"><span class="fa fa-commenting-o"></span></span>
 			</div>
 		</div>
 		<button id="chatSwitchOpen" type="button">
@@ -72,13 +106,8 @@
 			<span class="fa fa-arrow-circle-right fa-3x"></span>
 		</button>
 	</div>
-
-	<script>
-		
-	
-	</script>
 	<!-- //chat -->
-
+	
 
 	<!-- FOOTER -->
 	<div class="footer">
@@ -90,7 +119,7 @@
 		<div class="col-xs-12 col-sm-4">
 			<p>Service</p>
 			<p>關於我們</p>
-			<p><a href="<%=request.getContextPath()%>/front_end/qa/listAllQa.jsp" style="color:#FFF;">常見問題</a></p>
+			<p>常見問題</p>
 		</div>
 		<div class="col-xs-12 col-sm-4">
 			<p>Follow us</p>
@@ -106,15 +135,18 @@
 	</div>
 	<!-- FOOTER END-->
 	<script>
-	$(document).ready(function() {
-		//滾輪置底
+	
+	/********************卷軸置底************************/
+	
+	function down() {
 		var div = document.getElementById('chat-message');
 		div.scrollTop = div.scrollHeight;
-		//$("div #chat-message").scrollTo(0,document.body.scrollHeight);
 		
-		//dh.scrollTop(100000000);
-	});
+	}
 
+	
+	/********************websocket*********************/
+	
 		var MyPoint = "/FriendWS/${memSelf.mem_no}";
 		var host = window.location.host;
 		var path = window.location.pathname;
@@ -129,6 +161,11 @@
 			webSocket = new WebSocket(endPointURL);
 
 			webSocket.onopen = function(event) {
+				
+				nowFriNo='${nowFriNo}';
+				if(nowFriNo!=''){
+					getTalk('${nowFriNo}');
+				}
 				
 			};
 
@@ -147,57 +184,115 @@
             } 
 			if (jsonObj.type == 'sendSelf') { //上線接收在線好友清單
 				var onlineFri = jsonObj.onlineFri;
-			
-				onlineFri.forEach(function(fri){
-					$("#"+fri+">img").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/online.jpg");
-							});
+				if(onlineFri!=null){
+					onlineFri.forEach(function(fri){
+						$("#"+fri+">img").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/online.jpg");
+								});
 				}
+				
+				var str = JSON.stringify(jsonObj.read);//未讀數量的map<編號,數量>
+				var read = eval("("+str+")");
+				for (var key in read) {  
+					var a = read[key];
+					for (var k in a) {
+						if(a[k]>0){
+							$("#"+k).append("<span class='unread'>"+a[k]+"</span>");
+						}
+					}   
+				}  
+				
+				
+			}
 			/*********************接收歷史訊息***************************/
 			
 			if (jsonObj.type == 'getMessage') { 
 				var jsonMessage = jsonObj.message; //str
-				var content = JSON.parse(jsonMessage);//jsonArray
-				var selfNo = '${memSelf.mem_no}';
-				nowFriNo = new String(jsonObj.friNo);//好友編號
-				//alert("歷史訊息nowFriNo-type"+typeof(String(nowFriNo)));//String
 				
-				for(var i = 0 ; i < content.length ; i++){
-					if(content[i].memSend === selfNo){
-						var add = "<div class='clearFloat'><p class='selfMessage'>"+content[i].message+"</p></div>"
-						$("#chat-message").append(add);
-					}else if(content[i].memGet === selfNo){
-						var add = "<div class='clearFloat'><p class='friMessage'>"+content[i].message+"</p></div>"
-						$("#chat-message").append(add);
+				var content = JSON.parse(jsonMessage);//jsonArray
+				if(content!=null){
+					var selfNo = '${memSelf.mem_no}';
+					nowFriNo = String(new String(jsonObj.friNo));//好友編號
+					//alert("歷史訊息nowFriNo-type"+typeof(nowFriNo));//String
+					
+					for(var i = 0 ; i < content.length ; i++){
+						if(content[i].sendType === 'pic' && content[i].memSend === selfNo){
+							var add = "<div class='selfImg'><img src='"+content[i].message+"' style='width:60%' data-toggle='modal' data-target='#myModal' onclick='showBigPic(this);'></div><br>";
+							$("#chat-message").append(add);
+							down();
+							
+						}else if(content[i].sendType === 'pic' && content[i].memGet === selfNo){
+							var add = "<div class='friImg'><img src='"+content[i].message+"' style='width:60%' data-toggle='modal' data-target='#myModal' onclick='showBigPic(this);'></div><br>";
+							$("#chat-message").append(add);
+							down();
+							
+						}else{
+							if(content[i].memSend === selfNo){
+								var add = "<p class='selfMessage'>"+content[i].message+"</p>"
+								$("#chat-message").append(add);
+								down();
+							}else if(content[i].memGet === selfNo){
+								var add = "<p class='friMessage'>"+content[i].message+"</p>"
+								$("#chat-message").append(add);
+								down();
+							}
+						}
 					}
-				}
+					
+				}else{
+	            	return;
+	            }
+				
             }
 			
 			/**********************接收新訊息*****************************/
 			
 			if(jsonObj.type == 'getNewMessage'){
-				//alert("getNewMessage inter");
+				var count = 0;
 				var chat_message = $("#chat-message");
-				var messageHight = $("#chat-message").attr("height");
 				var message = jsonObj.message;
-				var add = "<div class='clearFloat'><p class='friMessage'>"+message+"</p></div>";
-				$("#chat-message").append(add);
-				
-				var div = document.getElementById('chat-message');
-				div.scrollTop = div.scrollHeight;
+				var add = "<p class='friMessage'>"+message+"</p>";
+				var memSend = new String(jsonObj.memSend);
+				if(memSend==nowFriNo){
+					$("#chat-message").append(add);
+					down();
+					return;
+				}else if(memSend!=nowFriNo){
+					
+					var count = $("#"+memSend+">span").text();
+					if(count === ""){
+						count=1;
+						$("#"+memSend).append("<span class='unread'>"+count+"</span>");
+					}else{
+						count++;
+						$("#"+memSend+">span").text(count);
+					}
+				}
+				return;
 			}
 			
-
+			/**********************接收新圖片*****************************/
+			if(jsonObj.type == 'getNewImg'){
+				var chat_message = $("#chat-message");
+				var message = jsonObj.message;
+				var add = "<div class='friImg'><img src='"+message+"' style='width:60%' data-toggle='modal' data-target='#myModal' onclick='showBigPic(this);'></div><br>";
+				var memSend = new String(jsonObj.memSend);
+				if(memSend==nowFriNo){
+					$("#chat-message").append(add);
+					down();
+					return;
+				}
+				return;
+			}
+			
 			};
 
 			webSocket.onclose = function(event) {
 				
 			}
-			
-			
-			
 
 		}
 		
+		/**********************傳送新訊息*****************************/
 		function sendMessage() {
 			var memGet = nowFriNo;
 			//alert("sendMessage nowFriNo = "+typeof(nowFriNo))
@@ -215,7 +310,7 @@
 				return;
 			}
 			
-			var add = "<div class='clearFloat'><p class='selfMessage'>"+message+"</p></div>"
+			var add = "<p class='selfMessage'>"+message+"</p>"
 			$("#chat-message").append(add);
 			
 			var jsonObj = {
@@ -224,18 +319,19 @@
 				"memGet" : memGet,
 				"date" : date,
 				"message" : message,
+				"sendType":"text",
+				"read":"未讀",
 			};
 			
 			webSocket.send(JSON.stringify(jsonObj));
 			 $("#inputMessage").val("");
 			 $("#inputMessage").focus();
 			 
-			 var div = document.getElementById('chat-message');
-			div.scrollTop = div.scrollHeight;
+			 down();
 
 		}
 		
-		
+		/*********************取歷史訊息**********************/
 		function getTalk(friNo){
 			
 			friName = $('#friName').text();//目前訊息框上的好友名稱
@@ -251,19 +347,77 @@
 				};
 				webSocket.send(JSON.stringify(jsonObj));
 				
+				var deleteUnread = {
+						"type":"deleteUnread",
+						"friNo" : friNo,
+						
+				};
+				
+				webSocket.send(JSON.stringify(deleteUnread));
+				
+				$("#"+friNo+">span").remove();
 				
 			}else{
 				return;
 			}
+			
+			
 		}
 		
 		function disconnect(){
-			
-			
-			
 			webSocket.close();
 			
 		}
+		
+		
+		
+		/********************傳圖片************************/
+		$(function(){
+			$('#upImg').on('change',function(img){
+				var file    = document.querySelector('input[id=upImg]').files[0];
+				var reader  = new FileReader();
+				var memGet = nowFriNo;
+				var memSend = "${memSelf.mem_no}";
+				var date = new Date();
+				
+				if (file) {
+				    reader.readAsDataURL(file);
+				    //var base = atob(reader.result);
+				    reader.addEventListener("load",function() {
+					var add = "<div class='selfImg'><img src='"+reader.result+"' style='width:60%' data-toggle='modal' data-target='#myModal' onclick='showBigPic(this);'></div><br>";
+					$("#chat-message").append(add);
+					var result = reader.result;
+					//console.log(reader.result);//base64String
+					var jsonObj = {
+							"type" : "sendImg",
+							"memSend" : memSend,
+							"memGet" : memGet,
+							"date" : date,
+							"message" : result,
+							"sendType":"pic",
+							"read":"未讀",
+							};
+
+					webSocket.send(JSON.stringify(jsonObj));
+					down();
+					}, false);
+				    
+				}
+				
+				})
+				
+		})
+		
+		
+		/********************秀大圖************************/
+		
+		function showBigPic(e){
+			var imgPath = e.src;
+		    $("#showBigPic").attr("src",imgPath);
+		}
+		
+	
+		
 	</script>
 
 

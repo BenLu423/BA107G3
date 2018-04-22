@@ -24,32 +24,7 @@ public class TalkServlet extends HttpServlet{
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-		String action = req.getParameter("action");
 		
-		/**************取得好友聊天內容******************/
-		if("getMessage".equals(action)){
-			HttpSession session = req.getSession();
-			MemberVO self = (MemberVO)session.getAttribute("memSelf");
-			String memGet = req.getParameter("memGet");
-			System.out.println(memGet);
-			FriendsService friSvc = new FriendsService();
-			FriendsListVO friends = friSvc.getOne(self.getMem_no(), memGet);
-						
-			TalkService talkSvc = new TalkService();
-			String talk_cnt = talkSvc.getOneTalk(friends);
-			JSONArray jsonarray = null ;
-			
-			try {
-				jsonarray = new JSONArray(talk_cnt);
-				System.out.println(jsonarray);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			
-			session.setAttribute("talk_cnt", jsonarray );
-			
-			
-		}
 		
 		
 		

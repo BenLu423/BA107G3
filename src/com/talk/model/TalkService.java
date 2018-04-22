@@ -10,11 +10,21 @@ public class TalkService {
 		
 	}
 	
-	public String getOneTalk(FriendsListVO friends){
+	public TalkVO getOneTalk(FriendsListVO friends){
 		TalkVO talk = dao.findTalkByFriends(friends);
 		String content = talk.getTalk_cnt();
 		
-		return content;
+		return talk;
 	}
+	
+	public void updateCnt(TalkVO talk){
+		dao.update(talk);
+	}
+	
+	public void addTalk(TalkVO talk){
+		dao.insert(talk);
+	}
+	
+	
 
 }
