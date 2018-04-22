@@ -45,7 +45,7 @@ public class GiftOrderWS {
 	
 	@OnError
 	public void onError(Session userSession, Throwable e){
-		e.printStackTrace(System.err);
+//		e.printStackTrace(System.err);
 	}
 	
 	@OnClose

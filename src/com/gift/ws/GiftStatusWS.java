@@ -34,7 +34,7 @@ public class GiftStatusWS {
 	
 	@OnError
 	public void onError(@PathParam("mem_no") String mem_no, Session userSession, Throwable e){
-		e.printStackTrace(System.err);
+//		e.printStackTrace(System.err);
 	}
 	
 	@OnClose
