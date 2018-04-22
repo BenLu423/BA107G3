@@ -177,12 +177,12 @@
                         <nav class="menu menu--iris">
                         <ul class="nav navbar-nav menu__list">
                         	 <!-- menu__item--current -->
-                    	<li class="menu__item"><a href="#" class="news.html">最新公告</a></li>
-                    	<li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/member/member_search_all.jsp" class="friends.html">交友搜尋</a></li> 
-                        <li class="menu__item"><a href="diary.html" class="menu__link">日記專欄</a></li>
-                        <li class="menu__item"><a href="event.html" class="menu__link">活動特輯</a></li>
-                        <li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/gift/gift_index.jsp" class="menu__link">禮物商城</a></li>
+                    	<li class="menu__item"><a href="#" class="menu__link">最新公告</a></li>
+                    	<li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/member/member_search_all.jsp" class="menu__link">交友搜尋</a></li> 
                         <li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/map/map.jsp" class="menu__link">距離配對</a></li>         
+                        <li class="menu__item"><a href="#" class="menu__link">日記專欄</a></li>
+                        <li class="menu__item"><a href="#" class="menu__link">活動特輯</a></li>
+                        <li class="menu__item"><a href="<%=request.getContextPath()%>/front_end/gift/gift_index.jsp" class="menu__link">禮物商城</a></li>
                     </ul>
                     </nav>
                 </div> 
