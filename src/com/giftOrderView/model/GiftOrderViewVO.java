@@ -13,6 +13,7 @@ public class GiftOrderViewVO implements Serializable {
 	private String mem_name_other;// 收禮會員姓名
 	private byte[] mem_photo_other;// 收禮會員照片
 	private Integer giftr_amount;// 收贈禮數量
+	private String giftr_message;// 收贈禮留言
 	private Timestamp giftr_time;// 收贈禮時間
 	private String gifto_no;// 訂單編號
 	private Timestamp gifto_time;// 訂單時間
@@ -96,6 +97,14 @@ public class GiftOrderViewVO implements Serializable {
 
 	public void setGiftr_amount(Integer giftr_amount) {
 		this.giftr_amount = giftr_amount;
+	}
+
+	public String getGiftr_message() {
+		return giftr_message;
+	}
+
+	public void setGiftr_message(String giftr_message) {
+		this.giftr_message = giftr_message;
 	}
 
 	public Timestamp getGiftr_time() {

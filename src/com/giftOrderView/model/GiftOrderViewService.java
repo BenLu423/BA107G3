@@ -31,6 +31,10 @@ public class GiftOrderViewService {
 		
 	}
 	
+	public List<GiftOrderViewVO> getReceiveAll(String mem_no_other) {
+		return dao.getReceiveAll(mem_no_other);
+	}
+	
 	public byte[] getPic(String giftr_no, String columnName) {
 		return dao.getPic(giftr_no, columnName);
 	}
