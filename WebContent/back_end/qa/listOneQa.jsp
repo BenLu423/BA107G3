@@ -16,20 +16,18 @@
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
 
 	
-	<script>console.log(qaVO)</script>
-	
 	   		<div class="col-xs-12 col-sm-10 cont">
 	   		
 	   		<div style="border-width:6px;border-style:double;border-color:#000;padding:7px;margin:150px;background: rgba(255,220,220,1);">
 
          <table id="table-1">
 	<tr><td>
-		 <h3>員工資料 - ListOneQa.jsp</h3>
-		 <h4><a href="select_page1.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
+		 <h3>ListOneQa</h3>
+		 <h4><a href="select_page1.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
 
-<table>
+<table border="1px,solid">
 	<tr>
 		<th>常見問題編號</th>
 		<th>刊登日期</th>

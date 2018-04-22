@@ -16,7 +16,7 @@
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
-
+<h4><a href="select_page2.jsp">回首頁</a></h4>
 	
 	<script>console.log(qaVO)</script>
 	
@@ -28,7 +28,8 @@
   <table id="table-1">
 	<tr><td>
 		 <h3>所有常見問題資料 - listAllQa.jsp</h3>
-		 <h4><a href="select_page1.jsp"></a></h4>
+	<h4><a href="select_page1.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
+	
 	</td></tr>
 </table>
 

@@ -23,12 +23,10 @@
 	   		<div style="border-width:6px;border-style:double;border-color:#000; width:600px;padding:7px;margin:150px;background: rgba(255,220,220,1);">
 
           <table id="table-1">
-   <tr><td><h3>IBM Qa: Home</h3><h4>( MVC )</h4></td></tr>
+   <tr><td><h3>常見問題管理</h3></td></tr>
 </table>
 
-<p>This is the Home page for IBM Qa: Home</p>
-
-<h3>資料查詢:</h3>
+<h3>常見問題查詢:</h3>
 	
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -45,8 +43,8 @@
   
   
   <li>
-    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/qa/qa.do" >
-        <b>輸入員工編號 (如7001):</b>
+    <FORM METHOD="post" ACTION="qa.do" >
+        <b>輸入常見問題編號 (如Q001):</b>
         <input type="text" name="qa_no">
         <input type="hidden" name="action" value="getOne_For_Display">
         <input type="submit" value="送出">
@@ -56,8 +54,8 @@
   <jsp:useBean id="qaSvc" scope="page" class="com.qa.model.QaService" />
    
   <li>
-     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/qa/qa.do" >
-       <b>選擇員工編號:</b>
+     <FORM METHOD="post" ACTION="qa.do" >
+       <b>選擇常見問題編號:</b>
        <select size="1" name="qa_no">
          <c:forEach var="qaVO" items="${qaSvc.all}" > 
           <option value="${qaVO.qa_no}">${qaVO.qa_no}
@@ -72,7 +70,7 @@
 </ul>
 
 
-<h3>員工管理</h3>
+<h3>新增常見問題</h3>
 
 <ul>
   <li><a href='addQa.jsp'>Add</a> a new Qa.</li>

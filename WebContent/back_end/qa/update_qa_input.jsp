@@ -20,55 +20,68 @@
 	
 	   		<div class="col-xs-12 col-sm-10 cont">
 	   		
-	   		<div style="border-width:6px;border-style:double;border-color:#000; width:600px;padding:7px;margin:150px;background: rgba(255,220,220,1);">
+	   		<div style="border-width:6px;border-style:double;border-color:#000; width:950px;padding:7px;margin:150px;background: rgba(255,220,220,1);;">
+			
 			<table id="table-1">
 				<tr><td>
-					 <h3>員工資料修改 - update_qa_input.jsp</h3>
-					 <h4><a href="select_page1.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
+					 <h7>update_qa_input.jsp</h7>
+					 <h4><a href="select_page1.jsp"></a></h4>
 				</td></tr>
 			</table>
 			
-			<h3>資料修改:</h3>
+			<center><font  color="#B5090B" face="Microsoft JhengHei" size="14"><i>常見問題資料修改:</i></font></center>
 			
 			<%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<font style="color:red">請修正以下錯誤:</font>
-				<ul>
-					<c:forEach var="message" items="${errorMsgs}">
+					<ul>
+						<c:forEach var="message" items="${errorMsgs}">
 						<li style="color:red">${message}</li>
-					</c:forEach>
-				</ul>
-			</c:if>
+						</c:forEach>
+					</ul>
+				</c:if>
 			
 			<FORM METHOD="post" ACTION="qa.do" name="form1">
-			<table>
+			<div class="panel-body">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th><span style="font-family:Microsoft JhengHei;">項目</span></th>
+									<th><span style="font-family:Microsoft JhengHei;">內容</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								
 				<tr>
-					<td>常見問題編號:<font color=red><b>*</b></font></td>
-					<td><%=qaVO.getQa_no()%></td>
+					<td><font size="14"><span style="font-family:Microsoft JhengHei;">常見問題編號:</span></font></td>
+					<td>${qaVO.qa_no}</td>
 				</tr>
 				<tr>
-					<td>雇用日期:</td>
-					<td><input name="qa_date" id="f_date1" type="text" ></td>
+					<td><font size="14"><span style="font-family:Microsoft JhengHei;">修改日期:</span></font></td>
+					<td><input name="qa_date" id="f_date1" type="text" class="btn-basic btn-lg" ></td>
 				</tr>
 					<tr>
-					<td>常見問題標題:</td>
-					<td><input type="TEXT" name="qa_title" size="45" value="<%=qaVO.getQa_title()%>" /></td>
+					<td><font size="14"><span style="font-family:Microsoft JhengHei;">常見問題標題:</span></font></td>
+					<td><input type="TEXT" name="qa_title" size="45" value="<%=qaVO.getQa_title()%>" class="btn-basic btn-lg"/></td>
 				</tr>
 				<tr>
-					<td>常見問題內容:</td>
-					<td><input type="TEXT" name="qa_cnt" size="45" value="<%=qaVO.getQa_cnt()%>" /></td>
+					<td><font size="14"><span style="font-family:Microsoft JhengHei;">常見問題內容:</span></font></td>
+					<td><input type="TEXT" name="qa_cnt" size="45" value="<%=qaVO.getQa_cnt()%>" class="btn-basic btn-lg"/></td>
 				</tr>
 			</table>
-				<br>
-				<input type="hidden" name="action" value="update">
-				<input type="hidden" name="qa_no" value="<%=qaVO.getQa_no()%>">
-				<input type="submit" value="送出修改"></FORM>
-				
-							</div>
-                        </div>
-
-  </body>
-
+								
+								
+								
+								
+								
+							</tbody>
+						
+					</div>
+					<input type="hidden" name="action" value="update">
+					<input type="hidden" name="qa_no" value="<%=qaVO.getQa_no()%>">
+					<input type="submit" value="送出修改"></FORM>
+			</div>
+		</div>
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />

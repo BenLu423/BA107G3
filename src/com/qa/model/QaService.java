@@ -11,12 +11,12 @@ public class QaService {
 		dao = new QaDAO();
 	}
 
-	public QaVO addQa(String qa_no,java.sql.Date qa_date, 
+	public QaVO addQa(java.sql.Date qa_date, 
 			String qa_title, String qa_cnt) {
 
 		QaVO qaVO = new QaVO();
 
-		qaVO.setQa_no(qa_no);
+		//qaVO.setQa_no(qa_no);
 		qaVO.setQa_date(qa_date);
 		qaVO.setQa_title(qa_title);
 		qaVO.setQa_cnt(qa_cnt);

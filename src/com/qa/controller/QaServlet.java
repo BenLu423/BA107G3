@@ -87,7 +87,6 @@ public class QaServlet extends HttpServlet {
 		
 		
 		if ("getOne_For_Update".equals(action)) { // 來自listAllQa.jsp的請求
-
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -185,7 +184,7 @@ public class QaServlet extends HttpServlet {
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				String qa_no =new String (req.getParameter("qa_no").trim());
+				//String qa_no =new String (req.getParameter("qa_no").trim());
 				
 				java.sql.Date qa_date = null;
 				try {
@@ -199,7 +198,7 @@ public class QaServlet extends HttpServlet {
 				
 				
 				QaVO qaVO = new QaVO();
-				qaVO.setQa_no(qa_no);
+				//qaVO.setQa_no(qa_no);
 				qaVO.setQa_date(qa_date);
 				qaVO.setQa_title(qa_title);
 				qaVO.setQa_cnt(qa_cnt);
@@ -215,7 +214,7 @@ public class QaServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				QaService qaSvc = new QaService();
-				qaVO = qaSvc.addQa(qa_no,qa_date,qa_title,qa_cnt);
+				qaVO = qaSvc.addQa(qa_date,qa_title,qa_cnt);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/back_end/qa/listAllQa.jsp";

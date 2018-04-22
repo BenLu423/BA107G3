@@ -16,8 +16,6 @@
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
 
 	
-	<script>console.log(qaVO)</script>
-	
 	   		<div class="col-xs-12 col-sm-10 cont">
 	   		
 	   		<div style="border-width:6px;border-style:double;border-color:#000;padding:7px;margin:150px;background: rgba(255,220,220,1);">
@@ -39,28 +37,25 @@
                         	<div class="form-top">
                         		<div class="form-top-left">
                         			<h2>新增常見問題</h2>	
+                        			 <h4><a href="select_page2.jsp">回首頁</a></h4>
                         		</div>
 	                        		<div class="form-top-right">
 	                        			<i class="fa fa-envelope"></i>
 	                        		</div>
                             </div>
                             	<div class="form-bottom contact-form">
-			                 <%-- 錯誤表列 --%>
-									<c:if test="${not empty errorMsgs}">
-										<font style="color:red">請修正以下錯誤:</font>
-										<ul>
-											<c:forEach var="message" items="${errorMsgs}">
-												<li style="color:red">${message}</li>
-											</c:forEach>
-										</ul>
-									</c:if>
+				 <%-- 錯誤表列 --%>
+					<c:if test="${not empty errorMsgs}">
+						<font style="color:red">請修正以下錯誤:</font>
+						<ul>
+							<c:forEach var="message" items="${errorMsgs}">
+								<li style="color:red">${message}</li>
+							</c:forEach>
+						</ul>
+					</c:if>
 									
 								<FORM METHOD="post" ACTION="qa.do" name="form1">
-			                    	<div class="form-group"><p class="lead">常見問題編號</p>
-			                    		<label class="sr-only" for="contact-email"></label>
-			                        	<input type="text" name="qa_no" class="contact-email form-control" 
-			                        	 value="<%= (qaVO==null)? "Q009" : qaVO.getQa_no()%>" >
-			                        </div>
+			                    	
 			                    	<div class="form-group"><p class="lead">刊登日期</p>
 			                    		<label class="sr-only" for="contact-email"></label>
 			                        	<input type="text" name="qa_date"  class="contact-email form-control" id="f_date1">
@@ -98,9 +93,9 @@
 								    qa_date = new java.sql.Date(System.currentTimeMillis());
 							   }
 							%>
-							<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-							<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-							<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+							<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/datetimepicker/jquery.datetimepicker.css" />
+							<script src="<%=request.getContextPath()%>/back_end/datetimepicker/jquery.js"></script>
+							<script src="<%=request.getContextPath()%>/back_end/datetimepicker/jquery.datetimepicker.full.js"></script>
 							
 							<style>
 							  .xdsoft_datetimepicker .xdsoft_datepicker {
