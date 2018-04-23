@@ -147,9 +147,9 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 
 //		//● 新增
 //		com.member.model.MemberVO memberVO = new com.member.model.MemberVO(); // 會員POJO
-//		memberVO.setMem_no("M012");
+//		memberVO.setMem_no("M013");
 //		com.gift.model.GiftVO giftVO = new com.gift.model.GiftVO(); // 禮物POJO
-//		giftVO.setGift_no("G001");
+//		giftVO.setGift_no("G003");
 //
 //		GiftTrackVO giftTrackVO1 = new GiftTrackVO();
 //		giftTrackVO1.setMemberVO(memberVO);

@@ -6,9 +6,7 @@
     <class name="com.member.model.MemberVO" table="MEMBER" >
         
         <id name="mem_no" column="mem_no">
-            <generator class="sequence" >
-              <param name="sequence">member_seq</param>
-            </generator>  
+            <generator class="com.member.model.MemberGenerator"/> 
         </id>
         
         <property name="mem_account" column="mem_account" />
