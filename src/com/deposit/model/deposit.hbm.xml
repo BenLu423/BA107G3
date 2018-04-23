@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.deposit.model.DepositVO" table="DEPOSIT" >
+        
+        <id name="depo_no" column="depo_no">
+            <generator class="com.deposit.model.DepositGenerator"/>
+        </id>
+        
+        <property name="depo_name" column="depo_name" />
+        <property name="depo_value" column="depo_value" />
+        <property name="depo_percent" column="depo_percent" />
+
+		<set name="depositDetails" table="DEPOSIT_DETAIL" cascade="save-update" order-by="depo_no desc">			
+			<key>
+				<column name="depod_no" />
+			</key>
+			<one-to-many class="com.deposit_detail.model.DepositDetailVO" />
+		</set>        
+        
+    </class>
+</hibernate-mapping>
+

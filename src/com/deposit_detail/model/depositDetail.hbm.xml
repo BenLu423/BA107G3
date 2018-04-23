@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.deposit_detail.model.DepositDetailVO" table="DEPOSIT_DETAIL" >
+        
+        <id name="depod_no" column="depod_no">
+<!--             <generator class="com.deposit_detail.model.DepositDetailGenerator"/>  -->
+        </id>
+        
+        <property name="depod_time" column="depod_time" />
+        
+        <many-to-one name="memberVO" class="com.member.model.MemberVO" lazy="false">
+            <column name="mem_no"/>
+        </many-to-one>
+
+        <many-to-one name="depositVO" class="com.deposit.model.DepositVO" lazy="false">
+            <column name="depo_no"/>
+        </many-to-one>
+        
+    </class>
+</hibernate-mapping>
+

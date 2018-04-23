@@ -36,6 +36,9 @@
 		<mapping resource="com/giftTrack/model/giftTrack.hbm.xml" />
 		<mapping resource="com/gift/model/gift.hbm.xml" />
 		<mapping resource="com/member/model/member.hbm.xml" />
+		<mapping resource="com/deposit/model/deposit.hbm.xml" />
+		<mapping resource="com/deposit_detail/model/depositDetail.hbm.xml" />
+		
 		
 	</session-factory>
 	

@@ -1,206 +1,111 @@
 package com.deposit_detail.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
-
-import com.deposit.model.DepositVO;
+import hibernate.util.HibernateUtil;
 
 public class DepositDetailDAO implements DepositDetail_interface {
-	
-	private static DataSource ds = null;
-	static {
-		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
 
-	private static final String INSERT_DEPOSITDETAIL = 
-			"INSERT INTO DEPOSIT_DETAIL(DEPOD_NO, MEM_NO, DEPO_NO, DEPOD_TIME) VALUES ('DD'||LPAD(to_char(DEPOSIT_DETAIL_SEQ.NEXTVAL),3,'0'),?,?, TO_DATE('2018-03-10 08:08:00','yyyy/mm/dd hh24:mi:ss'))";
-	private static final String GET_ONEMEM = 
-			"SELECT * FROM DEPOSIT_DETAIL WHERE MEM_NO=?";
-	private static final String GET_ALLMEM = 
-			"SELECT * FROM DEPOSIT_DETAIL ORDER BY MEM_NO";
+	private static final String INSERT_DEPOSITDETAIL = "INSERT INTO DEPOSIT_DETAIL(DEPOD_NO, MEM_NO, DEPO_NO) VALUES ('DD'||LPAD(to_char(DEPOSIT_DETAIL_SEQ.NEXTVAL),3,'0'),?,?)";
+
 	@Override
 	public void insert(DepositDetailVO depositDetailVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_DEPOSITDETAIL);
-			con.setAutoCommit(false);
-
-			pstmt.setString(1, depositDetailVO.getMem_no());
-			pstmt.setString(2, depositDetailVO.getDepo_no());
-
-			pstmt.executeUpdate();
-			con.commit();
-
-		} catch (SQLException se) {
-			try {
-				con.rollback();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.setAutoCommit(true);
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			Query query = session.createSQLQuery(INSERT_DEPOSITDETAIL);
+			query.setParameter(0, depositDetailVO.getMemberVO().getMem_no());
+			query.setParameter(1, depositDetailVO.getDepositVO().getDepo_no());
+			System.out.println("穝糤掸计=" + query.executeUpdate());
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw new RuntimeException("A database error occured. " + ex.getMessage());
 		}
 	}
 
 	@Override
-	public List<DepositDetailVO> findByPrimaryKey(String mem_no) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		DepositDetailVO depositDetailVO = null;
-		List<DepositDetailVO> list = new ArrayList<>();
+	public DepositDetailVO getByPrimaryKey(String depod_no) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List list = null;
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ONEMEM);
-			pstmt.setString(1, mem_no);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				depositDetailVO = new DepositDetailVO();
-				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
-				depositDetailVO.setDepod_no(rs.getString("DEPOD_NO"));
-				depositDetailVO.setMem_no(rs.getString("MEM_NO"));
-				depositDetailVO.setDepo_no(rs.getString("DEPO_NO"));
-				list.add(depositDetailVO);
-			}
-		} catch (SQLException se) {
+			session.beginTransaction();
+			Query query = session.createQuery("from DepositDetailVO where depod_no=? order by depod_no desc");
+			query.setParameter(0, depod_no);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException se) {
+			session.getTransaction().rollback();
 			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.setAutoCommit(true);
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
 		}
-		return list;
+		return (DepositDetailVO) list.get(0);
 	}
 
 	@Override
 	public List<DepositDetailVO> getAll() {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		DepositDetailVO depositDetailVO = null;
-		List<DepositDetailVO> list = new ArrayList<>();
+		List<DepositDetailVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALLMEM);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				depositDetailVO = new DepositDetailVO();
-				depositDetailVO.setDepod_time(rs.getTimestamp("DEPOD_TIME"));
-				depositDetailVO.setDepod_no(rs.getString("DEPOD_NO"));
-				depositDetailVO.setMem_no(rs.getString("MEM_NO"));
-				depositDetailVO.setDepo_no(rs.getString("DEPO_NO"));
-				list.add(depositDetailVO);
-			}
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.setAutoCommit(true);
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			Query query = session.createQuery("from DepositDetailVO order by depod_no desc");
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw new RuntimeException("A database error occured. " + ex.getMessage());
 		}
 		return list;
 	}
-	
-//	public static void main(String[] args) {
-//		DepositDetailDAO depositDetailDAO = new DepositDetailDAO();
-//		
-////		穝糤
-//		DepositDetailVO depositDetailVO = new DepositDetailVO();
-//		depositDetailVO.setMem_no("M003");
-//		depositDetailVO.setDepo_no("D003");
-//		depositDetailDAO.insert(depositDetailVO);
-//		
-////		琩高琘穦纗灿
-//		List<DepositDetailVO> list1 = depositDetailDAO.findByPrimaryKey("M003");
-//		for (DepositDetailVO depositDetailVO2 : list1) {
-//			System.out.print(depositDetailVO2.getDepod_no() + ",");
-//			System.out.print(depositDetailVO2.getMem_no() + ",");
-//			System.out.print(depositDetailVO2.getDepo_no() + ",");
-//			System.out.println(depositDetailVO2.getDepod_time());
-//			System.out.println("----------------------------------------------------");
-//		}
-//		
-////		琩高场穦纗灿
-//		List<DepositDetailVO> list2 = depositDetailDAO.getAll();
-//		for (DepositDetailVO depositDetailVO3 : list2) {
-//			System.out.print(depositDetailVO3.getDepod_no() + ",");
-//			System.out.print(depositDetailVO3.getMem_no() + ",");
-//			System.out.print(depositDetailVO3.getDepo_no() + ",");
-//			System.out.println(depositDetailVO3.getDepod_time());
-//			System.out.println("----------------------------------------------------");
-//		}
-//	}
+
+	public static void main(String[] args) {
+
+		DepositDetailDAO dao = new DepositDetailDAO();
+
+//		 //〈 穝糤
+//		 com.member.model.MemberVO memberVO = new com.member.model.MemberVO();
+//		 // 穦POJO
+//		 memberVO.setMem_no("M012");
+//		 com.deposit.model.DepositVO depositVO = new
+//		 com.deposit.model.DepositVO(); // 搂POJO
+//		 depositVO.setDepo_no("D001");
+//		 DepositDetailVO depositDetailVO1 = new DepositDetailVO();
+//		 depositDetailVO1.setMemberVO(memberVO);
+//		 depositDetailVO1.setDepositVO(depositVO);
+//		 dao.insert(depositDetailVO1);
+
+		// //〈 琩高-findByPrimaryKey (よgiftTtrack.hbm.xmlゲ斗砞lazy="false")(纔!)
+		// DepositDetailVO depositDetailVO3 = dao.getByPrimaryKey("DD013");
+		// System.out.print(depositDetailVO3.getDepod_no() + ",");
+		// System.out.println(depositDetailVO3.getDepod_time() + ",");
+		// MemberVO memberVO3 = depositDetailVO3.getMemberVO();
+		// System.out.print(memberVO3.getMem_no() + ",");
+		// System.out.println(memberVO3.getMem_name() + ",");
+		// DepositVO depositVO3 = depositDetailVO3.getDepositVO();
+		// System.out.print(depositVO3.getDepo_no() + ",");
+		// System.out.print(depositVO3.getDepo_name() + ",");
+		// System.out.print(depositVO3.getDepo_value() + ",");
+		// System.out.print(depositVO3.getDepo_percent() + ",");
+		// System.out.println();
+
+		// //〈 琩高-getAll (よgiftTtrack.hbm.xmlゲ斗砞lazy="false")(纔!)
+		// List<DepositDetailVO> list = dao.getAll();
+		// for (DepositDetailVO vo : list) {
+		// System.out.print(vo.getDepod_no() + ",");
+		// System.out.println(vo.getDepod_time() + ",");
+		// MemberVO memberVO = vo.getMemberVO();
+		// System.out.print(memberVO.getMem_no() + ",");
+		// System.out.println(memberVO.getMem_name() + ",");
+		// DepositVO depositVO = vo.getDepositVO();
+		// System.out.print(depositVO.getDepo_no() + ",");
+		// System.out.print(depositVO.getDepo_name() + ",");
+		// System.out.print(depositVO.getDepo_value() + ",");
+		// System.out.print(depositVO.getDepo_percent() + ",");
+		// System.out.println();
+		// }
+
+	}
 
 }

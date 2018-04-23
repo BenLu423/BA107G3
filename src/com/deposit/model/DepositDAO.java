@@ -1,194 +1,107 @@
 package com.deposit.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+import com.giftTrack.model.GiftTrackVO;
+
+import hibernate.util.HibernateUtil;
 
 public class DepositDAO implements DepositDAO_interface {
 
-	private static DataSource ds = null;
-	static {
-		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static final String INSERT_DEPOSIT = "INSERT INTO DEPOSIT(DEPO_NO, DEPO_NAME, DEPO_VALUE, DEPO_PERCENT) VALUES ('D'||LPAD(to_char(DEPOSIT_SEQ.NEXTVAL),3,'0'),?,?,?)";
-	private static final String UPDATE_DEPOSIT = "UPDATE DEPOSIT SET DEPO_NAME=?,DEPO_VALUE=?,DEPO_PERCENT=? WHERE DEPO_NO=?";
-	private static final String GET_ALL = "SELECT * FROM DEPOSIT";
-
 	@Override
 	public void insert(DepositVO depositVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_DEPOSIT);
-			con.setAutoCommit(false);
-
-			pstmt.setString(1, depositVO.getDepo_name());
-			pstmt.setInt(2, depositVO.getDepo_value());
-			pstmt.setDouble(3, depositVO.getDepo_percent());
-
-			pstmt.executeUpdate();
-			con.commit();
-
-		} catch (SQLException se) {
-			try {
-				con.rollback();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.setAutoCommit(true);
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			session.saveOrUpdate(depositVO);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 	}
 
 	@Override
 	public void update(DepositVO depositVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE_DEPOSIT);
-			con.setAutoCommit(false);
-
-			pstmt.setString(1, depositVO.getDepo_name());
-			pstmt.setInt(2, depositVO.getDepo_value());
-			pstmt.setDouble(3, depositVO.getDepo_percent());
-			pstmt.setString(4, depositVO.getDepo_no());
-
-			pstmt.executeUpdate();
-			con.commit();
-
-		} catch (SQLException se) {
-			try {
-				con.rollback();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.setAutoCommit(true);
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			session.saveOrUpdate(depositVO);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 	}
 
 	@Override
 	public List<DepositVO> getAll() {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<DepositVO> list = new ArrayList<>();
-		DepositVO depositVO = null;
+		List<DepositVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				depositVO = new DepositVO();
-				depositVO.setDepo_no(rs.getString("DEPO_NO"));
-				depositVO.setDepo_name(rs.getString("DEPO_NAME"));
-				depositVO.setDepo_value(rs.getInt("DEPO_VALUE"));
-				depositVO.setDepo_percent(rs.getDouble("DEPO_PERCENT"));
-				list.add(depositVO);
-			}
-
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.setAutoCommit(true);
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			Query query = session.createQuery("from DepositVO order by depo_no desc");
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 		return list;
 	}
-	
-//	public static void main(String[] args) {
-//		DepositDAO depositDAO = new DepositDAO();
-//		
-////		穝糤
-//		DepositVO depositVO1 = new DepositVO();
-//		depositVO1.setDepo_name("1000");
-//		depositVO1.setDepo_value(1000);
-//		depositVO1.setDepo_percent(0.4);
-//		depositDAO.insert(depositVO1);
-//		
-////		э敼
-//		DepositVO depositVO2 = new DepositVO();
-//		depositVO2.setDepo_no("D005");
-//		depositVO2.setDepo_name("1000");
-//		depositVO2.setDepo_value(1000);
-//		depositVO2.setDepo_percent(0.3);
-//		depositDAO.update(depositVO2);
-//		
-////		琩高场
-//		List<DepositVO> list = depositDAO.getAll();
-//		for (DepositVO depositVO : list) {
-//			System.out.print(depositVO.getDepo_no() + ",");
-//			System.out.print(depositVO.getDepo_name() + ",");
-//			System.out.print(depositVO.getDepo_value() + ",");
-//			System.out.println(depositVO.getDepo_percent());
-//			System.out.println("--------------------");
-//		}
-//	}
+
+	@Override
+	public DepositVO getByPrimaryKey(String depo_no) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List list = null;
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from DepositVO where depo_no=?");
+			query.setParameter(0, depo_no);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw new RuntimeException("A database error occured. " + ex.getMessage());
+		}
+		return (DepositVO) list.get(0);
+	}
+
+	public static void main(String[] args) {
+
+		 DepositDAO dao = new DepositDAO();
+
+//		 //〈 穝糤-2(ぃ惠璶cascade="save-update" ┪ cascade="all"砞﹚)(硂琌竒盽璶ノ穝糤)
+//		 DepositVO depositVO = new DepositVO(); // 纗POJO
+//		 depositVO.setDepo_name("纗7腹诀");
+//		 depositVO.setDepo_value(666);
+//		 depositVO.setDepo_percent(0.55);
+//		 dao.insert(depositVO);
+
+//		 //〈 э-2(ぃ惠砞﹚cascade="save-update" ┪ cascade="all")(硂琌竒盽璶ノэ)
+//		 DepositVO depositVO2 = dao.getByPrimaryKey("D001");
+//		 depositVO2.setDepo_value(500);
+//		 dao.update(depositVO2);
+
+//		 //〈 琩高-findByPrimaryKey (纔╭!) (よdept2.hbm.xmlゲ斗砞lazy="false")
+//		 DepositVO depositVO3 = dao.getByPrimaryKey("D002");
+//		 System.out.print(depositVO3.getDepo_no() + ",");
+//		 System.out.print(depositVO3.getDepo_name() + ",");
+//		 System.out.print(depositVO3.getDepo_value() + ",");
+//		 System.out.print(depositVO3.getDepo_percent() + ",");
+
+//		 //〈 琩高-getAll-2 (纔╭!!!) (よdept2.hbm.xmlゲ斗砞lazy="false")
+//		 List<DepositVO> list2 = dao.getAll();
+//		 for (DepositVO depositVO : list2) {
+//			 System.out.print(depositVO.getDepo_no() + ",");
+//			 System.out.print(depositVO.getDepo_name() + ",");
+//			 System.out.print(depositVO.getDepo_value() + ",");
+//			 System.out.print(depositVO.getDepo_percent() + ",");
+//			 System.out.println();
+//		 }
+
+	}
 }
