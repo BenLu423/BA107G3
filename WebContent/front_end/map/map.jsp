@@ -24,12 +24,12 @@ String jsonStr = new JSONArray(allMem).toString();
     <div class="row">
         <div class="col-xs-12 col-sm-1"></div>
         <div class="col-xs-12 col-sm-10 content">
-        <div class="content-top"></div>  
-    		<div class="col-xs-1 col-sm-3" style="background-color:pink ; height:750px">
+        <div class="content-top" style="height:80px"></div>  
+    		<div class="col-xs-1 col-sm-3" style="background-color:pink ; height:750px ;overflow:auto">
     			<br>選擇距離：<select id="kyori">
     				<% 
     				int count=0;
-    				for(int i = 1 ; i<=300 ; i++){
+    				for(int i = 1 ; i<=100 ; i++){
     					
     					if(i==1 || i%10==0 ){
     						count++;
@@ -37,6 +37,12 @@ String jsonStr = new JSONArray(allMem).toString();
 						<option value="<%=count%>"><%=i %></option>
 					<%}} %>    				
     			</select>公里
+    			
+    			<div id="havaMem">
+    			
+    			</div>
+    			
+    			
     		
     		</div>
     		<div class="col-xs- col-sm-9" style="background-color:skyblue; height:750px">
@@ -47,15 +53,17 @@ String jsonStr = new JSONArray(allMem).toString();
 			    
 			    var memCircle ;
 			    var map;
-			    var currentInfoWindow = ''; //Global variable   
+			    var currentInfoWindow = ''; //Global variable
+			    var uluru;
+			    var marker;
 			      function initMap() {
-			        var uluru = {lat:<%=(memSelf==null)? "23.58" : memSelf.getMem_latitude()%>, lng:<%=(memSelf==null)? "120.58" : memSelf.getMem_longitude()%>};
+			        uluru = {lat:<%=(memSelf==null)? "23.58" : memSelf.getMem_latitude()%>, lng:<%=(memSelf==null)? "120.58" : memSelf.getMem_longitude()%>};
 			        map = new google.maps.Map(document.getElementById('map'), {
 			          zoom: 15,
 			          center: uluru
 			        });
 			        
-			        var marker = new google.maps.Marker({
+			        marker = new google.maps.Marker({
 			            position: uluru,
 			            map: map
 			          });
@@ -90,8 +98,8 @@ String jsonStr = new JSONArray(allMem).toString();
 				        
 				        
 				        var infoWindow_${allMem.mem_no} = new google.maps.InfoWindow({
-				            content: "會員：${allMem.mem_name}<br>性別：${allMem.mem_gender}"+
-				            ""
+				            content: "會員：${allMem.mem_name}<br>性別：${allMem.mem_gender}<br>"+
+				            "<a href='<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${allMem.mem_no}'>個人頁面</a>"
 				        }); 
 				        
 	
@@ -110,30 +118,49 @@ String jsonStr = new JSONArray(allMem).toString();
 				          });
 			        </c:forEach>
 			        
-			        
+			        /*************控制距離和縮放****************/
+			        $("#kyori").change(function(){
+				    	var hani = $("#kyori option:selected").text();//距離
+				    	var val = $("#kyori option:selected").val();//縮放
+				    	map.setZoom(15-val);	 
+				    	memCircle.setRadius(hani * 1000);
+				    	$("#havaMem").empty();
+				        var start = new google.maps.LatLng(uluru);
+				    	
+				    	<c:forEach var="allMem" items="${allMem}">
+				    		var myLatlng = new google.maps.LatLng(${allMem.mem_latitude},${allMem.mem_longitude});
+				    		var meters = getMeters(myLatlng);
+				    		
+				    		if(hani*1000>meters && meters!=0){
+				    			$("#havaMem").append("<table class='table table-bordered' style='background-color:#fff ; margin-top:10px'><tr><th>${allMem.mem_name}</th>"+
+				    					"</tr><tr><td>性別：${allMem.mem_gender}<br>自我介紹：<br>${allMem.mem_intro}<br><a href='<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${allMem.mem_no}'>個人頁面</a></td></tr></table>"
+				    			);
+				    			
+				    			//alert("${allMem.mem_name}="+meters);
+				    		}
+				    	</c:forEach>
+				    	 	
+				      });
+			      }
 			      
+			      function getMeters(myLatlng){
+			    	
+			    	  
+			    	var start = new google.maps.LatLng(uluru);
+			    	var meters = google.maps.geometry.spherical.computeDistanceBetween(start, myLatlng);
+			    	return meters;
 			      }
 			      
 			      
 			      
-			      /*************控制距離和縮放****************/
-			      $("#kyori").change(function(){
-			    	var hani = $("#kyori option:selected").text();//距離
-			    	var val = $("#kyori option:selected").val();//縮放
-			    	//alert(val);
-			    	map.setZoom(15-val);	 
-			    	memCircle.setRadius(hani * 1000);
-			    	 
-			      });
 			      
-			      
+			    
 			      
 			      
 			    </script>
 			    <script async defer
 			    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCysVlOJDkATMLRKkDFn18qTR4ip-N-nf4&callback=initMap">
 			    </script>
-			
 			
 			</div>
     	
