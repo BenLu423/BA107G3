@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.gift.model.GiftVO" table="GIFT" >
+        
+        <id name="gift_no" column="gift_no">
+            <generator class="sequence" >
+              <param name="sequence">gift_seq</param>
+            </generator>  
+        </id>
+        
+        <property name="gift_name" column="gift_name" />
+        <property name="gift_cnt" column="gift_cnt" />
+        <property name="gift_price" column="gift_price" />
+        <property name="gift_pic" column="gift_pic" />
+        <property name="gift_is_on" column="gift_is_on" />
+        <property name="gift_track_qty" column="gift_track_qty" />
+        <property name="gift_buy_qty" column="gift_buy_qty" />
+        
+<!--         <many-to-one name="deptVO" class="com.dept.model.DeptVO" lazy="false"> -->
+<!--             <column name="deptno" /> -->
+<!--         </many-to-one> -->
+        
+    </class>
+</hibernate-mapping>
+

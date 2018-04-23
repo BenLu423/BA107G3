@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.member.model.MemberVO" table="MEMBER" >
+        
+        <id name="mem_no" column="mem_no">
+            <generator class="sequence" >
+              <param name="sequence">member_seq</param>
+            </generator>  
+        </id>
+        
+        <property name="mem_account" column="mem_account" />
+        <property name="mem_password" column="mem_password" />
+        <property name="mem_join_time" column="mem_join_time" />
+        <property name="mem_name" column="mem_name" />
+        <property name="mem_gender" column="mem_gender" />
+        <property name="mem_birthday" column="mem_birthday" />
+        <property name="mem_county" column="mem_county" />
+        <property name="mem_deposit" column="mem_deposit" />
+        <property name="mem_contact" column="mem_contact" />
+        <property name="mem_emotion" column="mem_emotion" />
+        <property name="mem_bonus" column="mem_bonus" />
+        <property name="mem_bloodtype" column="mem_bloodtype" />
+        <property name="mem_height" column="mem_height" />
+        <property name="mem_weight" column="mem_weight" />
+        <property name="mem_interest" column="mem_interest" />
+        <property name="mem_intro" column="mem_intro" />
+        <property name="mem_online" column="mem_online" />
+        <property name="mem_longitude" column="mem_longitude" />
+        <property name="mem_latitude" column="mem_latitude" />
+        <property name="mem_phone" column="mem_phone" />
+        <property name="mem_mail" column="mem_mail" />
+        <property name="mem_photo" column="mem_photo" />
+        <property name="mem_prohibit" column="mem_prohibit" />
+        <property name="mem_set_notify" column="mem_setnotify" />
+        <property name="mem_time_notify" column="mem_timenotify" />
+        <property name="mem_receive_gift" column="mem_receive_gift" />
+        
+<!--         <many-to-one name="deptVO" class="com.dept.model.DeptVO" lazy="false"> -->
+<!--             <column name="deptno" /> -->
+<!--         </many-to-one> -->
+        
+    </class>
+</hibernate-mapping>
+

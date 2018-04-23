@@ -31,11 +31,12 @@
         
         <!-- Enable Hibernate's automatic session context management -->
 		<property name="hibernate.current_session_context_class">thread</property>
-
+		
 		<!--Java物件與資料庫表格的映射檔 -->
-		<mapping resource="com/emp/model/emp2.hbm.xml" />
-		<mapping resource="com/dept/model/dept2.hbm.xml" />
-
+		<mapping resource="com/giftTrack/model/giftTrack.hbm.xml" />
+		<mapping resource="com/gift/model/gift.hbm.xml" />
+		<mapping resource="com/member/model/member.hbm.xml" />
+		
 	</session-factory>
 	
 </hibernate-configuration>

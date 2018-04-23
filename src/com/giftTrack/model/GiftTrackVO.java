@@ -3,30 +3,43 @@ package com.giftTrack.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.gift.model.GiftVO;
+import com.member.model.MemberVO;
+
 @SuppressWarnings("serial")
 public class GiftTrackVO implements Serializable{
-	private String mem_no;
-	private String gift_no;
+	private MemberVO memberVO;
+	private GiftVO giftVO;
 	private Timestamp giftt_time;
 	
 	public GiftTrackVO() {
 		super();
 	}
-
-	public String getMem_no() {
-		return mem_no;
+	
+	public MemberVO getMemberVO() {
+		return memberVO;
 	}
 
-	public void setMem_no(String mem_no) {
-		this.mem_no = mem_no;
+	public void setMemberVO(MemberVO memberVO) {
+		this.memberVO = memberVO;
 	}
 
-	public String getGift_no() {
-		return gift_no;
+	public GiftVO getGiftVO() {
+		return giftVO;
 	}
 
-	public void setGift_no(String gift_no) {
-		this.gift_no = gift_no;
+	public void setGiftVO(GiftVO giftVO) {
+		this.giftVO = giftVO;
 	}
 
 	public Timestamp getGiftt_time() {
