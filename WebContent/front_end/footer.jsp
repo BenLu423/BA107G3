@@ -184,7 +184,7 @@
             } 
 			if (jsonObj.type == 'sendSelf') { //上線接收在線好友清單
 				var onlineFri = jsonObj.onlineFri;
-				if(onlineFri!=null){
+				if(onlineFri!=null && onlineFri[0].length!=0){
 					onlineFri.forEach(function(fri){
 						$("#"+fri+">img").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/online.jpg");
 								});
