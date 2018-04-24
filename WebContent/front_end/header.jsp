@@ -272,7 +272,7 @@ $(document).ready(function() {
 	        var giftDiscountVO = jsonObj[4];
 	        var modal = $('.init-modal').clone()[0];
 			$( "body" ).append(modal);
-	        if(giftAction.action == "receiveGift"){
+	        if(giftAction.action == "sendGift"){
 // 	        	//設置新的class名稱
 				$(modal).removeClass('init-modal');
 	        	$(modal).addClass('new'+i);

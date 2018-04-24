@@ -188,7 +188,7 @@ System.out.println("Order action: " + action);
 			
 			//webSocket進行即時通知
 			GiftOrderWS giftOrderWS = new GiftOrderWS();
-			giftOrderWS.multipleSendGift("receiveGift", orderDetail);
+			giftOrderWS.multipleSendGift("sendGift", orderDetail);
 			
 			//查詢該次新增的訂單紀錄
 			GiftOrderViewService giftOrderViewSvc = new GiftOrderViewService();
