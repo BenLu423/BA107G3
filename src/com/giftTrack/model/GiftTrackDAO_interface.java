@@ -9,7 +9,7 @@ public interface GiftTrackDAO_interface {
 	public void delete(String mem_no, String gift_no);
 	public GiftTrackVO getByPrimaryKey(String mem_no, String gift_no);
 	public List<GiftTrackVO> getAll();
-
+	public List<String> getGiftListByMemNo(String mem_no);
 	public List<GiftTrackVO> getListByMemNo(String mem_no);
 	public List<GiftTrackVO> getListByGiftNo(String gift_no);
 	

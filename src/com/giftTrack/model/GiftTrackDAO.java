@@ -1,5 +1,6 @@
 package com.giftTrack.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -79,6 +80,7 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 		List list = null;
 		try {
 			session.beginTransaction();
+//GiftTrackVO = (GiftTrackVO) session.get(GiftTrackVO.class, new String(mem_no,gift_no));
 			Query query = session.createQuery("from GiftTrackVO where mem_no=? and gift_no=?");
 			query.setParameter(0, mem_no);
 			query.setParameter(1, gift_no);
@@ -88,7 +90,10 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 			session.getTransaction().rollback();
 			throw new RuntimeException("A database error occured. " + ex.getMessage());
 		}
-		return (GiftTrackVO) list.get(0);
+		if(list!=null)
+			return (GiftTrackVO) list.get(0);
+		else
+			return null;
 	}
 
 	@Override
@@ -105,6 +110,27 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 			throw new RuntimeException("A database error occured. " + ex.getMessage());
 		}
 		return list;
+	}
+
+	@Override
+	public List<String> getGiftListByMemNo(String mem_no) {
+		List<GiftTrackVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();		
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from GiftTrackVO where mem_no=? order by giftt_time desc");
+			query.setParameter(0, mem_no);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw new RuntimeException("A database error occured. " + ex.getMessage());
+		}
+		List<String> giftNoList = new ArrayList<String>();
+		for(GiftTrackVO giftTrackVO : list){
+			giftNoList.add(giftTrackVO.getGiftVO().getGift_no());
+		}
+		return giftNoList;
 	}
 
 	@Override
@@ -160,12 +186,12 @@ public class GiftTrackDAO implements GiftTrackDAO_interface{
 //		dao.delete("M002", "G001");
 
 		
-//		//● 查詢-findByPrimaryKey (多方giftTtrack.hbm.xml必須設為lazy="false")(優!)
-//		GiftTrackVO giftTrackVO3 = dao.getByPrimaryKey("M001", "G002");
-//		System.out.print(giftTrackVO3.getMemberVO().getMem_no() + ",");
-//		System.out.print(giftTrackVO3.getGiftVO().getGift_no() + ",");
-//		System.out.print(giftTrackVO3.getGiftt_time() + ",");
-//		System.out.println();
+		//● 查詢-findByPrimaryKey (多方giftTtrack.hbm.xml必須設為lazy="false")(優!)
+		GiftTrackVO giftTrackVO3 = dao.getByPrimaryKey("M001", "G002");
+		System.out.print(giftTrackVO3.getMemberVO().getMem_no() + ",");
+		System.out.print(giftTrackVO3.getGiftVO().getGift_no() + ",");
+		System.out.print(giftTrackVO3.getGiftt_time() + ",");
+		System.out.println();
 
 
 //		//● 查詢-getAll (多方giftTtrack.hbm.xml必須設為lazy="false")(優!)

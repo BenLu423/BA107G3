@@ -17,6 +17,10 @@ public class GiftTrackService {
 		dao.delete(mem_no, gift_no);
 	}
 	
+	public List<String> getGiftListByMemNo(String mem_no) {
+		return dao.getGiftListByMemNo(mem_no);
+	}
+	
 	public GiftTrackVO getOneGiftTrack(String mem_no, String gift_no){
 		return dao.getByPrimaryKey(mem_no, gift_no);
 	}

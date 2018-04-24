@@ -138,7 +138,7 @@
                                     <li role="separator" class="divider"></li>
                                     <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_receive.jsp">收禮清單</a></li>
                                     <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_history.jsp">贈禮紀錄</a></li>
-                                    <li><a href="#">加值服務</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/front_end/deposit/deposit_index.jsp">加值服務</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">我的日記</a></li>
                                     <li><a href="#">我的活動</a></li>
@@ -272,7 +272,7 @@ $(document).ready(function() {
 	        var giftDiscountVO = jsonObj[4];
 	        var modal = $('.init-modal').clone()[0];
 			$( "body" ).append(modal);
-	        if(giftAction.action == "sendGift"){
+	        if(giftAction.action == "receiveGift"){
 // 	        	//設置新的class名稱
 				$(modal).removeClass('init-modal');
 	        	$(modal).addClass('new'+i);

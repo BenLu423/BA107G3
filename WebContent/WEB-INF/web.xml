@@ -51,6 +51,14 @@
     <url-pattern>/gift/giftOrder.do</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>GfitTrackServletUTF8</servlet-name>
+    <servlet-class>com.giftTrack.controller.GfitTrackServletUTF8</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GfitTrackServletUTF8</servlet-name>
+    <url-pattern>/gift/giftTrackUTF8.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>GiftOrderViewServlet</servlet-name>
     <servlet-class>com.giftOrderView.controller.GiftOrderViewServlet</servlet-class>
   </servlet>

@@ -6,6 +6,7 @@
 <c:set var = "now" value = "<%= new java.util.Date()%>" />
 <jsp:useBean id="giftSvc" class="com.gift.model.GiftService" scope="page"></jsp:useBean>
 <jsp:useBean id="giftDiscountSvc" class="com.giftDiscount.model.GiftDiscountService" scope="page"/>
+<jsp:useBean id="giftTrackSvc" class="com.giftTrack.model.GiftTrackService" scope="page"/>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
@@ -17,6 +18,7 @@
 <div class="col-xs-12 col-sm-12 gift-div">
 	<div class="row">
 	<%@ include file="giftPage1.file" %> 
+	<c:set var="followList" value="${giftTrackSvc.getGiftListByMemNo(memSelf.mem_no)}"/>
 	<c:forEach var="gift" items="${(gifts!=null) ? gifts : (giftSvc.canBuy)}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" varStatus="status">
 <%--       	<c:if test="${(status.count)%5 == 1}"> --%>
 <!--        	<div class="col-xs-12 col-sm-1 gift-side2"></div> -->
@@ -60,7 +62,9 @@
 							<div style="color:red;text-align:center;font-size:20px;min-height:30px"></div>
 						</c:otherwise>
 					</c:choose>
-					<button type="button" style="margin-right: 0px;">FOLLOW</button>
+					<c:if test="${memSelf.mem_no!=null}">
+					<button type="button" ${fn:contains(followList, gift.key.gift_no) ? 'class="follow"' : 'class="addToFollow"'} style="margin-right: 0px;">FOLLOW</button>
+					</c:if>
 					<button type="button" class="addToCart" style="margin: 0px;">ADD TO CART</button>
 					<select name="giftod_amount" style="height: 30px;width: 45px;">
 						<c:forEach var="count" begin="1" end="${(discount!=null) ? giftSvc.getAmount(gift.key.gift_no) : '10'}" step="1">

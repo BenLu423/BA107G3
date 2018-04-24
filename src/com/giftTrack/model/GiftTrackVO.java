@@ -49,5 +49,36 @@ public class GiftTrackVO implements Serializable{
 	public void setGiftt_time(Timestamp giftt_time) {
 		this.giftt_time = giftt_time;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((giftVO == null) ? 0 : giftVO.hashCode());
+		result = prime * result + ((memberVO == null) ? 0 : memberVO.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GiftTrackVO other = (GiftTrackVO) obj;
+		if (giftVO == null) {
+			if (other.giftVO != null)
+				return false;
+		} else if (!giftVO.equals(other.giftVO))
+			return false;
+		if (memberVO == null) {
+			if (other.memberVO != null)
+				return false;
+		} else if (!memberVO.equals(other.memberVO))
+			return false;
+		return true;
+	}
 	
 }

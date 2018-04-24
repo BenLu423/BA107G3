@@ -92,7 +92,8 @@
  	text-align: center;
  	font-size: 16px;
 }
-.gift-item button {
+.addToCart,
+.addToFollow {
     border: none;
     background: #fff;
     color: #464646;
@@ -103,10 +104,28 @@
     font-size: 12px;
     border-radius: 60px;
 }
-
-.gift-item button:hover {
+.addToCart:hover,
+.addToFollow:hover {
     background: #000;
     color: #fff;
+	transition:0.5s all;
+}
+
+.follow {
+    border: none;
+    background: #000;
+    color: #fff;
+    margin: 1em 0.8em 1em 0.5em;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 60px;
+}
+
+.follow:hover {
+    background: #fff;
+    color: #000;
 	transition:0.5s all;
 }
 
