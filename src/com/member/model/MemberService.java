@@ -132,7 +132,14 @@ public class MemberService {
 	public List<MemberVO> precise(Map<String,String[]> map){
 		return memdao.getAll(map);
 	}
-	
+	/*會員是否為黑名單*/
+	public Boolean memIsBan(String mem_account, String mem_password){
+		return memdao.memIsBan(mem_account, mem_password);
+	}
+	/*封鎖會員*/
+	public void MemBanBoshan(String mem_no, String mem_prohibit){
+		memdao.memBan(mem_no, mem_prohibit);
+	}
 	//紹永[禮物訂單使用]
 	public void updateDeposit(String mem_no, Integer delDeposit, Connection con){
 		memdao.updateDeposit(mem_no, delDeposit, con);

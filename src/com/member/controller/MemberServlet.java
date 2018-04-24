@@ -47,23 +47,23 @@ public class MemberServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		/***************會員登入***************/
 		if("getAccount_judge".equals(action)){
-			
-			List<String> errorMsgs = new ArrayList<String>();
-			List<String> lostPassword = new ArrayList<String>();
+			MemberService ms = new MemberService();
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+//			List<String> errorMsgs = new ArrayList<String>();
+//			List<String> lostPassword = new ArrayList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			req.setAttribute("lostPassword", lostPassword);
 			/*判斷帳號密碼是否空白*/
 			try{
 				String mem_account = req.getParameter("mem_account");
 				if(mem_account == null || mem_account.trim().isEmpty()){
-					errorMsgs.add("請輸入帳號");
+					errorMsgs.put("account", "請輸入帳號");
 					System.out.println("請輸入帳號");
 				}
 				String mem_password = req.getParameter("mem_password");
 				if(mem_password == null || mem_password.trim().isEmpty()){
-					lostPassword.add("請輸入密碼");
+					errorMsgs.put("password", "請輸入密碼");
 					System.out.println("請輸入密碼");
-				}
+				}			
 				/*如果錯誤訊息不是空的就回傳錯誤訊息*/
 				if(!errorMsgs.isEmpty()){
 					RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");
@@ -72,12 +72,16 @@ public class MemberServlet extends HttpServlet {
 				}
 				/*判斷資料庫是否有帳號密碼*/
 				MemberVO memSelf = new MemberVO();
-				MemberService ms = new MemberService();
 				memSelf = ms.login(mem_account, mem_password);
 				
 				if(memSelf == null){
-					errorMsgs.add("無效的帳號");
+					errorMsgs.put("account", "無效的帳號");
 					System.out.println("無效的帳號");
+				}
+				System.out.println(ms.memIsBan(mem_account, mem_password));
+				if(ms.memIsBan(mem_account, mem_password)){
+					
+					errorMsgs.put("ban", "此帳號已被鎖");
 				}
 				if(!errorMsgs.isEmpty()){
 					RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");
@@ -100,7 +104,6 @@ public class MemberServlet extends HttpServlet {
 					if(personal_mem_no != null && (location.equals(req.getContextPath()+"/front_end/member/personal_page.jsp"))){
 						String str_personal_mem_no = (String)personal_mem_no.getAttribute("personal_mem_no");
 						personal_mem_no.removeAttribute("personal_mem_no");
-						System.out.println(location+"?mem_no="+str_personal_mem_no);
 						res.sendRedirect(location+"?mem_no="+str_personal_mem_no);
 						return;
 					}
@@ -117,7 +120,6 @@ public class MemberServlet extends HttpServlet {
 				res.sendRedirect(index);
 				return;
 			}catch(Exception e){
-				errorMsgs.add("無法取得資料");
 				System.out.println("無法取得資料");
 				RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");
 				rd.forward(req, res);
@@ -240,7 +242,6 @@ public class MemberServlet extends HttpServlet {
 				String mem_contact = req.getParameter("mem_contact");
 				System.out.println(mem_contact);
 				if(mem_contact == null || mem_contact.trim().length() == 0 || "請選擇:".equals(mem_contact)){
-					System.out.println("testcontact");
 					errorMsgs.put("mem_contact", "請選擇感情狀況");
 				}
 			
@@ -534,6 +535,27 @@ public class MemberServlet extends HttpServlet {
 				return;
 			}	
 		}
+		
+		
+		if("getOne_From06".equals(action)){
+			try{
+			String mem_no = req.getParameter("mem_no");
+			MemberVO memvo = new MemberVO();
+			MemberService ms = new MemberService();
+			
+			memvo = ms.getOneMem(mem_no);
+			req.setAttribute("memvo", memvo);
+			boolean openModal=true;
+			req.setAttribute("openModal",openModal );
+			RequestDispatcher successView = req
+					.getRequestDispatcher("/front_end/member/member_manage_friendslist.jsp");
+			successView.forward(req, res);
+			return;
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
 	    /***********************************/
 		/*								   */
 		/*								   */

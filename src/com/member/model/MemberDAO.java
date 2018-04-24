@@ -66,6 +66,10 @@ public class MemberDAO implements MemberDAO_interface{
 	static final String INSERTPHOTO = "UPDATE MEMBER SET MEM_PHOTO = ? WHERE MEM_NO = ?";
 	/*基本查詢*/
 	static final String BLURSEARCH = "SELECT * FROM MEMBER WHERE MEM_NAME LIKE ?";
+	/*查詢會員是否為黑名單*/
+	static final String ISBAN ="SELECT MEM_PROHIBIT FROM MEMBER WHERE MEM_ACCOUNT = ? AND MEM_PASSWORD = ?";
+	/*封鎖會員*/
+	static final String BANBANBAN = "UPDATE MEMBER SET MEM_PROHIBIT = ? WHERE MEM_NO = ?";
 	
 	static final String UPDATE_DEPOSIT_STMT  = "UPDATE MEMBER SET MEM_DEPOSIT=? WHERE MEM_NO=? ";
 	static final String UPDATE_REC_GIFT_STMT = "UPDATE MEMBER SET MEM_RECEIVE_GIFT=? WHERE MEM_NO=? ";
@@ -885,6 +889,60 @@ public class MemberDAO implements MemberDAO_interface{
 				}
 			}
 		return count;
+	}
+	
+	/*會員是否為黑單*/
+	public Boolean memIsBan(String mem_account,String mem_password){
+		Boolean isBan = false;
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(ISBAN);
+			ps.setString(1, mem_account);
+			ps.setString(2, mem_password);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				if(rs.getString("MEM_PROHIBIT").equals("是")){
+					isBan = true;
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			if(con != null){
+				try{
+					con.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return isBan;
+	}
+	/*封鎖會員*/
+	public void memBan(String mem_no, String mem_prohibit){
+		Connection con = null;
+		PreparedStatement ps =null;
+		ResultSet rs = null;
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(BANBANBAN);
+			ps.setString(1, mem_prohibit);
+			ps.setString(2, mem_no);
+			ps.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			if(con != null){
+				try{
+					con.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	//紹永[禮物訂單使用]
