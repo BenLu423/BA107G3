@@ -32,4 +32,5 @@ public class FriendsListService {
 	public List<FriendsListVO> getMemberFriends(String mem_no){
 		return dao.getMemberFriends(mem_no);
 	}
+
 }

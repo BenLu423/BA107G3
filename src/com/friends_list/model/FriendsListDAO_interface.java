@@ -10,5 +10,9 @@ public interface FriendsListDAO_interface {
 	public List<FriendsListVO> getAll();
 	public List<FriendsListVO> getMemberFriends(String mem_no);
 	
-	
+	public void webAddFriends(String self,String other);
+	public Boolean isFriend(String self,String other,Integer count);
+	public void webUpdateFrinds(String modify,String self, String other);
+	public void webDeleteFriends(String self,String other);
+	public List<FriendsListVO> webFriendsList(String modify,String self);
 }

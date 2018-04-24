@@ -41,5 +41,19 @@ public class FriendsService {
 	public FriendsListVO getOne(String self , String other){
 		return dao.findByPrimaryKey(self, other);
 	}
-
+	public void webAddFri(String self,String other){
+		dao.webAddFriends(self, other);
+	}
+	public boolean checkisfri(String self,String other,Integer count){
+		return dao.isFriend(self, other, count);
+	}
+	public void webUpdateFri(String modify,String self, String other){
+		dao.webUpdateFrinds(modify, self, other);
+	}
+	public void webDelFri(String self,String other){
+		dao.webDeleteFriends(self, other);
+	}
+	public List<FriendsListVO> browsFriList(String modify,String self){
+		return dao.webFriendsList(modify, self);
+	}
 }
