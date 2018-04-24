@@ -18,12 +18,12 @@
     <div class="row">
         <div class="col-xs-12 col-sm-1"></div>
         <div class="col-xs-12 col-sm-10 content">
-            <div class="content-top"></div>  
-			<div class="col-xs-12 col-sm-12">
-				
-				<div class="demo-container">
-			        <div class="card-wrapper"></div>
-			        <div class="form-container active">
+            <div class="content-top"  style="margin-top:100px;"></div>  
+			<div class="col-xs-12 col-sm-6">
+			</div>
+			<div class="col-xs-12 col-sm-6">
+			        <div class="col-xs-12 col-sm-6 card-wrapper"></div>
+			        <div class="col-xs-12 col-sm-6 form-container active" style="margin-top:25px;">
 			            <form action="">
 			                <input placeholder="Card number" type="text" name="number">
 			                <input placeholder="Full name" type="text" name="name">
@@ -31,8 +31,6 @@
 			                <input placeholder="CVC" type="text" name="cvc">
 			            </form>
 			        </div>
-			    </div>
-
 	    	</div>    
 		<div class="col-xs-12 col-sm-1"></div>
 	</div>    
@@ -40,18 +38,8 @@
 <jsp:include page="/front_end/footer.jsp"></jsp:include>
 </body>
 <style>
-	.demo-container {
-        width: 100%;
-        max-width: 350px;
-        margin: 50px auto;
-    }
-
-    form {
-        margin: 30px;
-    }
     input {
-        width: 200px;
-        margin: 10px auto;
+        margin: 10px 0px 10px 0px;
         display: block;
     }
 
