@@ -2,6 +2,10 @@ package android.com.friends_list.model;
 
 import java.util.List;
 
+import com.member.model.MemberVO;
+
+import android.com.talk.model.TalkService;
+
 
 public class FriendsListService {
 	
@@ -13,8 +17,15 @@ public class FriendsListService {
 	
 	public void insert(String mem_no_self,String mem_no_other){
 		FriendsListVO frilistVO = new FriendsListVO();
-		frilistVO.setMem_no_self(mem_no_self);
-		frilistVO.setMem_no_other(mem_no_other);
+		MemberVO memSelf = new MemberVO();
+		memSelf.setMem_no(mem_no_self);
+		MemberVO memOther = new MemberVO();
+		memOther.setMem_no(mem_no_other);
+		frilistVO.setMemVO_self(memSelf);
+		frilistVO.setMemVO_other(memOther);
+		dao.insert(frilistVO);
+		frilistVO.setMemVO_self(memOther);
+		frilistVO.setMemVO_other(memSelf);
 		dao.insert(frilistVO);
 	}
 	
@@ -24,12 +35,26 @@ public class FriendsListService {
 	
 	public void add(String mem_no_self,String mem_no_other){
 		FriendsListVO frilistVO = new FriendsListVO();
-		frilistVO.setMem_no_self(mem_no_self);
-		frilistVO.setMem_no_other(mem_no_other);
+		MemberVO memSelf = new MemberVO();
+		memSelf.setMem_no(mem_no_self);
+		MemberVO memOther = new MemberVO();
+		memOther.setMem_no(mem_no_other);
+		frilistVO.setMemVO_self(memSelf);
+		frilistVO.setMemVO_other(memOther);
+		frilistVO.setFrilist_modify("¬O");
 		dao.add(frilistVO);
 	}
 	
 	public void delete(String mem_no_self,String mem_no_other){
+		FriendsListVO frilistVO = new FriendsListVO();
+		TalkService tSvc = new TalkService();
+		MemberVO memSelf = new MemberVO();
+		memSelf.setMem_no(mem_no_self);
+		MemberVO memOther = new MemberVO();
+		memOther.setMem_no(mem_no_other);
+		frilistVO.setMemVO_self(memSelf);
+		frilistVO.setMemVO_other(memOther);
+		tSvc.deleteTalk(frilistVO);
 		dao.delete(mem_no_self, mem_no_other);
 	}
 	

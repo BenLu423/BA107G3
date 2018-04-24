@@ -12,8 +12,6 @@ public class TalkService {
 	
 	public TalkVO getOneTalk(FriendsListVO friends){
 		TalkVO talk = dao.findTalkByFriends(friends);
-	//	String content = talk.getTalk_cnt();
-		
 		return talk;
 	}
 	
@@ -25,6 +23,8 @@ public class TalkService {
 		dao.insert(talk);
 	}
 	
+	public void deleteTalk(FriendsListVO friends){
+		dao.delete(friends);
+	}
 	
-
 }

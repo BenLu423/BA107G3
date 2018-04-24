@@ -38,6 +38,7 @@
 		<mapping resource="com/member/model/member.hbm.xml" />
 		<mapping resource="com/deposit/model/deposit.hbm.xml" />
 		<mapping resource="com/deposit_detail/model/depositDetail.hbm.xml" />
+		<mapping resource="android/com/friends_list/model/friends_list.hbm.xml" />
 		
 		
 	</session-factory>

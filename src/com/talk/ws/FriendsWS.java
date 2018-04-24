@@ -32,7 +32,7 @@ public class FriendsWS {
 	public void onOpen(@PathParam("mem_no") String mem_no, Session session, EndpointConfig config)
 			throws JSONException {
 		// 設定成500KB為了配合Android bundle傳送大小
-		int maxBufferSize = 50 * 1024 * 1024;
+		int maxBufferSize = 5 * 1024 * 1024;
 		session.setMaxTextMessageBufferSize(maxBufferSize);
 		session.setMaxBinaryMessageBufferSize(maxBufferSize);
 
@@ -368,11 +368,11 @@ public void getTalk(String friNo , Session session) throws JSONException{
 		friSession = onlineMem.get(friNo);
 		HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
 		if (friSession != null) {
-//			if (httpSession != null) {
+			if (httpSession != null) {
 				friSession.getAsyncRemote().sendText(result.toString());
-//			} else {
-//				friSession.getAsyncRemote().sendBinary(ByteBuffer.wrap(result.toString().getBytes()));
-//			}
+			} else {
+				friSession.getAsyncRemote().sendBinary(ByteBuffer.wrap(result.toString().getBytes()));
+			}
 			TalkVO talk = talkSvc.getOneTalk(friends);
 			// 修改時間
 			java.util.Date today = new java.util.Date();

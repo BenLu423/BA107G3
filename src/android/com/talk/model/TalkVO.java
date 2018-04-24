@@ -12,7 +12,7 @@ public class TalkVO implements java.io.Serializable{
 	public TalkVO(){
 		
 	}
-	
+
 	public String getTalk_no(){
 		return talk_no;
 	}
@@ -20,7 +20,7 @@ public class TalkVO implements java.io.Serializable{
 	public void setTalk_no(String talk_no){
 		this.talk_no = talk_no;
 	}
-	
+
 
 	public String getMem_no_send() {
 		return mem_no_send;
@@ -54,7 +54,4 @@ public class TalkVO implements java.io.Serializable{
 		this.talk_cnt = talk_cnt;
 	}
 
-	
-
-	
 }

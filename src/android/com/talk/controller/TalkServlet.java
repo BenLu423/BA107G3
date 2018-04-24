@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.member.model.MemberVO;
 
 import android.com.friends_list.model.FriendsListVO;
 import android.com.talk.model.TalkService;
@@ -36,8 +37,13 @@ public class TalkServlet extends HttpServlet{
 			String fri_no = req.getParameter("fri_no");
 			TalkService talkSvc = new TalkService();
 			FriendsListVO friends = new FriendsListVO();
-			friends.setMem_no_self(self_no);
-			friends.setMem_no_other(fri_no);
+			TalkVO talkVO = new TalkVO();
+			MemberVO memSelf = new MemberVO();
+			memSelf.setMem_no(self_no);
+			friends.setMemVO_self(memSelf);
+			MemberVO memOther = new MemberVO();
+			memOther.setMem_no(fri_no);
+			friends.setMemVO_other(memOther);
 			TalkVO talk=null;
 			
 			//雙方之間沒有talkVO時建一個

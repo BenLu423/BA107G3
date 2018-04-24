@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="android.com.friends_list.model.FriendsListVO" table="FRIENDS_LIST" >
+        
+        <composite-id>
+        	<key-many-to-one name="memVO_self" class="com.member.model.MemberVO" lazy="false">
+        		<column name="mem_no_self" />
+        	</key-many-to-one>
+        	<key-many-to-one name="memVO_other" class="com.member.model.MemberVO" lazy="false">
+        		<column name="mem_no_other" />
+        	</key-many-to-one>
+        </composite-id>
+        
+        <property name="frilist_modify" column="frilist_modify"/>
+        <property name="frilist_time" column="frilist_time"/>
+        <property name="frilist_notice" column="frilist_notice"/>      
+        
+    </class>
+</hibernate-mapping>

@@ -27,7 +27,7 @@ public class FriendsService {
 		
 		for(FriendsListVO fr : list){
 			//等拿到以no取會員物件，以及我這邊修改假資料，再做修改
-			friends.add(memSvc.getOneByMemNo(fr.getMem_no_other()));
+			friends.add(memSvc.getOneByMemNo(fr.getMemVO_other().getMem_no()));
 		}
 		
 		

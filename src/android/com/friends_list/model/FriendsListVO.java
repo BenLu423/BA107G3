@@ -1,30 +1,40 @@
 package android.com.friends_list.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class FriendsListVO {
-	private String mem_no_self;
-	private String mem_no_other;
+import com.member.model.MemberVO;
+
+import android.com.talk.model.TalkVO;
+
+public class FriendsListVO implements Serializable {
 	private String frilist_modify;
 	private Date frilist_time;
 	private String frilist_notice;
+	private MemberVO memVO_self;
+	private MemberVO memVO_other;
+
 	
 	public FriendsListVO(){
 		
 	}
+
+	public MemberVO getMemVO_self() {
+		return memVO_self;
+	}
+
+	public void setMemVO_self(MemberVO memVO_self) {
+		this.memVO_self = memVO_self;
+	}
+
+	public MemberVO getMemVO_other() {
+		return memVO_other;
+	}
+
+	public void setMemVO_other(MemberVO memVO_other) {
+		this.memVO_other = memVO_other;
+	}
 	
-	public String getMem_no_self() {
-		return mem_no_self;
-	}
-	public void setMem_no_self(String mem_no_self) {
-		this.mem_no_self = mem_no_self;
-	}
-	public String getMem_no_other() {
-		return mem_no_other;
-	}
-	public void setMem_no_other(String mem_no_other) {
-		this.mem_no_other = mem_no_other;
-	}
 	public String getFrilist_modify() {
 		return frilist_modify;
 	}
