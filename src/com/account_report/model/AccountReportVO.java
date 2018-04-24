@@ -9,7 +9,7 @@ public class AccountReportVO {
 	private String accrep_cnt;
 	private Date accrep_time;
 	private String accrep_permit;
-	AccountReportVO(){
+	public AccountReportVO(){
 		
 	}
 	public String getMem_no_self() {
