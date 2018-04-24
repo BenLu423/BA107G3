@@ -83,6 +83,38 @@
     <url-pattern>/memgetpic/mem.do</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>FriendsListServlet</servlet-name>
+    <servlet-class>com.friends_list.controller.FriendsListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FriendsListServlet</servlet-name>
+    <url-pattern>/friends/firlist.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AccountReportServlet</servlet-name>
+    <servlet-class>com.account_report.controller.AccountReportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AccountReportServlet</servlet-name>
+    <url-pattern>/accpre/accpre.do</url-pattern>
+  </servlet-mapping>  
+  <filter>
+  	<filter-name>FrontLoginFilter</filter-name>
+  	<filter-class>filter.FrontLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>FrontLoginFilter</filter-name>
+  	<url-pattern>/front_end/member/modify_personal_data_main_page.jsp</url-pattern>
+  	<url-pattern>/front_end/member/member_intro.jsp</url-pattern>
+  	<url-pattern>/front_end/member/member_modify_password.jsp</url-pattern>
+  	<url-pattern>/front_end/member/member_modify_page.jsp</url-pattern>
+  	<dispatcher>REQUEST</dispatcher>
+  	<dispatcher>FORWARD</dispatcher>
+  	<dispatcher>INCLUDE</dispatcher>
+  	<dispatcher>ERROR</dispatcher>
+  	<dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  <servlet>
     <servlet-name>AdminServlet</servlet-name>
     <servlet-class>com.admin.controller.AdminServlet</servlet-class>
   </servlet>
