@@ -123,4 +123,67 @@
     <servlet-name>EventServlet</servlet-name>
     <url-pattern>/back_end/event/event.do</url-pattern>
   </servlet-mapping>
+  
+  	<servlet>
+		<servlet-name>Android.MemberServlet</servlet-name>
+		<servlet-class>android.com.member.controller.MemberServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Android.MemberServlet</servlet-name>
+		<url-pattern>/android/MemberServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Android.FriendsListServlet</servlet-name>
+		<servlet-class>android.com.friends_list.controller.FriendsListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Android.FriendsListServlet</servlet-name>
+		<url-pattern>/android/FriendsListServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Android.TalkServlet</servlet-name>
+		<servlet-class>android.com.talk.controller.TalkServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Android.TalkServlet</servlet-name>
+		<url-pattern>/android/TalkServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Android.GiftServlet</servlet-name>
+		<servlet-class>android.com.gift.controller.GiftServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Android.GiftServlet</servlet-name>
+		<url-pattern>/android/GiftServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Android.GiftboxServlet</servlet-name>
+		<servlet-class>android.com.giftbox.controller.GiftboxServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Android.GiftboxServlet</servlet-name>
+		<url-pattern>/android/GiftboxServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Android.GiftDiscountServlet</servlet-name>
+		<servlet-class>android.com.giftDiscount.controller.GiftDiscountServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Android.GiftDiscountServlet</servlet-name>
+		<url-pattern>/android/GiftDiscountServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Android.GiftOrderServlet</servlet-name>
+		<servlet-class>android.com.giftOrder.controller.GiftOrderServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Android.GiftOrderServlet</servlet-name>
+		<url-pattern>/android/GiftOrderServlet</url-pattern>
+	</servlet-mapping>
 </web-app>

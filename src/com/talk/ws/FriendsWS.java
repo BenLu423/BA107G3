@@ -1,6 +1,6 @@
 package com.talk.ws;
 
-
+import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -20,164 +20,159 @@ import com.member.model.MemberVO;
 import com.talk.model.TalkService;
 import com.talk.model.TalkVO;
 
-
-@ServerEndpoint(value="/FriendWS/{mem_no}" , configurator=ServletAwareConfig.class)
+@ServerEndpoint(value = "/FriendWS/{mem_no}", configurator = ServletAwareConfig.class)
 public class FriendsWS {
-	
+
 	private EndpointConfig config;
-	public static final Map<String , Session> onlineMem = new HashMap<String,Session>();
+	public static final Map<String, Session> onlineMem = new HashMap<String, Session>();
 	private MemberVO self;
 
+
 	@OnOpen
-	public void onOpen(@PathParam("mem_no") String mem_no,Session session , EndpointConfig config) throws JSONException{
+	public void onOpen(@PathParam("mem_no") String mem_no, Session session, EndpointConfig config)
+			throws JSONException {
 		// 設定成500KB為了配合Android bundle傳送大小
-		int maxBufferSize = 5 * 1024 * 1024;
+		int maxBufferSize = 50 * 1024 * 1024;
 		session.setMaxTextMessageBufferSize(maxBufferSize);
 		session.setMaxBinaryMessageBufferSize(maxBufferSize);
-		
+
 		this.config = config;
 		HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
-		
+
 		if (httpSession != null) {
-		   self = (MemberVO) httpSession.getAttribute("memSelf");// 上線會員
+			self = (MemberVO) httpSession.getAttribute("memSelf");// 上線會員
 		} else {
-		   MemberService mSvc = new MemberService();
-		   self = mSvc.getOneMem(mem_no);
+			MemberService mSvc = new MemberService();
+			self = mSvc.getOneMem(mem_no);
 		}
 		
+
 		onlineMem.put(self.getMem_no(), session);
-		System.out.println(self.getMem_name()+"上線");
-		
+		System.out.println(self.getMem_name() + "上線");
+
 		sendFriends(session);
 		getOnlineFri(session);
-		
-		
-		
+
 	}
-	
+
 	@OnMessage
-	public void onMessage(Session session, String message){
-		
-		try{
-		HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
-		//System.out.println(message);
-		JSONObject jsonObj = new JSONObject(message);
-		String type = jsonObj.getString("type");
-		Session friSession = null;
-		//System.out.println(jsonObj);
-		//取得與好友的歷史訊息
-		try{
-			if("getOneTalk".equals(type)){
-				
-				String friNo = jsonObj.getString("friNo");
-				httpSession.setAttribute("nowFriNo", friNo);
-	//			System.out.println("取得連線的好友"+friNo);
-				getTalk(friNo,session);
-				return;
+	public void onMessage(Session session, String message) {
+
+		try {
+			HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
+			// System.out.println(message);
+			JSONObject jsonObj = new JSONObject(message);
+			String type = jsonObj.getString("type");
+			Session friSession = null;
+			// System.out.println(jsonObj);
+			// 取得與好友的歷史訊息
+			try {
+				if ("getOneTalk".equals(type)) {
+
+					String friNo = jsonObj.getString("friNo");
+					httpSession.setAttribute("nowFriNo", friNo);
+					// System.out.println("取得連線的好友"+friNo);
+					getTalk(friNo, session);
+					return;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		//有新訊息傳入
-		if("sendMessage".equals(type)){
+			// 有新訊息傳入
+			if ("sendMessage".equals(type)) {
+
+				updateTextCnt(jsonObj, "getNewMessage", friSession);
+
+			}
+
+			if ("sendImg".equals(type)) {
+				updatePicCnt(jsonObj, "getNewImg", friSession);
+				// System.out.println(jsonObj);
+			}
 			
-			updateCnt(jsonObj , "getNewMessage",friSession);
-			
-		}
-		
-		//有新圖傳入
-		if("sendImg".equals(type)){
-			updateCnt(jsonObj , "getNewImg",friSession);
-			//System.out.println(jsonObj);
-		}
-		
-		//刪除未讀字串
-		if("deleteUnread".equals(type)){
-			String friNo = jsonObj.getString("friNo");
-			FriendsService friSvc = new FriendsService();
-			TalkService talkSvc = new TalkService();
-			FriendsListVO friends= friSvc.getOne(self.getMem_no(), friNo);
-			TalkVO talk = talkSvc.getOneTalk(friends);
-			String cnt = talk.getTalk_cnt();
-			
-			if(cnt!=null){
-				JSONArray jsonarray = new JSONArray(cnt);
-				for(int i = 0; i < jsonarray.length() ; i++){
-					JSONObject oneMessage = jsonarray.getJSONObject(i);
-					if(oneMessage.has("read")){
-						if(oneMessage.getString("memSend").equals(friNo)){
-							oneMessage.remove("read");
+			//刪除未讀字串
+			if("deleteUnread".equals(type)){
+				String friNo = jsonObj.getString("friNo");
+				FriendsService friSvc = new FriendsService();
+				TalkService talkSvc = new TalkService();
+				FriendsListVO friends= friSvc.getOne(self.getMem_no(), friNo);
+				TalkVO talk = talkSvc.getOneTalk(friends);
+				String cnt = talk.getTalk_cnt();
+				
+				if(cnt!=null){
+					JSONArray jsonarray = new JSONArray(cnt);
+					for(int i = 0; i < jsonarray.length() ; i++){
+						JSONObject oneMessage = jsonarray.getJSONObject(i);
+						if(oneMessage.has("read")){
+							if(oneMessage.getString("memSend").equals(friNo)){
+								oneMessage.remove("read");
+							}
 						}
 					}
+					
+					talk.setTalk_cnt(jsonarray.toString());
+					talkSvc.updateCnt(talk);
 				}
 				
-				talk.setTalk_cnt(jsonarray.toString());
-				talkSvc.updateCnt(talk);
 			}
-			
-		}
-				
-		}catch(Exception e){
+					
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
-	
+
 	@OnError
-	public void onError(Session session, Throwable e){
-		e.printStackTrace();
+	public void onError(Session session, Throwable e) {
+
 	}
-	
+
 	@OnClose
-	public void onClose(Session session, CloseReason reason) throws Exception{
-		
-		
+	public void onClose(Session session, CloseReason reason) throws Exception {
+
 		FriendsService friSvc = new FriendsService();
-		List<MemberVO>friends = friSvc.getMemFri(self);
-		
+		List<MemberVO> friends = friSvc.getMemFri(self);
+
 		JSONObject result = null;
 		result = new JSONObject();
-		result.append("type","leave");
-		result.append("memberNO",self.getMem_no());
-		
-		for(MemberVO friend : friends){
-			if(onlineMem.containsKey(friend.getMem_no())){//比對好友是否在上線名單
-				
+		result.append("type", "leave");
+		result.append("memberNO", self.getMem_no());
+
+		for (MemberVO friend : friends) {
+			if (onlineMem.containsKey(friend.getMem_no())) {// 比對好友是否在上線名單
+
 				Session friendsSession = onlineMem.get(friend.getMem_no());
 				friendsSession.getAsyncRemote().sendText(result.toString());
 			}
 		}
-		
-		System.out.println(self.getMem_name()+"離線");
+
+		System.out.println(self.getMem_name() + "離線");
 		session.close();
 		onlineMem.remove(self.getMem_no());
-//		System.out.println(self.getMem_name()+"close");
-		
-		
+		// System.out.println(self.getMem_name()+"close");
+
 	}
-	
-	//推給好友上線訊息
-	public void sendFriends(Session session) throws JSONException{
+
+	// 推給好友上線訊息
+	public void sendFriends(Session session) throws JSONException {
 		FriendsService friSvc = new FriendsService();
-		List<MemberVO> friends = friSvc.getMemFri(self);//上線會員好友清單
-		
-		JSONObject result =null;
+		List<MemberVO> friends = friSvc.getMemFri(self);// 上線會員好友清單
+
+		JSONObject result = null;
 		result = new JSONObject();
 		result.append("type", "sendEveryFri");
-		result.append("memberNO",self.getMem_no());
-		
-		for(MemberVO friend : friends){
-			if(onlineMem.containsKey(friend.getMem_no())){//比對好友是否在上線名單
-				
+		result.append("memberNO", self.getMem_no());
+
+		for (MemberVO friend : friends) {
+			if (onlineMem.containsKey(friend.getMem_no())) {// 比對好友是否在上線名單
+
 				Session friendsSession = onlineMem.get(friend.getMem_no());
 				friendsSession.getAsyncRemote().sendText(result.toString());
 			}
 
 		}
 	}
-	
-	//取得上線好友的狀態
+
+	// 取得上線好友的狀態
 	public void getOnlineFri(Session session) throws JSONException{
 		FriendsService friSvc = new FriendsService();
 		List<MemberVO>friendList = friSvc.getMemFri(self);//好友總人數
@@ -234,16 +229,16 @@ public class FriendsWS {
 			
 		}
 		
-		if(onlineFri.size()<=0){
-			result.remove("onlineFri");
-		}
+//		if(onlineFri.size()<=0){
+//			result.remove("onlineFri");
+//		}
 		
 		session.getAsyncRemote().sendText(result.toString());
 		
 	}
-	
-	//取得與好友的歷史訊息
-	public void getTalk(String friNo , Session session) throws JSONException{
+
+	// 取得與好友的歷史訊息
+public void getTalk(String friNo , Session session) throws JSONException{
 		
 		TalkService talkSvc = new TalkService();
 		FriendsListVO friends = new FriendsListVO();
@@ -277,85 +272,160 @@ public class FriendsWS {
 			session.getAsyncRemote().sendText(result.toString());
 		}
 	}
-	
 
-	public void updateCnt(JSONObject jsonObj,String type,Session friSession) throws JSONException{
+	public void updateTextCnt(JSONObject jsonObj, String type, Session friSession) throws JSONException {
 		String friNo = jsonObj.getString("memGet");
-		String sendType = jsonObj.getString("sendType");
-		
+
 		JSONObject result = new JSONObject();
-		result.append("type",type);
+		result.append("type", type);
 		result.append("memSend", jsonObj.getString("memSend"));
 		result.append("memGet", friNo);
 		result.append("date", jsonObj.getString("date"));
 		result.append("message", jsonObj.getString("message"));
-		
 
-		jsonObj.remove("type");//為了存入資料庫，先將type移除
-		
+		jsonObj.remove("type");// 為了存入資料庫，先將type移除
+
 		TalkService talkSvc = new TalkService();
 		FriendsService friSvc = new FriendsService();
 		FriendsListVO friends = friSvc.getOne(self.getMem_no(), friNo);
-		
+
 		friSession = onlineMem.get(friNo);
-		
-		if(friSession!=null){
+
+		if (friSession != null) {
 			friSession.getAsyncRemote().sendText(result.toString());
 			TalkVO talk = talkSvc.getOneTalk(friends);
-			//修改時間
+			// 修改時間
 			java.util.Date today = new java.util.Date();
 			long time = today.getTime();
 			Timestamp date = new Timestamp(time);
 			talk.setTalk_time(date);
-			
-			//修改訊息
+
+			// 修改訊息
 			String cnt = talk.getTalk_cnt();
-			
-			if(cnt==null){//沒有歷史訊息時
-				
-				talk.setTalk_cnt("["+jsonObj.toString()+"]");
+
+			if (cnt == null) {// 沒有歷史訊息時
+
+				talk.setTalk_cnt("[" + jsonObj.toString() + "]");
 				talkSvc.updateCnt(talk);
 				return;
 			}
-			
+
 			StringBuilder sb = new StringBuilder(cnt);
-			sb.insert(sb.length()-1,","+jsonObj);
-			
+			sb.insert(sb.length() - 1, "," + jsonObj);
+
 			talk.setTalk_cnt(sb.toString());
-			
+
 			talkSvc.updateCnt(talk);
-			
+
 			return;
-		
-		}else{
-			//好友不在線上的話先將訊息存入資料庫
-			TalkVO talk=talkSvc.getOneTalk(friends);
-			
-			//修改時間
+
+		} else {
+			// 好友不在線上的話先將訊息存入資料庫
+			TalkVO talk = talkSvc.getOneTalk(friends);
+
+			// 修改時間
 			java.util.Date today = new java.util.Date();
 			long time = today.getTime();
 			Timestamp date = new Timestamp(time);
 			talk.setTalk_time(date);
-			
-			//修改訊息
+
+			// 修改訊息
 			String cnt = talk.getTalk_cnt();
-			
-			if(cnt==null){//沒有歷史訊息時
-				talk.setTalk_cnt("["+jsonObj.toString()+"]");
+
+			if (cnt == null) {// 沒有歷史訊息時
+				talk.setTalk_cnt("[" + jsonObj.toString() + "]");
 				talkSvc.updateCnt(talk);
 				return;
 			}
-			
+
 			StringBuilder sb = new StringBuilder(cnt);
-			sb.insert(sb.length()-1,","+jsonObj);
-			
+			sb.insert(sb.length() - 1, "," + jsonObj);
+
 			talk.setTalk_cnt(sb.toString());
-			
+
 			talkSvc.updateCnt(talk);
 			return;
-		
+
 		}
 	}
-	
-	
+
+	public void updatePicCnt(JSONObject jsonObj, String type, Session friSession) throws JSONException {
+		String friNo = jsonObj.getString("memGet");
+
+		JSONObject result = new JSONObject();
+		result.append("type", type);
+		result.append("memSend", jsonObj.getString("memSend"));
+		result.append("memGet", friNo);
+		result.append("date", jsonObj.getString("date"));
+		result.append("message", jsonObj.getString("message"));
+
+		jsonObj.remove("type");// 為了存入資料庫，先將type移除
+
+		TalkService talkSvc = new TalkService();
+		FriendsService friSvc = new FriendsService();
+		FriendsListVO friends = friSvc.getOne(self.getMem_no(), friNo);
+
+		friSession = onlineMem.get(friNo);
+		HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
+		if (friSession != null) {
+//			if (httpSession != null) {
+				friSession.getAsyncRemote().sendText(result.toString());
+//			} else {
+//				friSession.getAsyncRemote().sendBinary(ByteBuffer.wrap(result.toString().getBytes()));
+//			}
+			TalkVO talk = talkSvc.getOneTalk(friends);
+			// 修改時間
+			java.util.Date today = new java.util.Date();
+			long time = today.getTime();
+			Timestamp date = new Timestamp(time);
+			talk.setTalk_time(date);
+
+			// 修改訊息
+			String cnt = talk.getTalk_cnt();
+
+			if (cnt == null) {// 沒有歷史訊息時
+
+				talk.setTalk_cnt("[" + jsonObj.toString() + "]");
+				talkSvc.updateCnt(talk);
+				return;
+			}
+
+			StringBuilder sb = new StringBuilder(cnt);
+			sb.insert(sb.length() - 1, "," + jsonObj);
+
+			talk.setTalk_cnt(sb.toString());
+
+			talkSvc.updateCnt(talk);
+
+			return;
+
+		} else {
+			// 好友不在線上的話先將訊息存入資料庫
+			TalkVO talk = talkSvc.getOneTalk(friends);
+
+			// 修改時間
+			java.util.Date today = new java.util.Date();
+			long time = today.getTime();
+			Timestamp date = new Timestamp(time);
+			talk.setTalk_time(date);
+
+			// 修改訊息
+			String cnt = talk.getTalk_cnt();
+
+			if (cnt == null) {// 沒有歷史訊息時
+				talk.setTalk_cnt("[" + jsonObj.toString() + "]");
+				talkSvc.updateCnt(talk);
+				return;
+			}
+
+			StringBuilder sb = new StringBuilder(cnt);
+			sb.insert(sb.length() - 1, "," + jsonObj);
+
+			talk.setTalk_cnt(sb.toString());
+
+			talkSvc.updateCnt(talk);
+			return;
+
+		}
+	}
 }

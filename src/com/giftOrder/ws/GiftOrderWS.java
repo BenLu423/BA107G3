@@ -24,17 +24,17 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.talk.ws.ServletAwareConfig;
 
-@ServerEndpoint(value="/GiftOrderServer/{mem_no}" , configurator=ServletAwareConfig.class)
+@ServerEndpoint(value="/GiftOrderServer/{mem_no}")
 public class GiftOrderWS {
 	
-	private EndpointConfig config;
+	//private EndpointConfig config;
 	private GiftStatusWS giftStatusWS = new GiftStatusWS();
 	private static final Map<String,Session> allUsers = Collections.synchronizedMap(new LinkedHashMap<>());
 
 	@OnOpen
-	public void onOpen(@PathParam("mem_no") String mem_no, Session userSession, EndpointConfig config) throws IOException {
-		this.config = config;
-		HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
+	public void onOpen(@PathParam("mem_no") String mem_no, Session userSession) throws IOException {
+		//this.config = config;
+		//HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
 		allUsers.put(mem_no, userSession);
 		System.out.println(mem_no + "的go已連線");
 	}
