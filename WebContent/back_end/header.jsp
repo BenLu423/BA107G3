@@ -150,7 +150,7 @@
 					</thead>
 					<tbody style="display:<c:if test="<%= tag.get(5)==0 %>">none</c:if>">
 						<tr>
-							<td><a href="#">帳號檢舉管理帳號</a></td>
+							<td><a href="<%=request.getContextPath()%>/back_end/forbid/mem_prohibit.jsp">帳號檢舉管理帳號</a></td>
 						</tr>
 						<tr>
 							<td><a href="#">日記檢舉管理</a></td>
