@@ -22,20 +22,24 @@ height: 34px;
 </head>
 <body>
 		
-		
+		<!-- header -->
+   		 <jsp:include page="/front_end/header.jsp"></jsp:include>
+		<!-- //header-->
 		
 	
 			<%
+				request.getAttribute("getallMemberData");
+				System.out.print(request.getAttribute("getallMemberData"));
+				
 				MemberService ms = new MemberService();
 				List<MemberVO> getallMember = new ArrayList<MemberVO>();
 				getallMember = ms.getallMem();
-				application.setAttribute("getallMember", getallMember);
+				request.setAttribute("getallMember", getallMember);
+			
 			%>
 			
 	
-	<!-- header -->
-    <jsp:include page="/front_end/header.jsp"></jsp:include>
-	<!-- //header-->
+	
 		
 
 	  <div class="container-fluid">
@@ -170,11 +174,12 @@ height: 34px;
 
                	  </div>
                	  <br><br><br><br><br>
+             	
              
-               	  
+				
                	<div class="col-xs-12 col-sm-12" align ="center">
-               		 		<c:if test="${not empty memSelf.mem_no}">
-	    						<%--
+               			<%--
+               		 		<c:if test="${not empty memSelf.mem_no}">						
 	    							MemberVO memvo = (MemberVO)session.getAttribute("memSelf");
 	    							String mem_no = memvo.getMem_no();
 	    							List<MemberVO> getallmem = (List<MemberVO>) application.getAttribute("getallMemberData");
@@ -184,52 +189,51 @@ height: 34px;
 	    									break;
 	    								}
 	    							}
-	    						--%>
 	    						
-	    							<%--
 	    								MemberVO memvo = (MemberVO)session.getAttribute("memSelf");
 	    								String mem_no = memvo.getMem_no();
 	    								List<MemberVO> getallmem = (List<MemberVO>) application.getAttribute("getallMemberData");
-	    							--%>
-	    						
     						</c:if>
-    						
-    					
-		
-		
-		
-						<c:if test="${empty getallMemberData1 && empty getallMemberData}">
-       					<c:forEach var="memData" items="${getallMember}">	
-       						<div class="col-xs-12 col-sm-4">
-								<div class="item">
-			
-									<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
-									<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
-									</a>
-									<P>暱稱:${memData.mem_name}</P>
-									<p>性別:${memData.mem_gender}</p>	
-									<p>禮物:${memData.mem_receive_gift}</p>		
-								</div>
-							</div>
-						</c:forEach>
-					</c:if>
-		
-	
-					<c:if test="${empty getallMemberData1}">
-       					<c:forEach var="memData" items="${getallMemberData}">	
-       						<div class="col-xs-12 col-sm-4">
-								<div class="item">
+    						--%>
+							<c:if test="${empty getallMemberData1 && empty getallMemberData}">
+							<%@ include file="page1.file" %>
+	       					<c:forEach var="memData" items="${getallMember}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">	
+	       						<div class="col-xs-12 col-sm-4">
+									<div class="item">
 				
-									<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
-									<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
-									</a>
-									<P>暱稱:${memData.mem_name}</P>
-									<p>性別:${memData.mem_gender}</p>	
-									<p>禮物:${memData.mem_receive_gift}</p>		
+										<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
+										<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
+										</a>
+										<P>暱稱:${memData.mem_name}</P>
+										<p>性別:${memData.mem_gender}</p>	
+										<p>禮物:${memData.mem_receive_gift}</p>		
+									</div>
 								</div>
-							</div>
-						</c:forEach>
-					</c:if>	
+							</c:forEach>
+			       			<div style="text-align: center;">
+			       			<%@ include file="page2.file" %>
+			    		  	</div>
+						</c:if>
+			
+		
+						<c:if test="${empty getallMemberData1}">
+
+	       					<c:forEach var="memData" items="${getallMemberData}">	
+	       						<div class="col-xs-12 col-sm-4">
+									<div class="item">
+					
+										<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
+										<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
+										</a>
+										<P>暱稱:${memData.mem_name}</P>
+										<p>性別:${memData.mem_gender}</p>	
+										<p>禮物:${memData.mem_receive_gift}</p>		
+									</div>
+								</div>
+							</c:forEach>
+				
+						</c:if>	
+					
 					
 					<c:if test="${(not empty getallMemberData1)}">
        					<c:forEach var="memData" items="${getallMemberData1}">	
@@ -250,8 +254,9 @@ height: 34px;
 					
 					
 					
-       			</div>
-				</div>
+       		
+    	
+			</div>
 		    </div> 
 		    <div class="col-xs-12 col-sm-1"></div>		
   			</div>

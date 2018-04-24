@@ -63,22 +63,7 @@
                             </div>
                           </div>
                         </div>
-                        <!-- 區塊3 -->
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="panel3">
-                            <h4 class="panel-title">
-                              <a href="#ccc" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ccc">
-                            	      收合項目標題三
-                              </a>
-                            </h4>
-                          </div>
-                          <div id="ccc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel3">
-                            <div class="panel-body">
-                              	  內容三置入在這裡
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+             
 
                 </div>
                 <div class="col-xs-12 col-sm-9">
@@ -109,9 +94,7 @@
  					
  					
  						<%} %>
- 						<%if(myself_page != null){ %>
-                 		<jsp:include page="<%=chang_page%>"></jsp:include>
-                 		<%}%>
+ 						
                      	 </div>
                      <%---------------------------------------------------------------------------------%> 
                       <div class="col-xs-12 col-sm-2"></div>

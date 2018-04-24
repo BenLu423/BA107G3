@@ -36,17 +36,6 @@
     <jsp:include page="/front_end/header.jsp"></jsp:include>
 	<!-- //header-->
     
-	<%-- 錯誤表列 --%>
-	<c:if test="${not empty errorMsgs}">
-		<font style="color:red">請修正以下錯誤:</font>
-		<ul>
-			<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message.value}</li>
-		</c:forEach>
-		</ul>
-	</c:if>
-	
-
 
     <div class="container-fluid">
         <div class="row">
@@ -57,39 +46,60 @@
            
                           <div class="form-group">
                             <label for="mem_account">帳號:</label>
+                             <c:if test="${not empty errorMsgs}">
+                             <p style="color:red">${errorMsgs.mem_account}</p>
+                             </c:if>
                             <input type="text" name="mem_account" id="mem_account" class="form-control" value="">
  						 </div>
 						  
                           <div class="form-group">
-                            <label for="mem_password">密碼:</label>  
+                            <label for="mem_password">密碼:</label>
+                             <c:if test="${not empty errorMsgs}">
+                             <p style="color:red">${errorMsgs.mem_password}</p>
+                             </c:if>  
                             <input type="text" name="mem_password" id="mem_password" class="form-control" value="">
                           </div>
 
                           <div class="form-group">
-                            <label for="doublecheck">確認密碼:</label>  
+                            <label for="doublecheck">確認密碼:</label>
+                             <c:if test="${not empty errorMsgs}">
+                             <p style="color:red">${errorMsgs.doublecheck}</p>
+                             </c:if>     
                             <input type="text" name="doublecheck" id="" class="form-control" value="">
                           </div>
                           
                           <div class="form-group">
-                            <label for="mem_name">暱稱:</label>  
+                            <label for="mem_name">暱稱:</label>
+                             <c:if test="${not empty errorMsgs}">
+                             <p style="color:red">${errorMsgs.mem_name}</p>
+                             </c:if>   
                             <input type="text" name="mem_name" id="mem_name" class="form-control" value="">
                           </div>
                                    
                        	  <div class="form-group">
-                            <label for="mem_birthday">出生年月:</label>  
+                            <label for="mem_birthday">出生年月:</label>
+                             <c:if test="${not empty errorMsgs}">
+                             <p style="color:red">${errorMsgs.mem_birthday}</p>
+                             </c:if>  
                             <input type="date" name="mem_birthday" id="mem_birthday" class="form-control" value="">
                           </div>
 						
                         	
                          <div class="form-group">
-                           		 <label for="mem_gender">性別:</label> 
+                           		 <label for="mem_gender">性別:</label>
+                           		 <c:if test="${not empty errorMsgs}">
+                           		 <p style="color:red">${errorMsgs.mem_gender}</p>
+                            	 </c:if> 
 					                              男<input type="radio" name="mem_gender" id="mem_gender" value="男">
 					                              女<input type="radio" name="mem_gender" id="mem_gender" value="女">
                          </div>	
                         	
                         	
                           <div class="form-group">
-                            <label for="mem_bloodtype">血型:</label> 
+                            <label for="mem_bloodtype">血型:</label>
+                            <c:if test="${not empty errorMsgs}">
+                           	<p style="color:red">${errorMsgs.mem_bloodtype}</p>
+                            </c:if>  
                             <select class="" name="mem_bloodtype" id="mem_bloodtype">
                               <option value="" selected>請選擇:</option>
                               <option value="A">A型</option>
@@ -101,7 +111,10 @@
 
                                
                           <div class="form-group">
-                            <label for="mem_county">地區:</label> 
+                            <label for="mem_county">地區:</label>
+                            <c:if test="${not empty errorMsgs}">
+                           	<p style="color:red">${errorMsgs.mem_county}</p>
+                            </c:if>  
                             <select class="" name="mem_county" id="mem_county">
                               <option value="" selected>請選擇:</option>
                               <option value="基隆市">基隆市</option>
@@ -128,14 +141,20 @@
 
 
                           <div class="form-group">
-                            <label for="mem_height">身高:</label> 
+                            <label for="mem_height">身高:</label>
+                            <c:if test="${not empty errorMsgs}">
+                           	<p style="color:red">${errorMsgs.mem_height}</p>
+                            </c:if> 
                             <select class="" name="mem_height" id="height">
                               <option value="" selected>請選擇:</option>
                             </select>
                           </div>
 
                           <div class="form-group">
-                            <label for="mem_weight">體重:</label> 
+                            <label for="mem_weight">體重:</label>
+                            <c:if test="${not empty errorMsgs}">
+                           	<p style="color:red">${errorMsgs.mem_weight}</p>
+                            </c:if> 
                             <select class="" name="mem_weight" id="weight">
                               <option value="" selected>請選擇:</option>
                             </select>
@@ -143,7 +162,10 @@
 
 
                            <div class="form-group">
-                            <label for="mem_emotion">感情狀況:</label> 
+                            <label for="mem_emotion">感情狀況:</label>
+                            <c:if test="${not empty errorMsgs}">
+                           	<p style="color:red">${errorMsgs.mem_emotion}</p>
+                            </c:if> 
                             <select class="" name="mem_emotion" id="mem_emotion">
                               <option value="" selected>請選擇:</option>
                               <option value="單身">單身</option>
@@ -156,7 +178,10 @@
                           </div>
                           
                           <div class="form-group">
-                            <label for="mem_contact">交往關係:</label> 
+                            <label for="mem_contact">交往關係:</label>
+                            <c:if test="${not empty errorMsgs}">
+                           	<p style="color:red">${errorMsgs.mem_contact}</p>
+                            </c:if> 
                             <select class="" name="mem_contact" id="mem_contact">
                               <option value="" selected>請選擇:</option>
                               <option value="其他友誼">其他友誼</option>
