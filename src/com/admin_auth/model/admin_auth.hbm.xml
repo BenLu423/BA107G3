@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.admin_auth.model.AdminAuthVO" table="admin_auth">
+		<composite-id>
+			<key-many-to-one name="admin" class="com.admin.model.AdminVO" lazy="false">
+				<column name="adm_no"/>
+			</key-many-to-one>
+			<key-many-to-one name="auth" class="com.auth_feature.model.AuthFeatureVO" lazy="false">
+				<column name="auth_no"/>
+			</key-many-to-one>
+		</composite-id>
+		
+	
+	</class>
+
+</hibernate-mapping>

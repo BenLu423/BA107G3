@@ -2,6 +2,7 @@ package com.admin.model;
 
 import java.util.*;
 
+import com.admin_auth.model.AdminAuthVO;
 import com.auth_feature.model.AuthFeatureVO;
 
 public class AdminService {
@@ -23,7 +24,7 @@ public class AdminService {
 	}
 	
 	public AdminVO updateAdmin(String adm_no,String adm_acct,String adm_mail ,String adm_name){
-		AdminVO adminVO = new AdminVO();
+		AdminVO adminVO = dao.findByPrimaryKey(adm_no);
 		adminVO.setAdm_no(adm_no);
 		adminVO.setAdm_acct(adm_acct);
 		adminVO.setAdm_mail(adm_mail);
@@ -49,7 +50,7 @@ public class AdminService {
 		return dao.getAll();
 	}
 	
-	public List<AuthFeatureVO>getAdminAuths(String adm_no){
+	public List<AdminAuthVO>getAdminAuths(String adm_no){
 		return dao.getAdminAuths(adm_no);
 	}
 	

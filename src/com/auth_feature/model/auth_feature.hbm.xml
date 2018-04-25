@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.auth_feature.model.AuthFeatureVO" table="auth_feature">
+		<id name="auth_no" column="auth_no" type="string">
+			<generator class="com.auth_feature.model.AuthFeatureGenerator"/>
+		</id>
+		<property name="auth_name" column="auth_name"/>
+	</class>
+
+</hibernate-mapping>

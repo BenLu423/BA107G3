@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.admin.model.AdminVO" table="ADMIN">
+		<id name="adm_no" column="adm_no" type="string">
+			<generator class="com.admin.model.AdminGenerator"/>
+		</id>
+		<property name="adm_acct" column="adm_acct"/>
+		<property name="adm_pwd" column="adm_pwd"/>
+		<property name="adm_name" column="adm_name"/>
+		<property name="adm_mail" column="adm_mail"/>
+	
+	</class>
+
+</hibernate-mapping>

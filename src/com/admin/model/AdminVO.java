@@ -14,7 +14,6 @@ public class AdminVO implements java.io.Serializable{
 	private String adm_name;
 	private String adm_mail;
 	
-	private String authsForHtml;
 	private List<Integer> tag;
 	
 	public AdminVO(){
@@ -56,50 +55,31 @@ public class AdminVO implements java.io.Serializable{
 		this.adm_name = adm_name;
 	}
 	
-
-	public String getAuthsForHtml(String adm_no){
-		AuthFeatureService authFeatSvc = new AuthFeatureService();
-		AuthService authSvc = new AuthService();
-		List<AuthFeatureVO>allAuth = authFeatSvc.getAll();//全權限(六個)
-		List<AdminAuthVO> allAdminAuth= authSvc.getAll();//所有員工的權限清單(正確答案)
-		
-		StringBuilder sb = new StringBuilder();
-		
-		for(int i = 0 ; i <allAuth.size();i++){
-			AdminAuthVO auth = new AdminAuthVO();
-			auth.setAdm_no(adm_no);
-			auth.setAuth_no((allAuth.get(i)).getAuth_no());
-			if(allAdminAuth.contains(auth)){
-				sb.append("<div class='auth-list checked'><span class='glyphicon glyphicon-ok hlyphicon-lg'></span><h5>").append((allAuth.get(i)).getAuth_name()).append("</h5></div>");
-			}else{
-				sb.append("<div class='auth-list'><span class='glyphicon glyphicon-ok hlyphicon-lg'></span><h5>").append((allAuth.get(i)).getAuth_name()).append("</h5></div>");
-			}
-		}
-				
-		return sb.toString();
-	}
-	
-	public void setAuthsForHtml(String authsForHtml){
-		this.authsForHtml = authsForHtml;
-	}
 	
 	public List<Integer> getTag(){
 		AuthFeatureService authFeatSvc = new AuthFeatureService();
 		AuthService authSvc = new AuthService();
+		AdminService adminSvc = new AdminService();
 		List<AuthFeatureVO>allAuth = authFeatSvc.getAll();//全權限(六個)
 		List<AdminAuthVO> allAdminAuth= authSvc.getAll();//所有員工的權限清單(正確答案)
 		List<Integer> tag = new ArrayList<Integer>();
 		for(int i = 0 ; i <allAuth.size();i++){
+			AdminVO admin = adminSvc.getOneAdmin(adm_no);
 			AdminAuthVO auth = new AdminAuthVO();
-			auth.setAdm_no(adm_no);
-			auth.setAuth_no((allAuth.get(i)).getAuth_no());
+			auth.setAdmin(admin);
+			auth.setAuth((allAuth.get(i)));
 			if(allAdminAuth.contains(auth)){
 				tag.add(1);
 			}else{
 				tag.add(0);
 			}
 		}
-				
+		
+		for(Integer tags :tag){
+			System.out.println(tags);
+		}
+		
+		
 		return tag;
 	}
 	

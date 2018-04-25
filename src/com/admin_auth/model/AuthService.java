@@ -2,6 +2,9 @@ package com.admin_auth.model;
 
 import java.util.List;
 
+import com.admin.model.AdminVO;
+import com.auth_feature.model.AuthFeatureVO;
+
 public class AuthService {
 	private AdminAuthDAO_interface dao;
 
@@ -9,20 +12,22 @@ public class AuthService {
 		dao = new AdminAuthDAO();
 	}
 
-	public void addAuth(String adm_no,String auth_no){
+	public void addAuth(AdminVO adm,AuthFeatureVO auth){
 		AdminAuthVO authVO = new AdminAuthVO();
-		authVO.setAdm_no(adm_no);
-		authVO.setAuth_no(auth_no);
+		authVO.setAdmin(adm);
+		authVO.setAuth(auth);
 		dao.insert(authVO);
 	}
 	
-	public void addAuth(String admin_no, String[] auths) {
+	public void addAuth(AdminVO admin, String[] auths) {
 		AdminAuthVO authVO = null;
 
 		for (int i = 0; i < auths.length; i++) {
 			authVO = new AdminAuthVO();
-			authVO.setAdm_no(admin_no);
-			authVO.setAuth_no(auths[i]);
+			authVO.setAdmin(admin);
+			AuthFeatureVO af = new AuthFeatureVO();
+			af.setAuth_no(auths[i]);
+			authVO.setAuth(af);
 			dao.insert(authVO);
 
 		}

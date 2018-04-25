@@ -1,390 +1,180 @@
 package com.admin.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import org.hibernate.*;
 
+import hibernate.util.*;
+
+import com.admin_auth.model.AdminAuthVO;
 import com.auth_feature.model.AuthFeatureVO;
 
 public class AdminDAO implements AdminDAO_interface{
 	
-	private static DataSource ds = null;
-	static {
-		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/BA107G3");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static final String INSERT_ADMIN = "INSERT INTO ADMIN(ADM_NO, ADM_ACCT, ADM_PWD, ADM_NAME,ADM_MAIL) VALUES ('A'||LPAD(to_char(ADMIN_SEQ.NEXTVAL),3,'0'), ?, ?, ?,?)";
-	private static final String UPDATE_ADMIN = "UPDATE ADMIN SET ADM_ACCT=?,ADM_MAIL=?,ADM_NAME=? WHERE ADM_NO=?";
-	private static final String DELETE_ADMIN = "DELETE FROM ADMIN WHERE ADM_NO=?";
-	private static final String GET_ONE_ADMIN = "SELECT*FROM ADMIN WHERE ADM_NO=?";
-	private static final String GET_ALL_ADMIN = "SELECT*FROM ADMIN ORDER BY ADM_NO DESC";
-	private static final String GET_ADMIN_AUTHS = "SELECT*FROM AUTH_FEATURE JOIN ADMIN_AUTH ON AUTH_FEATURE.AUTH_NO = ADMIN_AUTH.AUTH_NO WHERE ADM_NO=?";
-	private static final String GET_ONE_ByACCT = "SELECT*FROM ADMIN WHERE ADM_ACCT=?";
-	
 	@Override
 	public void insert(AdminVO adminVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_ADMIN);
-			
-			pstmt.setString(1, adminVO.getAdm_acct());
-			pstmt.setString(2, adminVO.getAdm_pwd());
-			pstmt.setString(3, adminVO.getAdm_name());
-			pstmt.setString(4,adminVO.getAdm_mail());
-			
-			pstmt.executeUpdate();
-			System.out.println("新增完成");
-			
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
+			session.beginTransaction();
+			session.saveOrUpdate(adminVO);
+			session.getTransaction().commit();
+		}catch(RuntimeException re){
+			session.getTransaction().rollback();
+			throw re;
 		}
 		
 	}
 
 	@Override
 	public void update(AdminVO adminVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE_ADMIN);
-			
-			pstmt.setString(1, adminVO.getAdm_acct());
-			pstmt.setString(2, adminVO.getAdm_mail());
-			pstmt.setString(3, adminVO.getAdm_name());
-			pstmt.setString(4, adminVO.getAdm_no());
-			
-			pstmt.executeUpdate();
-			System.out.println("修改完成");
-			
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
+			session.beginTransaction();
+			session.saveOrUpdate(adminVO);
+			session.getTransaction().commit();
+		}catch(RuntimeException re){
+			session.getTransaction().rollback();
+			throw re;
 		}
 		
 	}
 
 	@Override
-	public void delete(String admin_no) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		
+	public void delete(String adminNo) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(DELETE_ADMIN);
-			
-			pstmt.setString(1, admin_no);
-			
-			pstmt.executeUpdate();
-			System.out.println("刪除完成");
-			
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
+			session.beginTransaction();
+			AdminVO adminVO = (AdminVO)session.get(AdminVO.class, adminNo);
+			session.delete(adminVO);
+			session.getTransaction().commit();
+		}catch(RuntimeException re){
+			session.getTransaction().rollback();
+			throw re;
 		}
 		
 	}
 
 	@Override
 	public AdminVO findByPrimaryKey(String admin_no) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		AdminVO admin = null;
-		
+		AdminVO adminVO = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ONE_ADMIN);
-			
-			pstmt.setString(1, admin_no);
-			rs = pstmt.executeQuery();
-			
-			rs.next();
-			admin = new AdminVO();
-			admin.setAdm_no(rs.getString("adm_no"));
-			admin.setAdm_acct(rs.getString("adm_acct"));
-			admin.setAdm_pwd(rs.getString("adm_pwd"));
-			admin.setAdm_name(rs.getString("adm_name"));
-			admin.setAdm_mail(rs.getString("adm_mail"));
-			
-			System.out.println("查詢完成");
-			
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
+			session.beginTransaction();
+			adminVO = (AdminVO)session.get(AdminVO.class, admin_no);
+			session.getTransaction().commit();
+		}catch(RuntimeException re){
+			session.getTransaction().rollback();
+			throw re;
 		}
-		return admin;
+		return adminVO;
 	}
 
 	@Override
 	public List<AdminVO> getAll() {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		AdminVO admin = null;
-		List<AdminVO> adminList = new ArrayList<AdminVO>();
-		
+		List<AdminVO> list = new ArrayList<AdminVO>();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL_ADMIN);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){
-				admin = new AdminVO();
-				admin.setAdm_no(rs.getString("adm_no"));
-				admin.setAdm_acct(rs.getString("adm_acct"));
-				admin.setAdm_pwd(rs.getString("adm_pwd"));
-				admin.setAdm_name(rs.getString("adm_name"));
-				admin.setAdm_mail(rs.getString("adm_mail"));
-				adminList.add(admin);
-			}
-			
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
+			session.beginTransaction();
+			Query query = session.createQuery("from AdminVO order by adm_no desc");
+			list = query.list();
+			session.getTransaction().commit();
+		}catch(RuntimeException re){
+			session.getTransaction().rollback();
+			throw re;
 		}
-		return adminList;
-	}
-
-	@Override
-	public List<AuthFeatureVO> getAdminAuths(String admin_no) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		AuthFeatureVO auth = null;
-		List<AuthFeatureVO> list = new ArrayList<AuthFeatureVO>();
 		
-		try{
-			
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ADMIN_AUTHS);
-			
-			pstmt.setString(1, admin_no);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){
-				auth = new AuthFeatureVO();
-				auth.setAuth_no(rs.getString("auth_no"));
-				auth.setAuth_name(rs.getString("auth_name"));
-				list.add(auth);
-			}
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
-		}
 		return list;
 	}
 
-	
-	public Map<String, String> getAllMap() {
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		AdminVO admin = null;
-		Map<String , String >map = new HashMap<String ,String >();
-		
+	@Override
+	public List<AdminAuthVO> getAdminAuths(String adm_no) {
+		List<AdminAuthVO>list = new ArrayList<AdminAuthVO>();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL_ADMIN);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){
-				admin = new AdminVO();
-				admin.setAdm_no(rs.getString("adm_no"));
-				admin.setAdm_acct(rs.getString("adm_acct"));
-				admin.setAdm_pwd(rs.getString("adm_pwd"));
-				admin.setAdm_name(rs.getString("adm_name"));
-				admin.setAdm_mail(rs.getString("adm_mail"));
-				map.put(rs.getString("adm_acct"), rs.getString("adm_pwd"));
-			}
-			
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
+			session.beginTransaction();
+			Query query = session.createQuery("from AdminAuthVO where adm_no=?");
+			query.setParameter(0, adm_no);
+			list = query.list();
+		}catch(RuntimeException re){
+			session.getTransaction().rollback();
+			throw re;
 		}
-		return map;
+		return list;
 	}
+	
+	
 
 	@Override
 	public AdminVO findByAcct(String admin_acct) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		AdminVO admin = null;
-		
+		AdminVO adminVO = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ONE_ByACCT);
-			
-			pstmt.setString(1, admin_acct);
-			rs = pstmt.executeQuery();
-			
-			rs.next();
-			admin = new AdminVO();
-			admin.setAdm_no(rs.getString("adm_no"));
-			admin.setAdm_acct(rs.getString("adm_acct"));
-			admin.setAdm_pwd(rs.getString("adm_pwd"));
-			admin.setAdm_name(rs.getString("adm_name"));
-			admin.setAdm_mail(rs.getString("adm_mail"));
-			
-		}catch(SQLException se){
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
+			session.beginTransaction();
+			Query query = session.createQuery("from AdminVO where adm_acct=?");
+			query.setParameter(0, admin_acct);
+			List<AdminVO>list = query.list();
+			for(AdminVO admin : list){
+				adminVO = new AdminVO();
+				adminVO.setAdm_acct(admin.getAdm_acct());
+				adminVO.setAdm_no(admin.getAdm_no());
+				adminVO.setAdm_name(admin.getAdm_name());
+				adminVO.setAdm_pwd(admin.getAdm_pwd());
+				adminVO.setAdm_mail(admin.getAdm_mail());
 			}
-			if(con!=null){
-				try{
-					con.close();
-				}catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-				
-			}	
+			session.getTransaction().commit();
+		}catch(RuntimeException re){
+			session.getTransaction().rollback();
+			throw re;
 		}
-		return admin;
+		return adminVO;
 	}
 	
+	
+	public static void main(String[]args){
+		
+//		AdminDAO dao = new AdminDAO();
+		
+		//新增
+//		AdminVO admin = new AdminVO();
+//		admin.setAdm_name("test");
+//		admin.setAdm_acct("two");
+//		admin.setAdm_pwd("two");
+//		admin.setAdm_mail("jwes4421@gmail.com");
+//		dao.insert(admin);
+		
+		//修改
+//		AdminVO admin = new AdminVO();
+//		admin.setAdm_no("A011");
+//		admin.setAdm_name("test_update");
+//		admin.setAdm_acct("two");
+//		admin.setAdm_pwd("two");
+//		admin.setAdm_mail("jwes4421@gmail.com");
+//		dao.update(admin);
+		
+		//刪除
+//		dao.delete("A011");
+		
+		//get one
+//		AdminVO admin = dao.findByPrimaryKey("A009");
+//		System.out.println(admin.getAdm_name());
+		
+		//get all
+//		List<AdminVO> list = dao.getAll();
+//		for(AdminVO admins : list){
+//			System.out.println(admins.getAdm_name());
+//			System.out.println("-----------------");
+//		}
+		
+		//get by acct
+//		AdminVO admin = dao.findByAcct("AAA");
+//		System.out.println(admin.getAdm_name());
+		
+		//get admin auths
+//		List<AdminAuthVO>list = dao.getAdminAuths("A002");
+//		for(AdminAuthVO auth : list){
+//			System.out.println(auth.getAuth().getAuth_no());
+//			System.out.println("--------------");
+//		}
+	}
 
 }

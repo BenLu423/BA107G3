@@ -1,15 +1,18 @@
 package com.admin_auth.model;
 
+import com.admin.model.AdminVO;
+import com.auth_feature.model.AuthFeatureVO;
+
 public class AdminAuthVO implements java.io.Serializable{
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((adm_no == null) ? 0 : adm_no.hashCode());
-		result = prime * result + ((auth_no == null) ? 0 : auth_no.hashCode());
+		result = prime * result + ((admin == null) ? 0 : admin.hashCode());
+		result = prime * result + ((auth == null) ? 0 : auth.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -19,44 +22,55 @@ public class AdminAuthVO implements java.io.Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		AdminAuthVO other = (AdminAuthVO) obj;
-		if (adm_no == null) {
-			if (other.adm_no != null)
-				return false;
-		} else if (!adm_no.equals(other.adm_no))
+		
+		AdminVO selfAdmin = this.getAdmin();
+		AdminVO otherAdmin = other.getAdmin();
+		AuthFeatureVO selfAuth = this.getAuth();
+		AuthFeatureVO otherAuth = other.getAuth();
+
+		if(((selfAdmin.getAdm_no()).equals(otherAdmin.getAdm_no()))&&((selfAuth.getAuth_no()).equals(otherAuth.getAuth_no()))){
+			return true;
+		}else{
 			return false;
-		if (auth_no == null) {
-			if (other.auth_no != null)
-				return false;
-		} else if (!auth_no.equals(other.auth_no))
-			return false;
-		return true;
+		}
+//		if (admin == null) {
+//			if (other.admin != null)
+//				return false;
+//		} else if (!admin.equals(other.admin))
+//			return false;
+//		if (auth == null) {
+//			if (other.auth != null)
+//				return false;
+//		} else if (!auth.equals(other.auth))
+//			return false;
+//		return true;
 	}
 
-	private String adm_no;
-	private String auth_no;
+	private AdminVO admin;
+	private AuthFeatureVO auth;
 	
 	public AdminAuthVO(){
 		
 	}
-	public AdminAuthVO(String adm_no,String auth_no){
-		this.adm_no=adm_no;
-		this.auth_no=auth_no;
+	public AdminAuthVO(AdminVO admin,AuthFeatureVO auth){
+		this.admin=admin;
+		this.auth=auth;
 	}
 
-	public String getAdm_no() {
-		return adm_no;
+	public AdminVO getAdmin() {
+		return admin;
 	}
 
-	public void setAdm_no(String adm_no) {
-		this.adm_no = adm_no;
+	public void setAdmin(AdminVO admin) {
+		this.admin = admin;
 	}
 
-	public String getAuth_no() {
-		return auth_no;
+	public AuthFeatureVO getAuth() {
+		return auth;
 	}
 
-	public void setAuth_no(String auth_no) {
-		this.auth_no = auth_no;
+	public void setAuth(AuthFeatureVO auth) {
+		this.auth = auth;
 	}
 	
 	

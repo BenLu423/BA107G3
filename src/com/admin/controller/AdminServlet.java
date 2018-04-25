@@ -101,7 +101,7 @@ public class AdminServlet extends HttpServlet {
 				/*3.加入權限*/
 				AdminVO admin = adminSvc.getOneByAcct(account);
 				AuthService authSvc = new AuthService();
-				authSvc.addAuth(admin.getAdm_no(), auths);
+				authSvc.addAuth(admin, auths);
 				
 				/*4.寄送密碼*/
 				SendMail sendMail = new SendMail();
@@ -128,9 +128,9 @@ public class AdminServlet extends HttpServlet {
 				AuthService authSvc = new AuthService();
 				
 				//先刪該員工權限
-				List<AuthFeatureVO> auths = admSvc.getAdminAuths(adm_no);//取得員工擁有的權限
-				for(AuthFeatureVO auth : auths){
-					authSvc.deleteAuth(adm_no, auth.getAuth_no());
+				List<AdminAuthVO> auths = admSvc.getAdminAuths(adm_no);//取得員工擁有的權限
+				for(AdminAuthVO auth : auths){
+					authSvc.deleteAuth(adm_no, auth.getAuth().getAuth_no());
 				}
 				//刪除該員工
 				admSvc.deleteAdmin(adm_no);
@@ -230,13 +230,13 @@ public class AdminServlet extends HttpServlet {
 				AuthService authSvc = new AuthService();
 				
 				//先將全部權限刪除
-				List<AuthFeatureVO> adminAuths = adminSvc.getAdminAuths(adm_no);
-				for(AuthFeatureVO auth : adminAuths){
-					authSvc.deleteAuth(adm_no, auth.getAuth_no());
+				List<AdminAuthVO> adminAuths = adminSvc.getAdminAuths(adm_no);
+				for(AdminAuthVO auth : adminAuths){
+					authSvc.deleteAuth(adm_no, auth.getAuth().getAuth_no());
 				}
 				
 				//再將新的權限送出新增
-				authSvc.addAuth(adm_no, auths);
+				authSvc.addAuth(admin, auths);
 				
 				/*3.新增成功，跳轉到員工頁面*/
 				req.setAttribute("admin", admin);
@@ -245,6 +245,7 @@ public class AdminServlet extends HttpServlet {
 				
 			}catch(Exception e){
 				errorMsgs.add(e.getMessage());
+				e.printStackTrace();
 				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 				failureView.forward(req, res);
 			}
