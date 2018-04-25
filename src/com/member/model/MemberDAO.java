@@ -980,6 +980,38 @@ public class MemberDAO implements MemberDAO_interface{
 	}
 
 	@Override
+	public void updateDeposit(String mem_no, Integer delDeposit) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		MemberVO memberVO = getOne(mem_no);
+		Integer oriDeposit = memberVO.getMem_deposit();
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_DEPOSIT_STMT);
+			pstmt.setInt(1, oriDeposit-delDeposit);
+			pstmt.setString(2, mem_no);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException("A database error occured. " + e.getMessage());
+		} finally {
+			if(con != null){
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(pstmt != null){
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void updateRecGift(String mem_no, Integer addRecGift, Connection con) {
 		/* con從GiftOrderDAO的insert()傳遞過來  */
 		PreparedStatement pstmt = null;

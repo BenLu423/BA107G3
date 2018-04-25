@@ -3,6 +3,7 @@ package com.giftOrder.controller;
 import java.io.*;
 import java.util.*;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -176,8 +177,19 @@ System.out.println("Order action: " + action);
 			//取得所有訂單明細+收贈禮列表
 			Map<GiftOrderDetailVO, List<GiftReceiveVO>> orderDetail = (Map<GiftOrderDetailVO, List<GiftReceiveVO>>) session.getAttribute("orderDetail");
 			//取得當前會員編號
-			MemberVO member = (MemberVO)session.getAttribute("memSelf");
-			String mem_no = member.getMem_no();
+			MemberVO memberVO = (MemberVO)session.getAttribute("memSelf");
+			String mem_no = memberVO.getMem_no();
+			
+			//判斷會員是否有足夠金額
+			int mem_deposit = memberVO.getMem_deposit();
+			Integer orderMoney = (Integer) session.getAttribute("orderMoney");
+			if(mem_deposit<orderMoney){
+				req.setAttribute("requestURL", "/front_end/gift/gift_checkout.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/deposit/deposit_index.jsp");
+				failureView.forward(req, res);
+				return;
+			}
+			
 			//建立訂單VO
 			GiftOrderVO giftOrderVO = new GiftOrderVO();
 			giftOrderVO.setMem_no(mem_no);
@@ -194,6 +206,9 @@ System.out.println("Order action: " + action);
 			GiftOrderViewService giftOrderViewSvc = new GiftOrderViewService();
 			Map<String,String[]> map = new HashMap<>();
 			List<GiftOrderViewVO> orderViewList = giftOrderViewSvc.getAll(mem_no);
+			
+			memberVO.setMem_deposit(mem_deposit-orderMoney);
+			req.setAttribute("memSelf", memberVO);
 			
 			session.setAttribute("orderViewList", orderViewList);
 			session.setAttribute("orderDetail", null);

@@ -18,6 +18,16 @@
   <listener>
     <listener-class>listener.GiftTimerInitListener</listener-class>
   </listener>
+  
+  <servlet>
+    <servlet-name>DepositServlet</servlet-name>
+    <servlet-class>com.deposit.controller.DepositServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DepositServlet</servlet-name>
+    <url-pattern>/deposit/deposit.do</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>GiftServlet</servlet-name>
     <servlet-class>com.gift.controller.GiftServlet</servlet-class>
@@ -162,7 +172,7 @@
   <servlet-mapping>
     <servlet-name>EventServlet</servlet-name>
     <url-pattern>/back_end/event/event.do</url-pattern>
-  </servlet-mapping> 
+  </servlet-mapping>
   <servlet>
     <servlet-name>EventFrontServlet</servlet-name>
     <servlet-class>com.event.controller.EventFrontServlet</servlet-class>
@@ -243,7 +253,7 @@
     <servlet-name>AndroidEventServlet</servlet-name>
     <url-pattern>/android/AndroidEventServlet</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>AndroidEvent_participantsServlet</servlet-name>
     <servlet-class>android.com.event_participants.controller.AndroidEvent_participantsServlet</servlet-class>
   </servlet>
@@ -251,5 +261,4 @@
     <servlet-name>AndroidEvent_participantsServlet</servlet-name>
     <url-pattern>/android/AndroidEvent_participantsServlet</url-pattern>
   </servlet-mapping>
-  
 </web-app>

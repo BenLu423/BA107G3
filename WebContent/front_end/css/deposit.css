@@ -2,6 +2,9 @@
 	width:70px; 
 }
 
+.money,
+#currentMoney,
+#buyMoney,
 #remainMoney{
 	font-size:30px;	
 	font-weight:700;

@@ -144,6 +144,10 @@ public class MemberService {
 	public void updateDeposit(String mem_no, Integer delDeposit, Connection con){
 		memdao.updateDeposit(mem_no, delDeposit, con);
 	}
+
+	public void updateDeposit(String mem_no, Integer delDeposit){
+		memdao.updateDeposit(mem_no, delDeposit);
+	}
 	
 	public void updateRecGift(String mem_no, Integer addRecGift, Connection con) {
 		memdao.updateRecGift(mem_no, addRecGift, con);

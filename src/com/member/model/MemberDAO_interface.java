@@ -23,5 +23,6 @@ public interface MemberDAO_interface {
 	
 	//紹永[禮物訂單使用]
 	void updateDeposit(String mem_no, Integer delDeposit, Connection con);
+	void updateDeposit(String mem_no, Integer delDeposit);
 	void updateRecGift(String mem_no, Integer addRecGift, Connection con);
 }

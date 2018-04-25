@@ -25,7 +25,7 @@
         <div class="col-xs-12 col-sm-10 content">
             <div class="content-top"  style="margin-top:100px;"></div>  
 			<div class="col-xs-12 col-sm-6">
-				<div class="page-container">
+				<div class="page-container" id="allMoney">
 			        <ul class="tips">
 			        	<c:forEach var="depositVO" items="${depositSvc.all}">
 			      		<li>
@@ -47,7 +47,7 @@
 			<div class="col-xs-12 col-sm-6">
 				<div class="col-xs-12 col-sm-6 card-wrapper"></div>
 		        <div class="col-xs-12 col-sm-6 form-container active" style="margin-top:25px;">
-		            <form action="">
+		            <form>
 		                <input placeholder="Card number" type="text" name="number">
 		                <input placeholder="Full name" type="text" name="name">
 		                <input placeholder="MM/YY" type="text" name="expiry">
@@ -57,21 +57,31 @@
 		        <div class="col-xs-12 col-sm-9" style="text-align:right;margin-top:70px;">
 					<div>
 						<img id="coin" src="<%=request.getContextPath()%>/front_end/res/img/deposit/coin.jpg" alt="">	
-						<p style="display:inline-block;" id="remainMoney">目前代幣：　</p>
-						<p style="display:inline-block;" id="remainMoney">${memSelf.mem_deposit}</p>
+						<p style="display:inline-block;" id="currentMoney">目前代幣：　</p>
+						<p style="display:inline-block;width:100px;" class="money">${memSelf.mem_deposit}</p>
 					</div>
 					<div>
 						<p style="width:72px;display:inline-block;"></p>
-						<p style="display:inline-block;" id="remainMoney">購買代幣：　</p>
-						<p style="display:inline-block;" id="remainMoney">0</p>
+						<p style="display:inline-block;" id="buyMoney">購買代幣：　</p>
+						<p style="display:inline-block;width:100px;" class="money">0</p>
 					</div>
 					<hr style="width: 100%; height: 2px; background-color: black; margin: 10px 0px 0px 0px;">
-					<div id="remainMoney">剩餘代幣：　${memSelf.mem_deposit}</div>
+					<div>
+						<p style="width:72px;display:inline-block;"></p>
+						<p style="display:inline-block;" id="remainMoney">剩餘代幣：　</p>
+						<p style="display:inline-block;width:100px;" class="money">${memSelf.mem_deposit}</p>
+					</div>
+					<div>
+						<button type="button" id="storedValue" class="btn btn-default btn-block" style="margin-top:40px;font-size:30px;">儲值</button>
+						<input type="hidden" id="requestURL" value="${requestURL}">
+					</div>
 		        </div>
 	    	</div>    
-		<div class="col-xs-12 col-sm-1"></div>
-	</div>    
-</div>	      
+		<div class="col-xs-12 col-sm-12" style="margin-top:84px;"></div>
+		</div>    
+	</div>	 
+	<div class="modal"></div>
+</div>     
 <jsp:include page="/front_end/footer.jsp"></jsp:include>
 </body>
 <style>
@@ -113,9 +123,61 @@
     .tc_inner_card {
       width: 175px;
     }
+    
+	.modal {
+	    display:    none;
+	    position:   fixed;
+	    z-index:    1000;
+	    top:        0;
+	    left:       0;
+	    height:     100%;
+	    width:      100%;
+	    background: rgba( 255, 255, 255, .8 ) 
+	                url('http://sampsonresume.com/labs/pIkfp.gif') 
+	                50% 50% 
+	                no-repeat;
+	}
+	
+	body.loading {
+	    overflow: hidden;   
+	}
+	
+	body.loading .modal {
+	    display: block;
+	}
 </style>
 <script>
 $(document).ready( function() {
+	$('#storedValue').click(function(){
+		$body = $("body");
+		var requestURL = $('#requestURL')[0].value;
+		if(requestURL=="" || requestURL==null){
+			requestURL = "/front_end/gift/gift_index.jsp";
+		}
+		var obj = [{name: "action",value: "storedValue"},{name: "requestURL",value: requestURL},];
+		$('#allMoney').find('span').each(function (index) {
+			if($(this).attr('class')!=null && $(this).attr('class').match('imgChked')){
+				var money = $(this).find('input[name=depo_value]')[0].value;
+				obj[obj.length] = {name: "money", value: money};
+			}
+       	});
+		$body.addClass("loading");
+		$.ajax({
+			type: 'POST',
+			url: '/BA107G3/deposit/deposit.do',
+			data: obj,
+			dataType: 'json',
+			success: (function(json) {
+				if(json.status=='success'){
+					setTimeout(function(){ $body.removeClass("loading"); 
+					window.location.href = '${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}'+requestURL;
+					}, 3000);
+				}
+			}),
+			error:(function() { console.log("second error"); })
+		}); 
+	});
+	
 	$('.active form').card({
     	container: $('.card-wrapper')
 	})
@@ -127,8 +189,16 @@ $(document).ready( function() {
 	    onclick: function(el){
 	    	var isChecked = el.hasClass("imgChked"),
 		    imgEl = el.children()[0];  // the img element
-			console.log($(el).find('input[name=depo_no]')[0].value);//編號
-			console.log($(el).find('input[name=depo_value]')[0].value);//價格
+		    var money = $('#buyMoney').next();
+		    var total = $('#remainMoney').next();
+		    if($(el).attr('class').match('imgChked')!=null){
+			    money[0].innerText = parseInt(money[0].innerText) + parseInt($(el).find('input[name=depo_value]')[0].value);
+			    total[0].innerText = parseInt(total[0].innerText) + parseInt($(el).find('input[name=depo_value]')[0].value);
+		    }
+		    else{
+			    money[0].innerText = parseInt(money[0].innerText) - parseInt($(el).find('input[name=depo_value]')[0].value);
+			    total[0].innerText = parseInt(total[0].innerText) - parseInt($(el).find('input[name=depo_value]')[0].value);
+		    }
 	    }
 	});
 });
