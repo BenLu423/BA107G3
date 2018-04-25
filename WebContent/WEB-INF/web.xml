@@ -16,7 +16,7 @@
     <res-auth>Container</res-auth>
   </resource-ref>
   <listener>
-	<listener-class>listener.GiftTimerInitListener</listener-class>
+    <listener-class>listener.GiftTimerInitListener</listener-class>
   </listener>
   <servlet>
     <servlet-name>GiftServlet</servlet-name>
@@ -26,7 +26,7 @@
     <servlet-name>GiftServlet</servlet-name>
     <url-pattern>/gift/gift.do</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>GiftServletUFT8</servlet-name>
     <servlet-class>com.gift.controller.GiftServletUTF8</servlet-class>
   </servlet>
@@ -97,22 +97,22 @@
   <servlet-mapping>
     <servlet-name>AccountReportServlet</servlet-name>
     <url-pattern>/accpre/accpre.do</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
   <filter>
-  	<filter-name>FrontLoginFilter</filter-name>
-  	<filter-class>filter.FrontLoginFilter</filter-class>
+    <filter-name>FrontLoginFilter</filter-name>
+    <filter-class>filter.FrontLoginFilter</filter-class>
   </filter>
   <filter-mapping>
-  	<filter-name>FrontLoginFilter</filter-name>
-  	<url-pattern>/front_end/member/modify_personal_data_main_page.jsp</url-pattern>
-  	<url-pattern>/front_end/member/member_intro.jsp</url-pattern>
-  	<url-pattern>/front_end/member/member_modify_password.jsp</url-pattern>
-  	<url-pattern>/front_end/member/member_modify_page.jsp</url-pattern>
-  	<dispatcher>REQUEST</dispatcher>
-  	<dispatcher>FORWARD</dispatcher>
-  	<dispatcher>INCLUDE</dispatcher>
-  	<dispatcher>ERROR</dispatcher>
-  	<dispatcher>ASYNC</dispatcher>
+    <filter-name>FrontLoginFilter</filter-name>
+    <url-pattern>/front_end/member/modify_personal_data_main_page.jsp</url-pattern>
+    <url-pattern>/front_end/member/member_intro.jsp</url-pattern>
+    <url-pattern>/front_end/member/member_modify_password.jsp</url-pattern>
+    <url-pattern>/front_end/member/member_modify_page.jsp</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
   <servlet>
     <servlet-name>AdminServlet</servlet-name>
@@ -163,67 +163,77 @@
     <servlet-name>EventServlet</servlet-name>
     <url-pattern>/back_end/event/event.do</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Android.MemberServlet</servlet-name>
+    <servlet-class>android.com.member.controller.MemberServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Android.MemberServlet</servlet-name>
+    <url-pattern>/android/MemberServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Android.FriendsListServlet</servlet-name>
+    <servlet-class>android.com.friends_list.controller.FriendsListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Android.FriendsListServlet</servlet-name>
+    <url-pattern>/android/FriendsListServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Android.TalkServlet</servlet-name>
+    <servlet-class>android.com.talk.controller.TalkServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Android.TalkServlet</servlet-name>
+    <url-pattern>/android/TalkServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Android.GiftServlet</servlet-name>
+    <servlet-class>android.com.gift.controller.GiftServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Android.GiftServlet</servlet-name>
+    <url-pattern>/android/GiftServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Android.GiftboxServlet</servlet-name>
+    <servlet-class>android.com.giftbox.controller.GiftboxServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Android.GiftboxServlet</servlet-name>
+    <url-pattern>/android/GiftboxServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Android.GiftDiscountServlet</servlet-name>
+    <servlet-class>android.com.giftDiscount.controller.GiftDiscountServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Android.GiftDiscountServlet</servlet-name>
+    <url-pattern>/android/GiftDiscountServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Android.GiftOrderServlet</servlet-name>
+    <servlet-class>android.com.giftOrder.controller.GiftOrderServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Android.GiftOrderServlet</servlet-name>
+    <url-pattern>/android/GiftOrderServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AndroidEventServlet</servlet-name>
+    <servlet-class>android.com.event.controller.AndroidEventServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidEventServlet</servlet-name>
+    <url-pattern>/android/AndroidEventServlet</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <servlet-name>AndroidEvent_participantsServlet</servlet-name>
+    <servlet-class>android.com.event_participants.controller.AndroidEvent_participantsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidEvent_participantsServlet</servlet-name>
+    <url-pattern>/android/AndroidEvent_participantsServlet</url-pattern>
+  </servlet-mapping>
   
-  	<servlet>
-		<servlet-name>Android.MemberServlet</servlet-name>
-		<servlet-class>android.com.member.controller.MemberServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Android.MemberServlet</servlet-name>
-		<url-pattern>/android/MemberServlet</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Android.FriendsListServlet</servlet-name>
-		<servlet-class>android.com.friends_list.controller.FriendsListServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Android.FriendsListServlet</servlet-name>
-		<url-pattern>/android/FriendsListServlet</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Android.TalkServlet</servlet-name>
-		<servlet-class>android.com.talk.controller.TalkServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Android.TalkServlet</servlet-name>
-		<url-pattern>/android/TalkServlet</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Android.GiftServlet</servlet-name>
-		<servlet-class>android.com.gift.controller.GiftServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Android.GiftServlet</servlet-name>
-		<url-pattern>/android/GiftServlet</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Android.GiftboxServlet</servlet-name>
-		<servlet-class>android.com.giftbox.controller.GiftboxServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Android.GiftboxServlet</servlet-name>
-		<url-pattern>/android/GiftboxServlet</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Android.GiftDiscountServlet</servlet-name>
-		<servlet-class>android.com.giftDiscount.controller.GiftDiscountServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Android.GiftDiscountServlet</servlet-name>
-		<url-pattern>/android/GiftDiscountServlet</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Android.GiftOrderServlet</servlet-name>
-		<servlet-class>android.com.giftOrder.controller.GiftOrderServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Android.GiftOrderServlet</servlet-name>
-		<url-pattern>/android/GiftOrderServlet</url-pattern>
-	</servlet-mapping>
 </web-app>
