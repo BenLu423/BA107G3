@@ -43,7 +43,7 @@ public class DepositDAO implements DepositDAO_interface {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery("from DepositVO order by depo_no desc");
+			Query query = session.createQuery("from DepositVO order by depo_value");
 			list = query.list();
 			session.getTransaction().commit();
 		} catch (RuntimeException ex) {
