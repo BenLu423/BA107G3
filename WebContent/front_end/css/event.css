@@ -42,7 +42,7 @@
    
     border-style:double;
     border-style:outset;
-    background-color:#FFDD23;
+    background-color:rgba(255,220,220,1);
     padding:7px;
     margin-bottom:15px;
     text-align:justify;

@@ -134,7 +134,7 @@
 					</thead>
 					<tbody style="display:<c:if test="<%= tag.get(4)==0 %>">none</c:if>">
 						<tr>
-							<td><a href="#">活動內容管理</a></td>
+							<td><a href="<%=request.getContextPath()%>/back_end/event/listAllEvent.jsp">活動內容管理</a></td>
 						</tr>
 					</tbody>
 					</tbody>

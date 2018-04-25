@@ -162,6 +162,22 @@
   <servlet-mapping>
     <servlet-name>EventServlet</servlet-name>
     <url-pattern>/back_end/event/event.do</url-pattern>
+  </servlet-mapping> 
+  <servlet>
+    <servlet-name>EventFrontServlet</servlet-name>
+    <servlet-class>com.event.controller.EventFrontServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EventFrontServlet</servlet-name>
+    <url-pattern>/front_end/event/event.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>EvepServlet</servlet-name>
+    <servlet-class>com.evep.controller.EvepServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EvepServlet</servlet-name>
+    <url-pattern>/evep/evep.do</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>Android.MemberServlet</servlet-name>
