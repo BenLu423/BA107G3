@@ -3,12 +3,19 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.event.model.*"%>
 <%@ page import="com.evep.model.*"%>
+<%@ page import="com.member.model.*"%>
 
 <%
   EventVO eventVO = (EventVO) request.getAttribute("eventVO");
+  MemberVO memSelf = (MemberVO)session.getAttribute("memSelf");
+if (memSelf == null) {
+	memSelf = null;
+}else{
+  
   EvepService eveSvc = new EvepService();
-  List<String> list = eveSvc.getEvenMemNo(eventVO.getEve_no());
-  pageContext.setAttribute("eventMem", list);//此活動參加會員
+  boolean isInThisEvent = eveSvc.getEvenMemNo(memSelf.getMem_no(),eventVO.getEve_no());
+  pageContext.setAttribute("isInThisEvent", isInThisEvent);//是否有參加這個活動
+}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -40,12 +47,7 @@
 				<div class="col-xs-10 style="padding:50px;font-size:1.1em;">
 					
 					<div class="page-header">
-<%-- 					會員${memSelf.mem_no} --%>
-					<c:if test="${eventMem}.contains(${memSelf.mem_no})">已參加</c:if>
-					<c:forEach var="eventMem" items="${eventMem}">
-<%-- 						參加${eventMem} --%>
-						<font style="color:red"><c:if test="${eventMem == memSelf.mem_no}">已參加，請靜候通知</c:if></font>
-					</c:forEach>
+						<font style="color:red"><c:if test="${isInThisEvent}">已參加，請靜候通知</c:if></font>
 					
 					
 					<jsp:useBean id="evecSvc" scope="page" class="com.evec.model.EvecService" />
@@ -61,7 +63,7 @@
 					   <input type="hidden" name="action" value="getEvent_apply">
 					   <input type="hidden" name="eve_no" value="${eventVO.eve_no}">
 					   <input type="hidden" name="member_no" value="${memSelf.mem_no}">
-					   <input type="submit" value="報名活動">
+					   <input type="submit" value="報名活動" <c:if test="${isInThisEvent}">disabled</c:if>>
 					 </FORM>
               	
          

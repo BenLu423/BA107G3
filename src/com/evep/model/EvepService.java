@@ -40,14 +40,18 @@ public class EvepService {
 		dao.update(mem_no, eve_no, evep_sts);
 	}
 	
-	public List<String> getEvenMemNo(String eve_no){
+	public boolean getEvenMemNo(String mem_no,String eve_no){
 		List<String>list = new ArrayList<String>();
 		Set<EvepVO> set = getEventMembers(eve_no);
 		for(EvepVO evep : set){
 			list.add(evep.getMem_no());
 		}
-		
-		return list;
+
+		if(list.contains(mem_no)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }
