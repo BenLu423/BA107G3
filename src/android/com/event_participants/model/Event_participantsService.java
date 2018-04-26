@@ -29,5 +29,9 @@ public class Event_participantsService {
 	public List<Event_participantsVO> getOneEve(String mem_no){
 		return dao.getOneEve(mem_no);
 	}
+	
+	public List<Event_participantsVO> getOneEvep(String eve_no){
+		return dao.getOneEvep(eve_no);
+	}
 
 }

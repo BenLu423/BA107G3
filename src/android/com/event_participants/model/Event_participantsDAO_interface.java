@@ -10,4 +10,6 @@ public interface Event_participantsDAO_interface {
 	
 	public List<Event_participantsVO> getOneEve(String mem_no);
 	
+	public List<Event_participantsVO> getOneEvep(String eve_no);
+	
 }

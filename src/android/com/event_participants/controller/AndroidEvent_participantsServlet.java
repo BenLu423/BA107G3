@@ -37,7 +37,13 @@ public class AndroidEvent_participantsServlet extends HttpServlet {
 				event_participantsVO.setEvep_qr(ImageUtil.shrink(event_participantsVO.getEvep_qr(), 200));
 			}
 			outStr = gson.toJson(allEve);
-		} 
+		}
+		
+		else if("getOneEvep".equals(action)) {
+			String eve_no = req.getParameter("eve_no");
+			allEve = epSvc.getOneEvep(eve_no);
+			outStr = gson.toJson(allEve);
+		}
 			
 		res.setContentType(CONTENT_TYPE);
 		PrintWriter out = res.getWriter();
