@@ -38,11 +38,13 @@
 <body>
 <%
 	request.setAttribute("requsetURL", request.getRequestURI());
-	String path = (String)request.getAttribute("requsetURL");
+	String path = (String) request.getAttribute("requsetURL");
 	Object isSession = session.getAttribute("memSelf");
-	if(isSession == null && !(path.equals("/BA107G3/front_end/login.jsp"))){
-		session.setAttribute("location", request.getRequestURI());
-	}
+
+if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/login.jsp"))
+		&& !(path.equals(request.getContextPath() + "/front_end/member/member_register.jsp")))) {
+	session.setAttribute("location", request.getRequestURI());
+}
 %>
 
 
@@ -114,18 +116,22 @@
                                  <li>total: $${orderMoney}</li>
                                  <li><a href="<%=request.getContextPath()%>/front_end/gift/gift_order.jsp">前往購物車</a></li>
                              </ul>                                
-                         </div>
+                         	</div>
                          
-                         <div class="btn-group">
-                             <button class="btn btn-default dropdown-toggle mybutton-icon" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                             	通知 <span class="badge">888</span>
-                             </button>
-                             <ul class="dropdown-menu agile_short_dropdown dropdown-menu-right" aria-labelledby="dropdownMenu2" style="text-align: left">
-                                    <li><a href="#">　 劉德華　　請求加為好友</a></li>
-                                    <li><a href="#">　 周子瑜　　已成好友</a></li>
-                                    <li><a href="#">　蠟筆小新　 已新增留言</a></li>
-                                </ul>                                
-                            </div>
+							<div class="btn-group">
+								<button class="btn btn-default dropdown-toggle mybutton-icon"
+									type="button" id="dropdownMenu2" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="true">
+									通知 <span class="badge">0</span>
+								</button>
+								<%--新增 id set-fri--%>
+								<ul
+									class="dropdown-menu agile_short_dropdown dropdown-menu-right"
+									aria-labelledby="dropdownMenu2"
+									style="text-align: left; min-width: 260px;" id="set-fri">
+	
+								</ul>
+							</div>
                             <div class="btn-group btn-group-menu">
                                 <button class="btn btn-default dropdown-toggle mybutton-icon" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <div class="menu-icon"></div>
@@ -243,9 +249,273 @@
         opacity: 1;
     }
 }
+
 </style>
+
+
+
+
+
 <script type="text/javascript">
-$(document).ready(function() {
+// $(document).ready(function() {
+	var count = 0;
+	
+	
+		var memSend_name;
+		var memSend;
+		var memGet;
+		var MyPoint = "/MemberWS/${memSelf.mem_no}";
+		var host = window.location.host;
+		var path = window.location.pathname;
+		var webCtx = path.substring(0, path.indexOf('/', 1));
+		var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+		var addfri = document.getElementById("addfri");
+		var webSocket;		
+		
+		function sendaddfri(){
+			var memSend = document.getElementById('self').value;
+			var memGet = document.getElementById('other').value;
+			var type = document.getElementById('type').value;
+			var jsonObj = {"type": type, "memSend": memSend, "memGet": memGet};
+			webSocket.send(JSON.stringify(jsonObj));	
+		};
+	function notice(){
+		
+		webSocket = new WebSocket(endPointURL);
+		
+		webSocket.onopen = function(event){
+			console.log("notice連線成功");
+		};
+		
+		webSocket.onmessage = function(event) {
+			
+			var json = JSON.parse(event.data);
+			console.log(json.memGet);
+			console.log(json.memSend);
+			console.log(json.type);
+			console.log(json.memSend_name);
+			var memSend_name = json.memSend_name;
+			var memSend = json.memSend;
+			var memGet = json.memGet;
+			
+			
+			////////////////////////////////////////////////////////
+			//		創建元素順序									  //
+			//		var pname = document.createElement('p');	  //
+			//		pname.innerHTML = memSend_name;	  			  //
+			//		pname.setAttribute("class", "democlass");	  //
+			////////////////////////////////////////////////////////
+			//***********BA107G3-back要換路徑*************//
+			
+			var div = document.createElement('div');
+			
+			var li = document.createElement('li');
+			var liid = "id" + count;
+			li.setAttribute('id',liid);
+			
+			var newlinkpath = "/BA107G3/front_end/member/personal_page.jsp?mem_no="+memSend;
+			var newlink = document.createElement('a');
+			var link = "a" + count;
+			newlink.innerHTML = "&nbsp&nbsp&nbsp&nbsp"+ memSend_name + "&nbsp&nbsp&nbsp&nbsp請求加為好友&nbsp&nbsp&nbsp&nbsp";
+			newlink.setAttribute('href', newlinkpath);
+			newlink.setAttribute('id', link);
+			
+			var add = ("addfrie" + count).toString();
+			
+		
+			var addfri = document.createElement('button');
+			addfri.setAttribute("id", add);
+			addfri.setAttribute("class","btn btn-default");
+			addfri.setAttribute("style","width:15%");
+		
+			console.log(addfri);
+			
+			var addspan = document.createElement('span');
+			addspan.setAttribute("class","glyphicon glyphicon-ok");
+			addfri.appendChild(addspan);
+			//addfriend onclick
+			addfri.addEventListener('click',addfriends,false);
+			
+			var del = "delfri" + count;
+			var delfri = document.createElement('button');
+			delfri.setAttribute("id", del);
+			delfri.setAttribute("class","btn btn-default");
+			delfri.setAttribute("style","width:15%");
+			delfri.addEventListener('click',delfriends,false);
+
+			
+			var delspan = document.createElement('span');
+			delspan.setAttribute("class","glyphicon glyphicon-remove");
+			delfri.appendChild(delspan);
+			
+			
+			
+			var memSend_no = document.createElement('input');
+			var send_no = "memSend_no" + count;
+			memSend_no.setAttribute("type","hidden");
+			memSend_no.setAttribute("name","memSend_no");
+			memSend_no.setAttribute("value", memSend);
+			memSend_no.setAttribute("id", send_no);
+			console.log(memSend);
+			
+			
+			var memGet_no = document.createElement('input');
+			var get_no = "memGet_no" + count;
+			memGet_no.setAttribute("type","hidden");
+			memGet_no.setAttribute("name","memGet_no");
+			memGet_no.setAttribute("value", memGet);
+			memGet_no.setAttribute("id", get_no);
+			console.log(memGet);
+		
+			
+			var action = document.createElement('input');
+			action.setAttribute("type","hidden");
+			action.setAttribute("name","action");
+			action.setAttribute("value", "fri");
+			action.setAttribute("id","action");
+			
+	
+			
+			count++;
+			div.appendChild(li);
+			li.appendChild(newlink);
+			li.appendChild(addfri);
+			li.appendChild(delfri);
+			li.appendChild(memSend_no);
+			li.appendChild(memGet_no);
+			li.appendChild(action);
+	
+	
+			
+			$('#set-fri').prepend(div);
+		
+		};
+		webSocket.onerror = function(event){
+		};
+		webSocket.onclose = function(event) {		
+		};
+// 		function sendaddfri(){
+// 			var memSend = document.getElementById('self').value;
+// 			var memGet = document.getElementById('other').value;
+// 			var type = document.getElementById('type').value;
+// 			var jsonObj = {"type": type, "memSend": memSend, "memGet": memGet};
+// 			webSocket.send(JSON.stringify(jsonObj));	
+// 		};
+		
+	}
+	
+	notice();
+
+	function addfriends(e){
+		var t = e.currentTarget.id;
+		console.log("====e.target: ",e.target);
+		console.log("====e.target.id : ",e.target.id);
+		console.log("====e.currentTarget: ",e.currentTarget);
+		console.log("====e.currentTarget.id : ",e.currentTarget.id);
+		
+		var tid = t.toString();
+		console.log(tid);
+		var num = "";
+
+		for(var i = 0; i < tid.length; i++){
+			if(!(isNaN(tid.charAt(i)))){
+			num += tid.charAt(i);
+			//alert(num);
+			}
+		}
+//		alert("num : " + num);
+//		alert("typeof : " + typeof(num));
+		$("#a"+num).hide();
+		$("#addfrie"+num).hide();
+		$("#delfri"+num).hide();
+
+//		$("#a0").hide();
+//		$("#addfrie0").hide();
+//		$("#delfri0").hide();
+
+		var url = "<%=request.getContextPath()%>/friends/firlist.do";
+		var mg = "#memGet_no"+num;
+		var ms = "#memSend_no"+num;
+
+		var g = document.getElementById("memGet_no0").value;
+		var s = document.getElementById("memSend_no0").value;
+		console.log("---------");
+		console.log(g);
+		console.log(s);
+		console.log("---------");
+		console.log($(mg).val());
+		console.log($(ms).val());	
+		
+			
+			
+			$.ajax({
+				url: url,
+				type: "POST",
+				data:{
+					"action": $("#action").val(),
+					"memGet_no":$(mg).val(),
+					"memSend_no":$(ms).val()
+				}, 
+			});
+		
+	};	
+	
+	function delfriends(e){
+		var t = e.currentTarget.id;
+		console.log("====e.target: ",e.target);
+		console.log("====e.target.id : ",e.target.id);
+		console.log("====e.currentTarget: ",e.currentTarget);
+		console.log("====e.currentTarget.id : ",e.currentTarget.id);
+		
+		var tid = t.toString();
+		console.log(tid);
+		var num = "";
+
+		for(var i = 0; i < tid.length; i++){
+			if(!(isNaN(tid.charAt(i)))){
+			num += tid.charAt(i);
+			//alert(num);
+			}
+		}
+//		alert("num : " + num);
+//		alert("typeof : " + typeof(num));
+		$("#a"+num).hide();
+		$("#addfrie"+num).hide();
+		$("#delfri"+num).hide();
+
+//		$("#a0").hide();
+//		$("#addfrie0").hide();
+//		$("#delfri0").hide();
+
+		var url = "<%=request.getContextPath()%>/friends/firlist.do";
+		var mg = "#memGet_no"+num;
+		var ms = "#memSend_no"+num;
+
+		var g = document.getElementById("memGet_no0").value;
+		var s = document.getElementById("memSend_no0").value;
+		console.log("---------");
+		console.log(g);
+		console.log(s);
+		console.log("---------");
+		console.log($(mg).val());
+		console.log($(ms).val());	
+		
+			
+			
+			$.ajax({
+				url: url,
+				type: "POST",
+				data:{
+					"action": "dfri",
+					"memGet_no":$(mg).val(),
+					"memSend_no":$(ms).val()
+				}, 
+			});
+		
+	};	
+	
+
+	
 	var i = "0";
 	//go : giftOrder
     connectOrder();
@@ -307,10 +577,14 @@ $(document).ready(function() {
 			console.log("goWebSocket 已離線");
 		};
 	}
-});
+// });
 $(window).on('beforeunload',function(){
 	console.log("disconnect ws:giftOrder");
 	goWebSocket.close();
+	console.log("disconnect ws:notice")
+	webSocket.close();	
 });
 </script>
+
+
 </html>

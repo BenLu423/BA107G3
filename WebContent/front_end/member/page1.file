@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 
-<%  int rowsPerPage = 6;  //–掸计    
+<%  int rowsPerPage = 9;  //–掸计    
     int rowNumber=0;      //羆掸计
     int pageNumber=0;     //羆计      
     int whichPage=1;      //材碭

@@ -3,9 +3,9 @@
 <%@ page import="com.member.model.MemberService" %>
 <%@ page import="com.member.model.MemberVO" %>
 <%@ page import="com.friends_list.model.*" %>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.LinkedHashMap"%>
-<%@page import="java.util.Set"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.LinkedHashMap"%>
+<%@ page import="java.util.Set"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="">
   <head>
@@ -112,10 +112,16 @@
     <body>
     <%
     	String mem_no = request.getParameter("mem_no");
+    	String session_mem_no = null;
     	MemberService ms = new MemberService();
     	MemberVO getoneMemberData = ms.getOneMem(mem_no);
     	request.setAttribute("getoneMemberData", getoneMemberData);
+    	
+    	if(session.getAttribute("memSelf") != null){
+    		session_mem_no = ((MemberVO)session.getAttribute("memSelf")).getMem_no();
+    	}
     	if(session.getAttribute("memSelf") == null){
+    		
     		session.setAttribute("personal_mem_no", mem_no);
     	}
     	if(mem_no == null){
@@ -127,7 +133,6 @@
 <!-- //header-->
 
 	<script type="text/javascript">
-		
 		var url = "<%=request.getContextPath()%>/friends/firlist.do";		   
 		   $(function () {
 	            $('#addfri').click(function () {
@@ -147,8 +152,7 @@
 	
 	                    },
 	                    error: function(xhr) {
-	                    	alert("錯誤");
-	                    	alert(xhr.status);
+	                
 						}
 	                });
 	            });
@@ -228,60 +232,63 @@
                 
                 <div class="col-xs-12 col-sm-1"></div> 
                 <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                
 
-                       
+                   		
                        <div class="col-xs-12 col-sm-4 set-col-sm-font">
                               <div class="item item-imgarea">
                                  <img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${getoneMemberData.mem_no}" class="set-photostick">
 								<p id="p"></p>
-                                 <%--<img src="btnimg/add-friend.png" class=" btn set-icon set-icon-left">--%>
-                        		<c:if test="${not empty memSelf}">
-                        		<a data-toggle="modal" class="btn btn-default" id ="addfri" onclick="sendaddfri();">加入好友</a>
-                                 <input type="hidden" id="other" name="other" value="<%=mem_no%>">
-                                 <input type="hidden" id="self" name="self" value="${memSelf.mem_no}">
-                                 <input type="hidden" id="isfri" name="self">
-                                 <input type="hidden" id="ismemfri" name="ismemfri" value="<%=judgefri%>">
-                          		 <input type="hidden" id="action" name="action" value="getaddfri">
-                          		 <input type="hidden" id="type" value="sendAdd">
-                           		
-                           		
-                           		<a href='#modal-id' data-toggle="modal" class="btn btn-default">檢舉會員</a>
-									<div class="modal fade" id="modal-id">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-													<h4 class="modal-title">檢舉原因
-													<select name="accrep_reason" id="accrep_reason">
-														<option value="" selected>請選擇:</option>
-														<option value="違規大頭貼">違規大頭貼</option>
-														<option value="假資料">假資料</option>
-														<option value="詐騙">詐騙</option>
-														<option value="騷擾">騷擾</option>
-														<option value="其他">其他</option>
-													</select>
-													</h4>
+                                <c:if test="${not empty memSelf}">
+                                	<%if(!(mem_no.equals(session_mem_no))) {%>
+                        				<c:if test="${not empty memSelf}">
+                        					<button data-toggle="modal" class="btn btn-default" id ="addfri" onclick="sendaddfri();">加入好友</button>
+                              				<input type="hidden" id="other" name="other" value="<%=mem_no%>">
+                              			   <input type="hidden" id="self" name="self" value="${memSelf.mem_no}">
+			                                 <input type="hidden" id="isfri" name="self">
+			                                 <input type="hidden" id="ismemfri" name="ismemfri" value="<%=judgefri%>">
+			                          		 <input type="hidden" id="action" name="action" value="getaddfri">
+			                          		 <input type="hidden" id="type" value="sendAdd">
+	
+			                           		<a href='#modal-id' data-toggle="modal" class="btn btn-default">檢舉會員</a>
+												<div class="modal fade" id="modal-id">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+																<h4 class="modal-title">檢舉原因
+																<select name="accrep_reason" id="accrep_reason">
+																	<option value="" selected>請選擇:</option>
+																	<option value="違規大頭貼">違規大頭貼</option>
+																	<option value="假資料">假資料</option>
+																	<option value="詐騙">詐騙</option>
+																	<option value="騷擾">騷擾</option>
+																	<option value="其他">其他</option>
+																</select>
+																</h4>
+															</div>
+															<div class="modal-body">
+																	<textarea rows="4" cols="60" name="accrep_cnt" id="accrep_cnt"></textarea>
+															</div>
+															<input type="hidden" id="action1" name="action1" value="prohibit">
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+																<button type="button" class="btn btn-primary" id="send-pro" data-dismiss="modal">送出</button>
+															</div>
+														</div>
+													</div>
 												</div>
-												<div class="modal-body">
-														<textarea rows="4" cols="50" name="accrep_cnt" id="accrep_cnt"></textarea>
-												</div>
-												<input type="hidden" id="action1" name="action1" value="prohibit">
-												<div class="modal-footer">
-													<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-													<button type="button" class="btn btn-primary" id="send-pro" data-dismiss="modal">送出</button>
-												</div>
-											</div>
-										</div>
-									</div>
-                           		</c:if>
+                           					</c:if>
+                           				<%}%>
+                           			</c:if>
                            		<c:if test="${empty memSelf}">
                            		<button  class="btn btn-default">加入好友</button>
                            		<button  class="btn btn-default">檢舉會員</button>
                            		</c:if>
-                                 <img src="btnimg/gift.png" class=" btn set-icon">
-                                 <%-- <img src="btnimg/cancel.png" class=" btn set-icon">--%>
+                         
                               </div>
                         </div>
+                
 
                        <div class="col-xs-12 col-sm-6 set-col-sm-font">
                             <div>
@@ -343,10 +350,6 @@
                               <li role="presentation">
                                   <a class="link-font-color" href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab"><p class="p-font-color">收到禮物</p></a>
                               </li>
-                              <li role="presentation">
-                                  <a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab"><p class="p-font-color">我的日記</p></a>
-                              </li>
-
                           </ul>
 
                           <!-- 標籤面板：內容區 -->
@@ -363,7 +366,7 @@
                             	
                               </div>
                               <div role="tabpanel" class="tab-pane" id="tab3">Lorem ipsum dolor sit amet.</div>
-                               <div role="tabpanel" class="tab-pane" id="tab4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, ab!</div>
+                               
 
                            </div>
                            
@@ -413,7 +416,7 @@
  </c:if>
 
 <!-- FOOTER -->
-<jsp:include page="/front_end/footer.jsp"></jsp:include>
+<%-- <jsp:include page="/front_end/footer.jsp"></jsp:include> --%>
 <!-- FOOTER END-->
 	</body>
 </html>

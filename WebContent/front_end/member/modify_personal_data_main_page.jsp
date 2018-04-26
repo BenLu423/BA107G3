@@ -78,27 +78,33 @@
  						<% 
  							String chang_page = "";
  							Map<String,String> myself_page = (Map<String,String>)session.getAttribute("myself_page");
+ 						
  							if(myself_page != null){
  								Set<String> keys = myself_page.keySet();
  								for(String key : keys){
  									String value = myself_page.get(key);
  									if(key.equals("selfintro")){
- 										chang_page = value.substring(value.indexOf("k")+1);
+ 										chang_page = value;
  									}else if(key.equals("selfdata")){
- 										chang_page = value.substring(value.indexOf("k")+1);
+ 										chang_page = value;
  									}else if(key.equals("selfpass")){
- 										chang_page = value.substring(value.indexOf("k")+1);
+ 										chang_page = value;
  									}
  								}
  						%>
- 					
- 					
  						<%} %>
- 						
                      	 </div>
                      <%---------------------------------------------------------------------------------%> 
                       <div class="col-xs-12 col-sm-2"></div>
                 </div>
+              </div>
+              <div class="col-xs-12 col-sm-9">
+              			<c:if test="${empty myself_page}">
+              			<jsp:include page="/front_end/member/member_modify_password.jsp"/>
+              			</c:if>
+              			<c:if test="${not empty myself_page}">
+ 						<jsp:include page="<%=chang_page%>"/>   
+ 						</c:if>           
               </div>
               <div class="col-xs-12 col-sm-1"></div>   
             </div>
@@ -140,7 +146,7 @@
 				})
 
 
-				       window.onload = function(){
+			window.onload = function(){
               var height = document.getElementById("height");
                   for(var i = 120; i <= 220; i++){
                     var text = i + "¤½¤À";

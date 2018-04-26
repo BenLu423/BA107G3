@@ -103,8 +103,11 @@ public class FriendsListServlet extends HttpServlet {
 			try{
 				String memGet = req.getParameter("memGet_no");
 				String memSend = req.getParameter("memSend_no");
+				System.out.println("§R°£");
 				System.out.println(memSend);
 				System.out.println(memGet);
+				FriendsService fs = new FriendsService();
+				fs.webDelFri(memGet, memSend);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -135,7 +138,6 @@ public class FriendsListServlet extends HttpServlet {
 			
 			System.out.println(action);
 		if("delfrilist".equals(action)){
-			System.out.println("123456");
 			try{
 				String self = req.getParameter("memself");
 				String other = req.getParameter("memother");

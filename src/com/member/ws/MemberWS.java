@@ -44,13 +44,12 @@ public class MemberWS {
 
 		@OnMessage
 		public void onMessage(Session session, String message) throws JSONException {
-			System.out.println("inter");
+			System.out.println("e04");
 			JSONObject jsonObj = new JSONObject(message);
 			Session onlineSession = null;
 			String type =(String)jsonObj.get("type");
 			System.out.println("type = " + type);
 			if ("sendAdd".equals(type)) {
-				System.out.println("test");
 				System.out.println("jsonObj = "+jsonObj);
 				JSONObject result = null;
 				String friNo = (String) jsonObj.getString("memGet");

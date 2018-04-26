@@ -189,12 +189,12 @@ height: 34px;
 	    									break;
 	    								}
 	    							}
-	    						
 	    								MemberVO memvo = (MemberVO)session.getAttribute("memSelf");
 	    								String mem_no = memvo.getMem_no();
 	    								List<MemberVO> getallmem = (List<MemberVO>) application.getAttribute("getallMemberData");
     						</c:if>
     						--%>
+    					
 							<c:if test="${empty getallMemberData1 && empty getallMemberData}">
 							<%@ include file="page1.file" %>
 	       					<c:forEach var="memData" items="${getallMember}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">	
@@ -214,8 +214,8 @@ height: 34px;
 			       			<%@ include file="page2.file" %>
 			    		  	</div>
 						</c:if>
-			
-		
+						
+						
 						<c:if test="${empty getallMemberData1}">
 
 	       					<c:forEach var="memData" items="${getallMemberData}">	
@@ -230,12 +230,12 @@ height: 34px;
 										<p>┬зкл:${memData.mem_receive_gift}</p>		
 									</div>
 								</div>
-							</c:forEach>
-				
+							</c:forEach>	
 						</c:if>	
 					
 					
 					<c:if test="${(not empty getallMemberData1)}">
+				
        					<c:forEach var="memData" items="${getallMemberData1}">	
        						<div class="col-xs-12 col-sm-4">
 								<div class="item">
@@ -249,6 +249,7 @@ height: 34px;
 								</div>
 							</div>
 						</c:forEach>
+					
 					</c:if>		
 					
 					

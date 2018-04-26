@@ -51,8 +51,8 @@ public class MemberDAO implements MemberDAO_interface{
 	/*會員登入*/
 	static final String CHECKLOGIN = "SELECT * FROM MEMBER WHERE MEM_ACCOUNT = ? AND MEM_PASSWORD = ?";
 	/*會員註冊*/
-	static final String REGISTER = "INSERT INTO MEMBER(MEM_NO, MEM_ACCOUNT, MEM_PASSWORD, MEM_NAME, MEM_GENDER, MEM_BIRTHDAY, MEM_COUNTY, MEM_CONTACT, MEM_EMOTION, MEM_BLOODTYPE, MEM_HEIGHT, MEM_WEIGHT)"
-			+ "VALUES ('M'||LPAD(to_char(MEMBER_SEQ.NEXTVAL),3,'0'),? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)";
+	static final String REGISTER = "INSERT INTO MEMBER(MEM_NO, MEM_ACCOUNT, MEM_PASSWORD, MEM_NAME, MEM_GENDER, MEM_BIRTHDAY, MEM_COUNTY, MEM_CONTACT, MEM_EMOTION, MEM_BLOODTYPE, MEM_HEIGHT, MEM_WEIGHT, MEM_LONGITUDE, MEM_LATITUDE)"
+			+ "VALUES ('M'||LPAD(to_char(MEMBER_SEQ.NEXTVAL),3,'0'),? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?, ?)";
 	/*測試處理圖片*/
 	static final String GETPIC = "SELECT MEM_PHOTO FROM MEMBER WHERE MEM_NO = ?";
 	/*修改密碼*/
@@ -441,6 +441,9 @@ public class MemberDAO implements MemberDAO_interface{
 			ps.setString(9, member.getMem_bloodtype());
 			ps.setInt(10, member.getMem_height());
 			ps.setInt(11, member.getMem_weight());
+			ps.setDouble(12, member.getMem_longitude());
+			ps.setDouble(13, member.getMem_latitude());
+			
 			ps.executeUpdate();
 //			con.commit();
 //			con.setAutoCommit(true);	

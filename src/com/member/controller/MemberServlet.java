@@ -24,9 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-
 import org.apache.catalina.deploy.ContextService;
-
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
 import com.sun.xml.internal.stream.buffer.sax.Properties;
@@ -271,13 +269,13 @@ public class MemberServlet extends HttpServlet {
 				String selfp = req.getParameter("selfp");
 			
 				if("selfintro".equals(selfp)){
-					String selfintro_path = req.getContextPath()+"/front_end/member/member_intro.jsp";
-					myself_page.put(selfp, selfintro_path);	
+					String selfintro_path = "/front_end/member/member_intro.jsp";
+					myself_page.put(selfp, selfintro_path);
 				}else if("selfdata".equals(selfp)){
-					String selfintro_path = req.getContextPath()+"/front_end/member/member_modify_page.jsp";
+					String selfintro_path = "/front_end/member/member_modify_page.jsp";
 					myself_page.put(selfp, selfintro_path);	
 				}else if("selfpass".equals(selfp)){
-					String selfintro_path = req.getContextPath()+"/front_end/member/member_modify_password.jsp";
+					String selfintro_path ="/front_end/member/member_modify_password.jsp";
 					myself_page.put(selfp, selfintro_path);
 				}
 
@@ -594,10 +592,11 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 		/***************¶i¶¥·j´M***************/
-		
+			System.out.println(action);
 		if("listMems_ByCompositeQuery".equals(action)){
 				
 			try{
+				
 				Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();				
 				MemberService ms = new MemberService();
 				List<MemberVO>getallMemberData = ms.precise(map);		
@@ -606,6 +605,7 @@ public class MemberServlet extends HttpServlet {
 				rd.forward(req, res);
 				return;
 				
+
 			}catch(Exception e){
 				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
 				rd.forward(req, res);
