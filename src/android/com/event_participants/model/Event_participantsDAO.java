@@ -25,8 +25,8 @@ public class Event_participantsDAO implements Event_participantsDAO_interface{
 
 	private static final String INSERT_STMT = "INSERT INTO event_participants (mem_no , eve_no , evep_sts , evep_qr) VALUES (? , ? , ? , ?)";
 	private static final String UPDATE = "UPDATE event_participants set evep_sts = '¤w³ø¨ì' where (mem_no = ? and eve_no = ?) ";
-	private static final String GETONEEVE = "SELECT * from event_participants where mem_no = ?";
-	private static final String GETONEEVEP = "SELECT * from event_participants where eve_no = ?";
+	private static final String GETONEEVE = "SELECT * from event_participants where mem_no = ? order by eve_no desc";
+	private static final String GETONEEVEP = "SELECT * from event_participants where eve_no = ? order by mem_no desc";
 
 	@Override
 	public void insert(Event_participantsVO event_participantsVO) {

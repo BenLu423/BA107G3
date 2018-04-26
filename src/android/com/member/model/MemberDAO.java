@@ -40,7 +40,7 @@ public class MemberDAO implements MemberDAO_interface {
 
 	static final String ISMEMBER = "SELECT * FROM MEMBER WHERE MEM_ACCOUNT = ? AND MEM_PASSWORD = ?";
 
-	static final String GETALL = "SELECT * FROM MEMBER";
+	static final String GETALL = "SELECT * FROM MEMBER ORDER BY MEM_NO DESC";
 	
 	static final String UPDATE_DEPOSIT_STMT  = "UPDATE MEMBER SET MEM_DEPOSIT=? WHERE MEM_NO=? ";
 	

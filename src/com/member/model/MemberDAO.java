@@ -45,7 +45,7 @@ public class MemberDAO implements MemberDAO_interface{
 	/*虫掸琩高*/
 	static final String GETONE = "SELECT * FROM MEMBER WHERE MEM_NO = ?";
 	/*琩高场*/
-	static final String GETALL = "SELECT * FROM MEMBER";
+	static final String GETALL = "SELECT * FROM MEMBER ORDER BY MEM_NO DESC";
 	/*琩高眀腹琌*/
 	static final String ISMEMEXSIT = "SELECT MEM_ACCOUNT FROM MEMBER WHERE MEM_ACCOUNT = ?";
 	/*穦祅*/
