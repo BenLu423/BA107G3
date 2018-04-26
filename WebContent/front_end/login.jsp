@@ -45,11 +45,10 @@
                           <div class="form-group">
                             <label for="mem_account">±b¸¹</label>
                             	<%-- ¿ù»~ªí¦C --%>
-								<c:if test="${not empty errorMsgs}">
-									<c:forEach var="message" items="${errorMsgs}" begin="0" end="${errorMsgs.size()}">
-										<p style="color:red">${message}</p>
-									</c:forEach>						
-								</c:if>
+								  <c:if test="${not empty errorMsgs}">
+                           			  <p style="color:red">${errorMsgs.account}</p>
+                         		  </c:if> 
+								
                             
                             <input type="text" name="mem_account" id="mem_account" class="form-control">
                           </div>
@@ -57,10 +56,8 @@
                           <div class="form-group">
                             <label for="mem_password">±K½X</label>
                              <%-- ¿ù»~ªí¦C --%>
-                             <c:if test="${not empty lostPassword}">
-                             		<c:forEach var="password" items="${lostPassword}">
-                             			<p style="color:red">${password}</p>
-                             		</c:forEach>
+                             <c:if test="${not empty errorMsgs}">
+                             			<p style="color:red">${errorMsgs.password}</p>	
                              </c:if>
                             <input type="text" name="mem_password" id="mem_password" class="form-control">
                           </div>

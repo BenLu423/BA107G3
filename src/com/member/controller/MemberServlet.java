@@ -79,7 +79,7 @@ public class MemberServlet extends HttpServlet {
 				System.out.println(ms.memIsBan(mem_account, mem_password));
 				if(ms.memIsBan(mem_account, mem_password)){
 					
-					errorMsgs.put("ban", "此帳號已被鎖");
+					errorMsgs.put("account", "此帳號已被鎖");
 				}
 				if(!errorMsgs.isEmpty()){
 					RequestDispatcher rd = req.getRequestDispatcher("/front_end/login.jsp");

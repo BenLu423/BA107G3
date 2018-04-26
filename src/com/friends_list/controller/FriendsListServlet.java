@@ -125,7 +125,7 @@ public class FriendsListServlet extends HttpServlet {
 					String statements = "¬O";
 					FriendsService fs = new FriendsService();
 					fs.webUpdateFri(statements, memself, memother);
-					res.sendRedirect(req.getContextPath()+"/front_end/member/member_manage_friendslist.jsp");
+					res.sendRedirect(req.getContextPath()+"/front_end/member/check_add_friends_list.jsp");
 					return;
 				}catch(Exception e){
 					e.printStackTrace();
@@ -145,7 +145,7 @@ public class FriendsListServlet extends HttpServlet {
 				System.out.println(other);
 				FriendsService fs = new FriendsService();
 				fs.webDelFri(self, other);
-				res.sendRedirect(req.getContextPath()+"/front_end/member/member_manage_friendslist.jsp");
+				res.sendRedirect(req.getContextPath()+"/front_end/member/check_add_friends_list.jsp");
 				return;
 			}catch(Exception e){
 				e.printStackTrace();

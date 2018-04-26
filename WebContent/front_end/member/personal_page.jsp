@@ -178,8 +178,7 @@
 	                       alert(data.isExist);   
 	                   },
 	                   error: function(xhr) {
-	                   	alert("¿ù»~");
-	                   	alert(xhr.status);
+
 						}
 	               });
 	           });  

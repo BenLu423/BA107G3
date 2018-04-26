@@ -80,7 +80,7 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
                          </div>   
                      	 
                          <div class="btn-group">
-                         	<a href="<%=request.getContextPath()%>/front_end/member/modify_personal_data_main_page.jsp">          
+                         	<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memSelf.mem_no}">          
                              <button type="button" class="btn btn-default mybutton-icon">
                                  	${memSelf.mem_name}
                              </button>

@@ -205,7 +205,7 @@ height: 34px;
 										<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
 										</a>
 										<P>暱稱:${memData.mem_name}</P>
-										<p>性別:${memData.mem_gender}</p>	
+										<P>感情:${memData.mem_emotion}</P>
 										<p>禮物:${memData.mem_receive_gift}</p>		
 									</div>
 								</div>
@@ -226,7 +226,7 @@ height: 34px;
 										<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
 										</a>
 										<P>暱稱:${memData.mem_name}</P>
-										<p>性別:${memData.mem_gender}</p>	
+										<P>感情:${memData.mem_emotion}</P>
 										<p>禮物:${memData.mem_receive_gift}</p>		
 									</div>
 								</div>
@@ -239,12 +239,12 @@ height: 34px;
        					<c:forEach var="memData" items="${getallMemberData1}">	
        						<div class="col-xs-12 col-sm-4">
 								<div class="item">
-									<p>編號:${memData.mem_no}</p>
+									
 									<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
 									<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
 									</a>
 									<P>暱稱:${memData.mem_name}</P>
-									<p>性別:${memData.mem_gender}</p>	
+									<P>感情:${memData.mem_emotion}</P>
 									<p>禮物:${memData.mem_receive_gift}</p>		
 								</div>
 							</div>
