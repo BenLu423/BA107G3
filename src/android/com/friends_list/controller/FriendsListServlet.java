@@ -39,7 +39,8 @@ public class FriendsListServlet extends HttpServlet {
 			for (int i = 0; i < friendsList.size(); i++) {
 				member = memSvc.getOneByMemNo(friendsList.get(i).getMemVO_other().getMem_no());
 				int imageSize = Integer.parseInt(req.getParameter("imageSize"));
-				member.setMem_photo(ImageUtil.shrink(member.getMem_photo(), imageSize));
+				if(member.getMem_photo()!=null)
+					member.setMem_photo(ImageUtil.shrink(member.getMem_photo(), imageSize));
 				member.setMem_age(member.getMem_birthday().toString());
 				member.setMem_birthday(null);
 				friendsDetailList.add(member);
