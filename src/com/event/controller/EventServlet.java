@@ -21,7 +21,7 @@ public class EventServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 
-		req.setCharacterEncoding("BIG5");
+		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		System.out.println("action = " + action);
 
@@ -417,7 +417,7 @@ public class EventServlet extends HttpServlet {
 				
 				eventSvc.updateEventSts("上架",eve_no);
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/back_end/event/listStsOff.jsp";
+				String url = "/back_end/event/listAllEvent.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 				successView.forward(req, res);
 				
@@ -425,7 +425,7 @@ public class EventServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("更新資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back_end/event/listStsOff.jsp");
+						.getRequestDispatcher("/back_end/event/listAllEvent.jsp");
 				failureView.forward(req, res);
 			}
 		}

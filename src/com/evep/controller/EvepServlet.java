@@ -11,20 +11,17 @@ import javax.servlet.http.*;
 import com.event.model.EventService;
 import com.event.model.EventVO;
 import com.evep.model.*;
-import com.google.gson.Gson;
-
-import android.com.event_participants.model.Event_participantsService;
 
 public class EvepServlet extends HttpServlet {
-	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
+
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doPost(req, res);
+	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		Gson gson = new Gson();
-		Event_participantsService epSvc = new Event_participantsService();
-		String outStr = "";
+		req.setCharacterEncoding("BIG5");
 		String action = req.getParameter("action");
-		System.out.println(action);
+System.out.println(action);
 		
 		//提供手機端掃描QRCode後進行更新報名狀態
 		if(("checkin").equals(action)){
@@ -42,9 +39,5 @@ public class EvepServlet extends HttpServlet {
 			EvepService evepSvc = new EvepService();
 			evepSvc.update(mem_no, eve_no, "已報到");
 		}
-	}
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		doPost(req, res);
 	}
 }

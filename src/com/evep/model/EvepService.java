@@ -2,8 +2,7 @@ package com.evep.model;
 
 import java.util.*;
 
-import com.event.model.EventDAO;
-import com.event.model.EventDAO_interface;
+
 import com.evep.model.EvepDAO_interface;
 import com.evep.model.EvepVO;
 
@@ -46,12 +45,20 @@ public class EvepService {
 		for(EvepVO evep : set){
 			list.add(evep.getMem_no());
 		}
-
+		
 		if(list.contains(mem_no)){
 			return true;
 		}else{
 			return false;
 		}
+		
+	}
+	public List<EvepVO> getAll_EVEP() {
+		return dao.getAll_EVEP();
 	}
 
+	public byte[] getEVEP_Pic(String mem_no, String eve_no) {
+		return dao.getEVEP_Pic(mem_no, eve_no);
+	}
+	
 }

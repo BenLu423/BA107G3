@@ -16,7 +16,7 @@ public class EvepQRcode {
 		this.eve_no = eve_no;
 	}
 
-	public byte[] generate(){
+		public byte[] generate(){
 		String imageUrl = "http://chart.apis.google.com/chart?cht=qr&chl=eve_no:"+eve_no+",mem_no:"+mem_no+"&chs=500x500";
 System.out.println(imageUrl);
 		InputStream is = null;

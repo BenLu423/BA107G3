@@ -25,8 +25,8 @@ public class EventDAO implements EventDAO_interface {
 	}
 
 	private static final String INSERT_STMT = "INSERT INTO event (eve_no , evec_no , eve_name , eve_start , eve_end , eve_time , eve_cnt , eve_pic , eve_quota , eve_site , eve_regfee,eve_sts) VALUES ('E'||LPAD(TO_CHAR(EVENT_SEQ.NEXTVAL),3,'0') , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?,? )";
-	private static final String GET_ALL_STMT = "SELECT EVE_NO, EVEC_NO, EVE_NAME, EVE_START, EVE_END,EVE_TIME, EVE_CNT, EVE_QUOTA, EVE_SITE, EVE_REGFEE, EVE_STS FROM EVENT ORDER BY EVE_NO";
-	private static final String GET_ALL_STMT_STS_ON = "SELECT eve_no, evec_no, eve_name, eve_start, eve_end,eve_time, eve_cnt, eve_quota, eve_site, eve_regfee, eve_sts FROM event WHERE eve_sts = '¤W¬[' order by eve_no";
+	private static final String GET_ALL_STMT = "SELECT EVE_NO, EVEC_NO, EVE_NAME, EVE_START, EVE_END,EVE_TIME, EVE_CNT, EVE_QUOTA, EVE_SITE, EVE_REGFEE, EVE_STS FROM EVENT ORDER BY EVE_NO DESC";
+	private static final String GET_ALL_STMT_STS_ON = "SELECT eve_no, evec_no, eve_name, eve_start, eve_end,eve_time, eve_cnt, eve_quota, eve_site, eve_regfee, eve_sts FROM event WHERE eve_sts = '¤W¬[' order by eve_no DESC";
 	private static final String GET_ALL_STMT_STS_OFF = "SELECT eve_no , evec_no , eve_name , eve_start,eve_end,eve_time,eve_cnt, eve_quota,eve_site , eve_regfee,eve_sts FROM event WHERE EVE_STS='¤U¬[' order by eve_no";
 	private static final String GET_ONE_STMT = "SELECT eve_no , evec_no , eve_name , eve_start,eve_end,eve_time,eve_cnt,eve_pic, eve_quota,eve_site , eve_regfee,eve_sts FROM event where eve_no = ?";
 	private static final String DELETE = "DELETE FROM event where eve_no = ?";
@@ -216,11 +216,9 @@ public class EventDAO implements EventDAO_interface {
 				eventVO.setEve_no(rs.getString("eve_no"));
 				eventVO.setEvec_no(rs.getString("evec_no"));
 				eventVO.setEve_name(rs.getString("eve_name"));
-				eventVO.setEve_start(rs.getTimestamp("eve_start"));
+				eventVO.setEve_start(rs.getTimestamp("eve_Start"));
 				eventVO.setEve_end(rs.getTimestamp("eve_end"));
-				eventVO.setEve_time(rs.getTimestamp("eve_time"));
 				eventVO.setEve_cnt(rs.getString("eve_cnt"));
-				eventVO.setEve_pic(rs.getBytes("eve_pic"));
 				eventVO.setEve_quota(rs.getInt("eve_quota"));
 				eventVO.setEve_site(rs.getString("eve_site"));
 				eventVO.setEve_regfee(rs.getInt("eve_regfee"));

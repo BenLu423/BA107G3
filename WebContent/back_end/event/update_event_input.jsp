@@ -1,6 +1,5 @@
-<%@ page contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.event.model.*"%>
 
@@ -114,24 +113,15 @@
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">開始報名時間:</td>
-		<td>
-			<input name="eve_start" id="f_date1" type="text" 
-			value="<fmt:formatDate value="${eventVO.eve_start}" pattern="yyyy-MM-dd HH:mm:ss"/>">
-		</td>
+		<td><input name="eve_start" id="f_date1" type="text" ></td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">結束報名時間:</td>
-		<td>
-			<input name="eve_end" id="f_date2" type="text" 
-			value="<fmt:formatDate value="${eventVO.eve_end}" pattern="yyyy-MM-dd HH:mm:ss"/>">
-		</td>
+		<td><input name="eve_end" id="f_date2" type="text" ></td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">活動舉辦時間:</td>
-		<td>	
-			<input name="eve_time" id="f_date3" type="text" 
-			value="<fmt:formatDate value="${eventVO.eve_time}" pattern="yyyy-MM-dd HH:mm:ss"/>">
-		</td>
+		<td><input name="eve_time" id="f_date3" type="text" ></td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">活動詳情:</td>
@@ -186,9 +176,9 @@
 
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.js"></script> 
-<script type="text/javascript"  charset="UTF-8"  src="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.datetimepicker.full.js"></script> 
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 
 <style>
   .xdsoft_datetimepicker .xdsoft_datepicker {

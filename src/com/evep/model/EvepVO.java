@@ -8,6 +8,7 @@ package com.evep.model;
 				private String eve_no;
 				private String evep_sts;
 				private byte[] evep_qr;
+				
 				public String getMem_no() {
 					return mem_no;
 				}

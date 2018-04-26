@@ -8,6 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+
 public class EvepDAO  implements EvepDAO_interface {
 	
 	private static DataSource ds = null;
@@ -29,6 +30,70 @@ public class EvepDAO  implements EvepDAO_interface {
 			"UPDATE EVENT_PARTICIPANTS SET EVEP_STS=? WHERE MEM_NO=? AND EVE_NO=?";
 //		private static final String GET_EVE_NO = 
 //			"SELECT EVE_NO FROM EVENT WHERE EVE_NAME = ?";
+		private static final String GET_EVEP_STS = 
+			"SELECT MEM_NO, EVE_NO, EVEP_STS FROM event_participants";
+		private static final String GET_EVEP_PIC = 
+			"SELECT EVEP_QR FROM event_participants WHERE mem_no = ? AND eve_no = ?";
+		
+		@Override
+		public List<EvepVO> getAll_EVEP() {
+			List<EvepVO> list = new ArrayList<EvepVO>();
+			EvepVO evepVO = null;
+
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			try {
+
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(GET_EVEP_STS);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					// empVO 也稱為 Domain objects
+					evepVO = new EvepVO();
+					evepVO.setMem_no(rs.getString("mem_no"));
+					evepVO.setEve_no(rs.getString("eve_no"));
+					evepVO.setEvep_sts(rs.getString("evep_sts"));
+					
+					list.add(evepVO); // Store the row in the list
+				}
+
+				// Handle any driver errors
+			} catch (SQLException se) {
+//				throw new RuntimeException("A database error occured. "
+//						+ se.getMessage());
+				// Clean up JDBC resources
+				se.printStackTrace();
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
+					}
+				}
+			}
+			return list;
+		}
+	
+		
+		
 		
 		@Override
 		public void insert(EvepVO evepVO) {
@@ -209,6 +274,39 @@ public class EvepDAO  implements EvepDAO_interface {
 					}
 				}
 
+			}
+
+
+
+
+			@Override
+			public byte[] getEVEP_Pic(String mem_no, String eve_no) {
+				Connection con = null;//建立連線
+				PreparedStatement pstmt = null;//代表sql語句的資料類型
+				ResultSet rs = null;//代表查詢資料庫的結果
+				byte[] result = null;
+				try {
+					con = ds.getConnection();
+					pstmt = con.prepareStatement(GET_EVEP_PIC);
+					pstmt.setString(1, mem_no);
+					pstmt.setString(2, eve_no);
+					rs = pstmt.executeQuery();
+
+					while (rs.next()) {
+						result = rs.getBytes("evep_qr");
+					}
+
+				} catch (SQLException se) {
+					throw new RuntimeException("A database error occured. " + se.getMessage());
+				} finally {
+					try {
+						con.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+
+				return result;
 			}
 				
 	

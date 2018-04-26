@@ -12,11 +12,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Insert</title>
+<title>常見問題</title>
+
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
-<h4><a href="select_page2.jsp">回首頁</a></h4>
 	
 	<script>console.log(qaVO)</script>
 	
@@ -27,8 +27,8 @@
      
   <table id="table-1">
 	<tr><td>
-		 <h3>所有常見問題資料 - listAllQa.jsp</h3>
-	<h4><a href="select_page1.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
+		 <h3>所有常見問題資料</h3>
+	<h4><a href="select_page1.jsp">回首頁</a></h4>
 	
 	</td></tr>
 </table>
@@ -42,17 +42,19 @@
 		</c:forEach>
 	</ul>
 </c:if>
-
-<table>
+<%@ include file="page1.file" %> 
+<table id="qa-table">
+<thead>
 	<tr>
 		<th class="text-center">問題編號</th>
 		<th class="text-center">刊登日期</th>
 		<th class="text-center">常見問題標題</th>
 		<th class="text-center">常見問題內容</th>
-		
-		
+		<th></th>
+		<th></th>
 	</tr>
-	<%@ include file="page1.file" %> 
+	</thead>
+	<tbody>
 	<c:forEach var="qaVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		
 		<tr>
@@ -75,14 +77,10 @@
 			</td>
 		</tr>
 	</c:forEach>
+</tbody>
 </table>
 <%@ include file="page2.file" %>
 
-     
-     
-     
-     
-      
 	</div>
     </div>
                 

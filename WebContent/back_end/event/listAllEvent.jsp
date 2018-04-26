@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.event.model.*"%>
@@ -6,7 +6,7 @@
 
 <%
     EventService eventSvc = new EventService();
-    List<EventVO> list = eventSvc.getAll_sts_on();
+    List<EventVO> list = eventSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
 
@@ -19,7 +19,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>下架中活動</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -41,27 +41,27 @@
 <div style=border-style:double;background:rgba(255,220,220,1);width:1500px>
 	
   <h4><a href="event_title.jsp">回首頁</a></h4><br>
-  <h2>活動瀏覽 </h2><br>
+  <h2>活動總覽</h2><br>
 
   <table class="table" style="width: 100%">
  
     <thead>
       <tr>
-       	<th><font size="6">活動編號</font></th>
-		<th><font size="6">分類編號</font></th>
-		<th><font size="6">活動名稱</font></th>
-		<th><font size="6">開始時間</font></th>
-		<th><font size="6">結束時間</font></th>
+       	<th><font size="4">編號</font></th>
+		<th><font size="4">編號</font></th>
+		<th><font size="4">標題</font></th>
+		<th><font size="4">開始時間</font></th>
+		<th><font size="4">結束時間</font></th>
 		
-		<th style="width:150px;"><font size="6">活動詳情</font></th>
-		<th><font size="6">活動圖片</font></th>
-		<th><font size="6">活動名額</font></th>
-		<th><font size="6">活動地點</font></th>
-		<th><font size="6">活動費用</font></th>
+		<th style="width:150px;"><font size="4">活動詳情</font></th>
+		<th><font size="4">活動圖片</font></th>
+		<th><font size="4">名額</font></th>
+		<th><font size="4">地點</font></th>
+		<th><font size="4">費用</font></th>
 		
-		<th><font size="6">活動修改</font></th>
-		<th><font size="6">活動狀態</font></th>
-		<th><font size="6">參加名單</font></th>
+		<th><font size="4">修改</font></th>
+		<th><font size="4">上下架</font></th>
+		<th><font size="4">參加名單</font></th>
       </tr>
     </thead>
     <tbody>
@@ -74,7 +74,7 @@
 			<td><font size="5">${eventVO.eve_start}</font></td>
 			<td><font size="5">${eventVO.eve_end}</font></td>
 			
-			<td style="width:150px;"><font size="5">${eventVO.eve_cnt}</font></td>
+			<td style="width:150px;"><div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;font-size:5px">${eventVO.eve_cnt}</div></td>
 			<td><img style="width:150px;" src="<%=request.getContextPath()%>/imagesServlet?action=event&no=${eventVO.eve_no}"></td>
 			<td><font size="5">${eventVO.eve_quota}</font></td>
 			<td><font size="5">${eventVO.eve_site}</font></td>
@@ -87,10 +87,11 @@
 			     <input type="hidden" name="action"	value="getOne_For_Update2"></FORM>
 			</td>
 			<td>
+			
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/event/event.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="下架中">
+			     <input type="submit" value=<c:if test="${eventVO.eve_sts eq '上架'}">"下架"</c:if><c:if test="${eventVO.eve_sts eq '下架'}">"上架"</c:if>>
 			     <input type="hidden" name="eve_no"  value="${eventVO.eve_no}">
-			     <input type="hidden" name="action" value="onToOff"></FORM>
+			     <input type="hidden" name="action" value=<c:if test="${eventVO.eve_sts eq '上架'}">"onToOff"</c:if><c:if test="${eventVO.eve_sts eq '下架'}">"offToOn"</c:if>></FORM>
 			</td>
       </tr>      
      

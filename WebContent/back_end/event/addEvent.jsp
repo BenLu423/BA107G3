@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.event.model.*"%>
 
@@ -70,7 +70,7 @@
 <body bgcolor='white'>
 
 <jsp:include page="/back_end/header.jsp"></jsp:include>
-		 <h4><a href="event_title.jsp">回首頁</a></h4>
+		 
 <div class="col-xs-12 col-sm-10 cont">
 	   		
 	<div style="border-width:6px;border-style:double;border-color:#000; width:1200px;padding:7px;margin:150px;background: rgba(255,220,220,1);">
@@ -78,7 +78,7 @@
    
 
 <h3>資料新增:</h3>
-
+<h4><a href="event_title.jsp">回首頁</a></h4>
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
 	<font style="color:red">請修正以下錯誤:</font>
@@ -129,7 +129,7 @@
 	<tr>
 		<td style="word-wrap:break-word;">活動地點:</td>
 		<td><input type="TEXT" name="eve_site" size="45"
-			 value="<%= (eventVO==null)? "台中" : eventVO.getEve_site()%>" /></td>
+			 value="<%= (eventVO==null)? "桃園市中壢區合浦街113號3樓" : eventVO.getEve_site()%>" /></td>
 	</tr><tr>
 		<td style="word-wrap:break-word;">活動報名費用:</td>
 		<td><input type="TEXT" name="eve_regfee" size="45" 
@@ -137,7 +137,7 @@
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">活動狀態:</td>
-		<td><input type="TEXT" name="eve_sts" size="45" value="<%= (eventVO==null)? "上架" :eventVO.getEve_sts()%>" /></td>
+		<td><input type="TEXT" name="eve_sts" size="45" value="<%= (eventVO==null)? "下架" :eventVO.getEve_sts()%>" /></td>
 	</tr>
 	
 	<tr>
@@ -192,10 +192,9 @@
         
 
        
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.js"></script> 
-<script type="text/javascript"  charset="UTF-8"  src="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.datetimepicker.full.js"></script> 
-
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 							
 
 <style>

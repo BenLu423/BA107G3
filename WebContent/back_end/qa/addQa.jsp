@@ -63,12 +63,12 @@
 			                        <div class="form-group"><p class="lead">常見問題標題</p>
 			                        	<label class="sr-only" for="contact-subject"></label>
 			                        	<input type="text" name="qa_title"  class="contact-subject form-control"
-			                        	 value="<%= (qaVO==null)? "title" : qaVO.getQa_title()%>" >
+			                        	 value="<%= (qaVO==null)? "帳號登不進去怎麼辦？" : qaVO.getQa_title()%>" >
 			                        </div>
 			                        <div class="form-group"><p class="lead">常見問題內容</p>
 			                        	<label class="sr-only" for="contact-message"></label>
 			                        	<input name="qa_cnt"  class="contact-message form-control"
-			                        	 value="<%= (qaVO==null)? "Message" : qaVO.getQa_cnt()%>">
+			                        	 value="<%= (qaVO==null)? "可能是帳號被檢舉封鎖 ,請與本網頁人員聯絡。" : qaVO.getQa_cnt()%>">
 			                        </div>
 			                        <input type="hidden" name="action" value="insert">
 			                         <input type="submit" value="送出新增">

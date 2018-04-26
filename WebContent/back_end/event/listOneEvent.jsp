@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=BIG5"%>
+<%@ page contentType="text/html; charset=Big5"%>
 <%@ page import="com.event.model.*"%>
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
@@ -31,21 +31,21 @@
 		<div style=border-style:double;background:rgba(255,220,220,1);width:1500px>
 			
 			 <h4><a href="event_title.jsp">回首頁</a></h4><br>
-			 <h3>活動個人頁面</h3><br>
+			 <h3>單一活動</h3><br>
 			<table>
 				<tr>
 					<th style="width:300px;"><font size="5">活動編號</font></th>
 					<th style="width:300px;"><font size="5">分類編號</font></th>
-					<th style="width:200px;"><font size="5">活動名稱</font></th>
+					<th style="width:250px;"><font size="5">活動名稱</font></th>
 					<th style="width:170px;"><font size="5">開始時間</font></th>
 					<th style="width:170px;"><font size="5">結束時間</font></th>
 					
-					<th style="width:400px;"><font size="5">活動詳情</font></th>
-					<th style="width:170px;"><font size="5">活動圖片</font></th>
-					<th style="width:170px;"><font size="5">活動名額</font></th>
-					<th style="width:170px;"><font size="5">活動地點</font></th>
-					<th style="width:170px;"><font size="5">活動費用</font></th>
-					<th style="width:170px;"><font size="5">活動狀態</font></th>
+					<th style="width:400px;"><font size="5">詳情</font></th>
+					<th style="width:170px;"><font size="5">圖片</font></th>
+					<th style="width:170px;"><font size="5">名額</font></th>
+					<th style="width:170px;"><font size="5">地點</font></th>
+					<th style="width:170px;"><font size="5">費用</font></th>
+					<th style="width:170px;"><font size="5">狀態</font></th>
 				</tr>
 				<tr>
 					
@@ -54,7 +54,7 @@
 					<td><font size="5">${eventVO.eve_name}</font></td>
 					<td><font size="5">${eventVO.eve_start}</font></td>
 					<td><font size="5">${eventVO.eve_end}</font></td>
-					<td style="width:150px;"><font size="5">${eventVO.eve_cnt}</font></td>
+					<td style="width:150px;"><div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;font-size:5px">${eventVO.eve_cnt}</div></td>
 					<td><img style="width:150px;" src="<%=request.getContextPath()%>/imagesServlet?action=event&no=${eventVO.eve_no}"></td>
 					<td><font size="5">${eventVO.eve_quota}</font></td>
 					<td><font size="5">${eventVO.eve_site}</font></td>

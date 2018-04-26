@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.event.model.*"%>
@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>IBM Event: Home</title>
+<title>Event: Home</title>
 
 <style>
   table#table-1 {
@@ -39,7 +39,7 @@
 <div class="col-xs-12 col-sm-10 cont">
 	   		
 	<div style="border-width:6px;border-style:double;border-color:#000; width:650px;padding:7px;margin:80px;background: rgba(255,220,220,1);">
-	<div><img src="<%=request.getContextPath()%>/back_end/res/img/event/event2.jpg"></div>
+	<div><img src="<%=request.getContextPath()%>/back_end/res/img/event2.jpg"></div>
   
 <h3>活動後台</h3>
 	
@@ -54,7 +54,7 @@
 </c:if>
 
    <ul>
-	<li>新增一個活動&nbsp&nbsp&nbsp&nbsp<a href='addEvent.jsp'>按我</a></li>
+	  <li>新增一個活動&nbsp&nbsp&nbsp&nbsp<a href='addEvent.jsp'>按我</a></li>
 	  <li>
 		    <FORM METHOD="post" ACTION="event.do" >
 		        <b>輸入單一活動編號</b>
@@ -79,23 +79,9 @@
 		    </FORM>
 		  </li>
   
-			  <li>
-			     <FORM METHOD="post" ACTION="event.do" >
-			       <b>活動類別尋找單一活動:</b>
-			       <select size="1" name="eve_no">
-			         <c:forEach var="eventVO" items="${eventSvc.all}" > 
-			          <option value="${eventVO.eve_no}">${eventVO.evec_no}
-			         </c:forEach>   
-			       </select>
-			       <input type="hidden" name="action" value="getOne_For_Display2">
-			       <input type="submit" value="送出">
-			     </FORM>
-			  </li>
-			  <li>活動功能總覽&nbsp&nbsp&nbsp&nbsp<a href='listStsOff.jsp'>按我</a></li><br>
-			  
-	 		  <li>活動下架&nbsp&nbsp&nbsp&nbsp<a href='listAllEvent.jsp'>按我</a></li>
+	  		  <li><br>活動總覽&nbsp&nbsp&nbsp&nbsp<a href='listAllEvent.jsp'>按我</a><br></li>
+	 
       </ul>
- 
 	</div>
 </div>
 
