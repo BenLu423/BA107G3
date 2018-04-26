@@ -39,7 +39,7 @@
 <div class="col-xs-12 col-sm-10 cont">
 	   		
 	<div style="border-width:6px;border-style:double;border-color:#000; width:650px;padding:7px;margin:80px;background: rgba(255,220,220,1);">
-	<div><img src="<%=request.getContextPath()%>/back_end/res/img/event2.jpg"></div>
+	<div><img src="<%=request.getContextPath()%>/back_end/res/img/event/event2.jpg"></div>
   
 <h3>活動後台</h3>
 	
