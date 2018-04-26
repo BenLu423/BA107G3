@@ -156,7 +156,12 @@ public class AdminServlet extends HttpServlet {
 				AdminService admSvc = new AdminService();
 				AdminVO admin = admSvc.getOneAdmin(adm_no);
 				req.setAttribute("admin", admin);
-				RequestDispatcher successView = req.getRequestDispatcher("/back_end/admin/update_admin.jsp");
+				
+				//Bootstrap_modal
+				boolean openModal=true;
+				req.setAttribute("openModal",openModal );
+				
+				RequestDispatcher successView = req.getRequestDispatcher("/back_end/admin/all_admin-catchTag.jsp");
 				successView.forward(req, res);
 			}catch(Exception e){
 				errorMsgs.add("修改資料取出時失敗:"+e.getMessage());

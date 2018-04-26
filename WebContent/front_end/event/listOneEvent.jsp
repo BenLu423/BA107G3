@@ -63,7 +63,7 @@ if (memSelf == null) {
 					   <input type="hidden" name="action" value="getEvent_apply">
 					   <input type="hidden" name="eve_no" value="${eventVO.eve_no}">
 					   <input type="hidden" name="member_no" value="${memSelf.mem_no}">
-					   <input type="submit" value="報名活動" <c:if test="${isInThisEvent}">disabled</c:if>>
+					   <button type="submit" <c:if test="${isInThisEvent}">disabled="disabled"</c:if>>報名活動</button>
 					 </FORM>
               	
          

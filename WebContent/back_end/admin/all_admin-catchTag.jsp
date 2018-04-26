@@ -118,10 +118,33 @@
 		</div>
 	</div>
 
-	<script>
+<c:if test="${openModal!=null}">
+	<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="width:fit-content">
+				
+			<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+			
+			<div class="modal-body" style="height:350px">
+			
+<!-- =========================================以下為原update_admin.jsp的內容========================================== -->
+               <jsp:include page="update_admin.jsp" />
+<!-- =========================================以上為原update_admin.jsp的內容========================================== -->
+			</div>
+			
+			<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
 		
-	</script>
-
+		</div>
+	</div>
+	</div>
+		<script>
+    		 $("#basicModal").modal({show: true});
+        </script>
+</c:if>
 
 </body>
 </html>

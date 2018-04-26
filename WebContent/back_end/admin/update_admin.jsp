@@ -17,7 +17,6 @@
 </head>
 <body>
 
-	<jsp:include page="/back_end/header.jsp"></jsp:include>
 	<div class="col-xs-12 col-sm-10 cont" id="admin">
 
 		<div class="container">
