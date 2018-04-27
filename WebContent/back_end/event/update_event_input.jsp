@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.event.model.*"%>
 
@@ -11,7 +12,7 @@
 
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料修改 - update_event_input.jsp</title>
+<title>活動資料修改 - update_event_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -113,15 +114,24 @@
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">開始報名時間:</td>
-		<td><input name="eve_start" id="f_date1" type="text" ></td>
+		<td>
+			<input name="eve_start" id="f_date1" type="text" 
+			value='<fmt:formatDate value="${eventVO.eve_start}" pattern="yyyy-MM-dd"/>'>
+		</td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">結束報名時間:</td>
-		<td><input name="eve_end" id="f_date2" type="text" ></td>
+		<td>
+			<input name="eve_end" id="f_date2" type="text" 
+			value="<fmt:formatDate value="${eventVO.eve_end}" pattern="yyyy-MM-dd"/>">
+		</td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">活動舉辦時間:</td>
-		<td><input name="eve_time" id="f_date3" type="text" ></td>
+		<td>	
+			<input name="eve_time" id="f_date3" type="text" 
+			value="<fmt:formatDate value="${eventVO.eve_time}" pattern="yyyy-MM-dd"/>">
+		</td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">活動詳情:</td>
@@ -176,9 +186,9 @@
 
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.js"></script> 
+<script type="text/javascript"  charset="UTF-8"  src="<%=request.getContextPath()%>/back_end/js/datetimepicker/jquery.datetimepicker.full.js"></script> 
 
 <style>
   .xdsoft_datetimepicker .xdsoft_datepicker {
@@ -195,10 +205,10 @@
            theme: '',              //theme: 'dark',
  	       timepicker:false,       //timepicker:true,
  	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
- 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
- 		   value: '<%=eventVO.getEve_start()%>', // value:   new Date(),
- 		   value: '<%=eventVO.getEve_end()%>', // value:   new Date(),
- 		   value: '<%=eventVO.getEve_time()%>', // value:   new Date(),
+ 	       format:'Y-m-d'        //format:'Y-m-d H:i:s',
+<%--  		   value: '<%=eventVO.getEve_start()%>', // value:   new Date(), --%>
+<%--  		   value: '<%=eventVO.getEve_end()%>', // value:   new Date(), --%>
+<%--  		   value: '<%=eventVO.getEve_time()%>', // value:   new Date(), --%>
            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
            //startDate:	            '2017/07/10',  // 起始日
            //minDate:               '-1970-01-01', // 去除今日(不含)之前
@@ -209,10 +219,10 @@
            theme: '',              //theme: 'dark',
  	       timepicker:false,       //timepicker:true,
  	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
- 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
- 		   value: '<%=eventVO.getEve_start()%>', // value:   new Date(),
- 		   value: '<%=eventVO.getEve_end()%>', // value:   new Date(),
- 		   value: '<%=eventVO.getEve_time()%>', // value:   new Date(),
+ 	       format:'Y-m-d'         //format:'Y-m-d H:i:s',
+<%--  		   value: '<%=eventVO.getEve_start()%>', // value:   new Date(), --%>
+<%--  		   value: '<%=eventVO.getEve_end()%>', // value:   new Date(), --%>
+<%--  		   value: '<%=eventVO.getEve_time()%>', // value:   new Date(), --%>
            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
            //startDate:	            '2017/07/10',  // 起始日
            //minDate:               '-1970-01-01', // 去除今日(不含)之前
@@ -222,10 +232,10 @@
             theme: '',              //theme: 'dark',
   	       timepicker:false,       //timepicker:true,
   	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-  	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-  		   value: '<%=eventVO.getEve_start()%>', // value:   new Date(),
-  		   value: '<%=eventVO.getEve_end()%>', // value:   new Date(),
-  		   value: '<%=eventVO.getEve_time()%>', // value:   new Date(),
+  	       format:'Y-m-d'         //format:'Y-m-d H:i:s',
+<%--   		   value: '<%=eventVO.getEve_start()%>', // value:   new Date(), --%>
+<%--   		   value: '<%=eventVO.getEve_end()%>', // value:   new Date(), --%>
+<%--   		   value: '<%=eventVO.getEve_time()%>', // value:   new Date(), --%>
             //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
             //startDate:	            '2017/07/10',  // 起始日
             //minDate:               '-1970-01-01', // 去除今日(不含)之前
