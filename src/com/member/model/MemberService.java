@@ -39,8 +39,8 @@ public class MemberService {
 		memvo.setMem_weight(mem_weight);
 		memvo.setMem_emotion(mem_emotion);
 		memvo.setMem_contact(mem_contact);
-		memvo.setMem_longitude(120.7908715);
-		memvo.setMem_latitude(22.087433);
+		memvo.setMem_longitude(121.438509);
+		memvo.setMem_latitude(25.171823);
 		memdao.memberRegister(memvo);
 		return memvo;
 	}

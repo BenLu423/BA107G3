@@ -23,7 +23,7 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                     <div class="item active">
-                        <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg">
+                        <img src="<%=request.getContextPath()%>/front_end/res/img/index/carousel1.jpg">
                         <!-- <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg" alt="First slide"> -->
                         <!-- Static Header -->
                         <div class="header-text hidden-xs">
@@ -40,7 +40,7 @@
                         </div><!-- /header-text -->
                     </div>
                     <div class="item">
-                        <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg">
+                        <img src="<%=request.getContextPath()%>/front_end/res/img/index/carousel2.jpg">
                         <!-- <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg" alt="Second slide"> -->
                         <!-- Static Header -->
                         <div class="header-text hidden-xs">
@@ -57,7 +57,7 @@
                         </div><!-- /header-text -->
                     </div>
                     <div class="item">
-                        <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg">
+                        <img src="<%=request.getContextPath()%>/front_end/res/img/index/carousel3.jpg">
                         <!-- <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg" alt="Third slide"> -->
                         <!-- Static Header -->
                         <div class="header-text hidden-xs">
