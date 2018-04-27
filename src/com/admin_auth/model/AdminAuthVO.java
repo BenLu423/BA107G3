@@ -28,7 +28,8 @@ public class AdminAuthVO implements java.io.Serializable{
 		AuthFeatureVO selfAuth = this.getAuth();
 		AuthFeatureVO otherAuth = other.getAuth();
 
-		if(((selfAdmin.getAdm_no()).equals(otherAdmin.getAdm_no()))&&((selfAuth.getAuth_no()).equals(otherAuth.getAuth_no()))){
+		if(((selfAdmin.getAdm_no()).equals(otherAdmin.getAdm_no()))&&((selfAuth.getAuth_no()).equals(otherAuth.getAuth_no()))
+				&&((selfAuth.getAuth_name()).equals(otherAuth.getAuth_name()))&&((selfAdmin.getAdm_name()).equals(otherAdmin.getAdm_name()))){
 			return true;
 		}else{
 			return false;

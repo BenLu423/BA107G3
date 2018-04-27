@@ -72,7 +72,7 @@
 						</tr>
 					</thead>
 					
-					<tbody style="display:<c:if test="<%= tag.get(0)==0 %>">none</c:if>">
+					<tbody style="display:<c:if test="<%= tag.get(5)==0 %>">none</c:if>">
 						<tr>
 							<td><a href="<%=request.getContextPath()%>/back_end/admin/all_admin-catchTag.jsp">員工資料管理</a></td>
 						</tr>
@@ -89,7 +89,7 @@
 						</tr>
 					</thead>
 					
-					<tbody style="display:<c:if test="<%= tag.get(1)==0 %>">none</c:if>">
+					<tbody style="display:<c:if test="<%= tag.get(4)==0 %>">none</c:if>">
 						<tr>
 							<td><a href="#">查看個人頁面</a></td>
 						</tr>
@@ -108,7 +108,7 @@
 							<th><span class="glyphicon glyphicon-gift"></span> 商城管理</th>
 						</tr>
 					</thead>
-					<tbody style="display:<c:if test="<%= tag.get(3)==0 %>">none</c:if>">
+					<tbody style="display:<c:if test="<%= tag.get(2)==0 %>">none</c:if>">
 						<tr>
 							<td><a href="<%=request.getContextPath()%>/back_end/gift/gift_index.jsp">全部禮物</a></td>
 						</tr>
@@ -132,7 +132,7 @@
 							<th><span class="glyphicon glyphicon-heart"></span> 活動管理</th>
 						</tr>
 					</thead>
-					<tbody style="display:<c:if test="<%= tag.get(4)==0 %>">none</c:if>">
+					<tbody style="display:<c:if test="<%= tag.get(1)==0 %>">none</c:if>">
 						<tr>
 							<td><a href="<%=request.getContextPath()%>/back_end/event/event_title.jsp">活動內容管理</a></td>
 						</tr>
@@ -148,7 +148,7 @@
 								檢舉管理</th>
 						</tr>
 					</thead>
-					<tbody style="display:<c:if test="<%= tag.get(5)==0 %>">none</c:if>">
+					<tbody style="display:<c:if test="<%= tag.get(0)==0 %>">none</c:if>">
 						<tr>
 							<td><a href="<%=request.getContextPath()%>/back_end/forbid/mem_prohibit.jsp">帳號檢舉管理帳號</a></td>
 						</tr>
@@ -168,7 +168,7 @@
 							<th><span class="glyphicon glyphicon-duplicate"></span> 頁面管理</th>
 						</tr>
 					</thead>
-					<tbody style="display:<c:if test="<%= tag.get(2)==0 %>">none</c:if>">
+					<tbody style="display:<c:if test="<%= tag.get(3)==0 %>">none</c:if>">
 						<tr>
 							<td><a href="#">最新公告管理</a></td>
 						</tr>

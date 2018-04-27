@@ -7,25 +7,18 @@
 <%
 	MemberVO memSelf = (MemberVO) session.getAttribute("memSelf");
 	FriendsService friSvc = new FriendsService();
-	if (memSelf == null) {
-		memSelf = null;
-	} else {
-
+	if (memSelf != null) {
 		List<MemberVO> friends = friSvc.getMemFri(memSelf);
 		session.setAttribute("friends", friends);
 	}
 	
 	String nowFriNo = (String)session.getAttribute("nowFriNo");
-	if(nowFriNo == null){
-		nowFriNo = null;
-	}else{
+	if(nowFriNo != null){
 		session.setAttribute("nowFriNo", nowFriNo);
 	}
 	
 	TalkVO holdTalk = (TalkVO)session.getAttribute("holdTalk");
-	if(holdTalk==null){
-		holdTalk = null;
-	}else{
+	if(holdTalk!=null){
 		session.setAttribute("holdTalk",holdTalk);
 	}
 	
@@ -38,7 +31,7 @@
 <title>footer</title>
 
 </head>
-<body onload="connect();" onunload="disconnect();">
+<body onload="chatConnect();" onunload="disconnect();">
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -157,7 +150,7 @@
 		
 		var nowFriNo ;
 		
-		function connect() {
+		function chatConnect() {
 			webSocket = new WebSocket(endPointURL);
 
 			webSocket.onopen = function(event) {
