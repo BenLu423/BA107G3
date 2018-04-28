@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Insert</title>
+<title>新增員工帳號</title>
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>

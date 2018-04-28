@@ -9,7 +9,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-	<title></title>
+	<title>帳號檢舉管理</title>
     </head>
 <body>
 <jsp:include page="/back_end/header.jsp"></jsp:include>

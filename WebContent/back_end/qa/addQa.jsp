@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Insert-addQa.jsp</title>
+<title>新增常見問題</title>
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
@@ -37,7 +37,7 @@
                         	<div class="form-top">
                         		<div class="form-top-left">
                         			<h2>新增常見問題</h2>	
-                        			 <h4><a href="select_page2.jsp">回首頁</a></h4>
+                        			 <h4><a href="select_page1.jsp">回首頁</a></h4>
                         		</div>
 	                        		<div class="form-top-right">
 	                        			<i class="fa fa-envelope"></i>

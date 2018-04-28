@@ -19,7 +19,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Admin List</title>
+<title>員工資料管理</title>
 </head>
 <body>
 

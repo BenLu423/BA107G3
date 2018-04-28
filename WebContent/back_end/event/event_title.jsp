@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>Event: Home</title>
+<title>活動管理</title>
 
 <style>
   table#table-1 {
