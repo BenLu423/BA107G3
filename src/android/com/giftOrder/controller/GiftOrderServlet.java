@@ -23,6 +23,9 @@ import com.giftOrder.model.GiftOrderVO;
 import com.giftOrder.ws.GiftOrderWS;
 import com.giftOrderDetail.model.GiftOrderDetailVO;
 import android.com.giftReceive.model.GiftReceiveVOA;
+import android.com.member.model.MemberService;
+import android.com.member.model.MemberVO;
+
 import com.giftReceive.model.GiftReceiveVO;
 
 public class GiftOrderServlet extends HttpServlet {
@@ -57,35 +60,51 @@ public class GiftOrderServlet extends HttpServlet {
 				}
 			}
 			if (outStr.isEmpty()) {
-				String jsonReceiveList = req.getParameter("gReceiveList");
-				List<GiftReceiveVOA> gReceiveList = gson.fromJson(jsonReceiveList.toString(),
-						new TypeToken<List<GiftReceiveVOA>>() {
-						}.getType());
-
-				for (int i = 0; i < goDetailList.size(); i++) {
-					List<GiftReceiveVO> list = new ArrayList<>();
-					for (int j = 0; j < gReceiveList.size(); j++) {
-						GiftReceiveVOA giftReceiveVOA  = gReceiveList.get(j);
-						if (goDetailList.get(i).getGift_no().equals(giftReceiveVOA.getGift_no())) {
-							GiftReceiveVO giftReceiveVO = new GiftReceiveVO();
-							giftReceiveVO.setMem_no_self(giftReceiveVOA.getMem_no_self());
-							giftReceiveVO.setMem_no_other(giftReceiveVOA.getMem_no_other());
-							giftReceiveVO.setGiftr_amount(giftReceiveVOA.getGiftr_amount());
-							list.add(giftReceiveVO);
-						}
-					}
-					orderMap.put(goDetailList.get(i), list);
-				}
 				String jsonGiftOrderVO = req.getParameter("jsonGiftOrderVO");
 				GiftOrderVO giftOrderVO = new Gson().fromJson(jsonGiftOrderVO.toString(), GiftOrderVO.class);
-				try {
-					goSvc.insert(giftOrderVO, orderMap);
-					outStr = "結帳成功";
-					GiftOrderWS giftOrderWS = new GiftOrderWS();
-					giftOrderWS.multipleSendGift("sendGift", orderMap);
-				} catch (Exception e) {
-					System.out.println(e.getStackTrace());
+
+				int delDeposit = 0;
+				for (GiftOrderDetailVO giftOrderDetailVO : goDetailList) {
+					// 計算購買總金額
+					delDeposit += giftOrderDetailVO.getGiftod_money();
+				}
+				System.out.println("購買金額:"+delDeposit);
+				MemberService mSvc = new MemberService();
+				MemberVO memberVO = mSvc.getOneByMemNo(giftOrderVO.getMem_no());
+				Integer oriDeposit = memberVO.getMem_deposit();
+				System.out.println("帳戶餘額:"+oriDeposit);
+				if (oriDeposit - delDeposit < 0) {
 					outStr = "金額不足";
+				} else {
+
+					String jsonReceiveList = req.getParameter("gReceiveList");
+					List<GiftReceiveVOA> gReceiveList = gson.fromJson(jsonReceiveList.toString(),
+							new TypeToken<List<GiftReceiveVOA>>() {
+							}.getType());
+
+					for (int i = 0; i < goDetailList.size(); i++) {
+						List<GiftReceiveVO> list = new ArrayList<>();
+						for (int j = 0; j < gReceiveList.size(); j++) {
+							GiftReceiveVOA giftReceiveVOA = gReceiveList.get(j);
+							if (goDetailList.get(i).getGift_no().equals(giftReceiveVOA.getGift_no())) {
+								GiftReceiveVO giftReceiveVO = new GiftReceiveVO();
+								giftReceiveVO.setMem_no_self(giftReceiveVOA.getMem_no_self());
+								giftReceiveVO.setMem_no_other(giftReceiveVOA.getMem_no_other());
+								giftReceiveVO.setGiftr_amount(giftReceiveVOA.getGiftr_amount());
+								list.add(giftReceiveVO);
+							}
+						}
+						orderMap.put(goDetailList.get(i), list);
+					}
+					try {
+						goSvc.insert(giftOrderVO, orderMap);
+						outStr = "結帳成功";
+						GiftOrderWS giftOrderWS = new GiftOrderWS();
+						giftOrderWS.multipleSendGift("sendGift", orderMap);
+					} catch (Exception e) {
+						System.out.println(e.getStackTrace());
+						outStr = "金額不足";
+					}
 				}
 			}
 		}
