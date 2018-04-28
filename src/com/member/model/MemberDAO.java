@@ -28,12 +28,6 @@ import javax.sql.DataSource;
 
 import org.apache.catalina.ssi.ByteArrayServletOutputStream;
 
-import com.giftDiscount.model.GiftDiscountVO;
-
-import oracle.jdbc.proxy.annotation.Pre;
-
-
-
 public class MemberDAO implements MemberDAO_interface{
 
 	/*·s¼W´ú¸Õ*/
