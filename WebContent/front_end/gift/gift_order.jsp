@@ -116,7 +116,7 @@
 					<span id="checkoutMoney">
 						Total: $<p>${orderMoney}</p>
 					</span>
-					<a id="ckeckoutText" href="<%=request.getContextPath()%>/front_end/gift/gift_checkout.jsp">
+					<a id="ckeckoutText" href="javascript: ckeckout(); return false;">
 						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout_ok.jpg" style="height:60px;">結帳
 					</a>
 				</div>         
@@ -207,6 +207,25 @@ $(document).ready(function() {
 	
 });
 
+function ckeckout(){
+	var obj = [{name: "action",value: "canCheckout"}];
+	$.ajax({
+		async: false,
+		type: 'POST',
+		url: '/BA107G3/gift/giftOrder.do',
+		data: obj,
+		dataType: 'json',
+		success: (function(json) {
+			if(json.status == 'failure'){	
+				connectCheck();
+			}//end failure
+			else{
+			window.location.href = '${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/front_end/gift/gift_checkout.jsp';
+			}//end success
+		}),
+		error:(function() { console.log("second error"); })
+	}); 
+}
 
 function connectCheck() {
 	var obj = [{name: "action",value: "canCheckout"}];
@@ -225,7 +244,10 @@ function connectCheck() {
 					$('#giftOrder-context').find('tr').each(function (index) {
 		        		var findGift = $(this).find('td[class=order-name] input:eq(1)');
 		        		if(findGift.length != 0 && objKey[i] == findGift.val()){
-		        			$(this).find('td[class=order-amount] p')[0].innerText = '請調整購買數';
+		        			if(objValue[i] == -1)
+			        			$(this).find('td[class=order-amount] p')[0].innerText = '已結束促銷';
+		        			else
+			        			$(this).find('td[class=order-amount] p')[0].innerText = '請調整購買數';
 		        			var optionValue = "";
 		        			optionValue += "<option value=0 selected></option>";
 		        			for(var j=1; j<=objValue[i]; j++){
@@ -251,7 +273,7 @@ function connectCheck() {
 	        		}
 	        	});
 				$('#checkoutMoney').next().find('img')[0].src = '${pageContext.request.contextPath}/front_end/res/img/gift/ckeckout_ok.jpg';
-				$('#checkoutMoney').next().attr('href','${pageContext.request.contextPath}/front_end/gift/gift_checkout.jsp');
+				$('#checkoutMoney').next().attr('href','javascript: ckeckout();');
 			}//end success
 		}),
 		error:(function() { console.log("second error"); })

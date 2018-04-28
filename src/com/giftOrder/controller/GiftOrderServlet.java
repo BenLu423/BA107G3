@@ -149,9 +149,15 @@ System.out.println("Order action: " + action);
 				Set<GiftOrderDetailVO> giftOrderDetailList = orderDetail.keySet();
 				for(GiftOrderDetailVO giftOrderDetailVO: giftOrderDetailList){
 					String giftd_no = giftOrderDetailVO.getGiftd_no();
+					String gift_no = giftOrderDetailVO.getGift_no();
 					if(giftd_no != null && !giftd_no.isEmpty()){
 						GiftDiscountVO oriVO = giftDiscountSvc.getOneGD(giftd_no);
-						if(oriVO.getGiftd_amount() < giftOrderDetailVO.getGiftod_amount()){
+						//判斷加入購物車的限時優惠禮物是否還存在
+						if(giftDiscountSvc.getCurrentValidGift(gift_no) == null){
+							map.put(oriVO.getGift_no(), "-1");
+							canBuy = false;
+						}//判斷限時優惠禮物數量是否有還足夠[因為可能被別人搶走]
+						else if(oriVO.getGiftd_amount() < giftOrderDetailVO.getGiftod_amount()){
 							map.put(oriVO.getGift_no(), oriVO.getGiftd_amount().toString());
 							canBuy = false;
 						}
