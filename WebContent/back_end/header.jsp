@@ -91,9 +91,6 @@
 					
 					<tbody style="display:<c:if test="<%= tag.get(4)==0 %>">none</c:if>">
 						<tr>
-							<td><a href="#">查看個人頁面</a></td>
-						</tr>
-						<tr>
 							<td><a href="#">會員權限管理</a></td>
 						</tr>
 						<tr>

@@ -20,7 +20,7 @@
 						<h1>新增帳號</h1>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-12">
+				<div class="col-xs-12 col-sm-12" style="background-color:#fff;border-color:#aaa;border-style:solid">
 					<form class="form-inline" action="<%=request.getContextPath()%>/admin/admin.do" method="post">
 						<div class="form-group">
 							<label for="adminName">員工姓名</label> <input type="text"
@@ -45,15 +45,23 @@
 						<hr>
 						<jsp:useBean id="authFeatureSvc" scope="page" class="com.auth_feature.model.AuthFeatureService"/>
 						<h4>設定權限</h4>
-						
+						<div class="searchable-container">
 						<c:forEach var="authFeatureVO" items="${authFeatureSvc.all}">
-							<input type="checkbox" value="${authFeatureVO['auth_no']}" name="auth">${authFeatureVO['auth_name']}<br>
+							<div data-toggle="buttons" class="btn-group bizmoduleselect">
+								<label class="btn btn-default">
+									<div class="bizcontent">
+										<input type="checkbox" name="auth" autocomplete="off" value="${authFeatureVO['auth_no']}"> 
+										<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+										<h5>${authFeatureVO['auth_name']}</h5>
+									</div>
+								</label>
+							</div>
 						</c:forEach>
-						
+						</div>
 
 						<br> <br>
 						
-						<button type="submit" class="btn btn-default" id="login">新增</button>
+						<button type="submit" class="btn btn-default" id="login" style="margin-bottom:10px">新增</button>
 						<input type="hidden" name="action" value="insert_admin">
 						
 						<c:if test="${not empty errorMsgs}">
@@ -63,13 +71,25 @@
 							</c:forEach>
 							</ul>
 						</c:if>
-
-						
 					</form>
+
+					<button id="insertNewAdmin" style="margin-bottom:10px">GO</button>
 
 				</div>
 			</div>
 		</div>
 		</div>
+		
+		<script>
+			$('#insertNewAdmin').click(function(){
+				$('#adminName').val("竹竹");
+				$('#account').val("QQQ");
+				$('#mail').val("jwes4421@gmail.com");
+				
+			});
+		
+		</script>
+		
+		
 </body>
 </html>

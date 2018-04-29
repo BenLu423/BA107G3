@@ -27,13 +27,19 @@
 
 <div class="col-xs-12 col-sm-10 cont gift-cont">
 	<div class="row">
+	
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+		<div class="col-xs-12 col-sm-12" style="margin-top:30px">
 		<div class="col-xs-12 col-sm-12">
+					<div class="page-header">
+						<h1>帳號檢舉管理</h1>
+					</div>
+				</div>
 		<div class="panel panel-default">
     		<div class="panel-body">
     			<div class="col-xs-12 col-sm-8">
 
-
+					
 					<form method="post" action="<%=request.getContextPath()%>/accpre/accpre.do" class="form-inline">
 						<div class="form-group"> 
 							<select class="form-control" id="selectWord" name="statement">

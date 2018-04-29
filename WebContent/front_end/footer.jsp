@@ -31,7 +31,7 @@
 <title>footer</title>
 
 </head>
-<body onload="chatConnect();" onunload="disconnect();">
+<body onload="chatConnect();" onunload="chatDisconnect();">
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -138,7 +138,7 @@
 	}
 
 	
-	/********************websocket*********************/
+	/********************chatWebSocket*********************/
 	
 		var MyPoint = "/FriendWS/${memSelf.mem_no}";
 		var host = window.location.host;
@@ -146,14 +146,14 @@
 		var webCtx = path.substring(0, path.indexOf('/', 1));
 		var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
 
-		var webSocket;
+		var chatWebSocket;
 		
 		var nowFriNo ;
 		
 		function chatConnect() {
-			webSocket = new WebSocket(endPointURL);
+			chatWebSocket = new chatWebSocket(endPointURL);
 
-			webSocket.onopen = function(event) {
+			chatWebSocket.onopen = function(event) {
 				
 				nowFriNo='${nowFriNo}';
 				if(nowFriNo!=''){
@@ -162,7 +162,7 @@
 				
 			};
 
-			webSocket.onmessage = function(event) {
+			chatWebSocket.onmessage = function(event) {
 				
 				var jsonObj = JSON.parse(event.data);
 
@@ -279,7 +279,7 @@
 			
 			};
 
-			webSocket.onclose = function(event) {
+			chatWebSocket.onclose = function(event) {
 				
 			}
 
@@ -316,7 +316,7 @@
 				"read":"¥¼Åª",
 			};
 			
-			webSocket.send(JSON.stringify(jsonObj));
+			chatWebSocket.send(JSON.stringify(jsonObj));
 			 $("#inputMessage").val("");
 			 $("#inputMessage").focus();
 			 
@@ -338,7 +338,7 @@
 					"type" : "getOneTalk",
 					"friNo" : friNo,
 				};
-				webSocket.send(JSON.stringify(jsonObj));
+				chatWebSocket.send(JSON.stringify(jsonObj));
 				
 				var deleteUnread = {
 						"type":"deleteUnread",
@@ -346,7 +346,7 @@
 						
 				};
 				
-				webSocket.send(JSON.stringify(deleteUnread));
+				chatWebSocket.send(JSON.stringify(deleteUnread));
 				
 				$("#"+friNo+">span").remove();
 				
@@ -357,8 +357,8 @@
 			
 		}
 		
-		function disconnect(){
-			webSocket.close();
+		function chatDisconnect(){
+			chatWebSocket.close();
 			
 		}
 		
@@ -391,7 +391,7 @@
 							"read":"¥¼Åª",
 							};
 
-					webSocket.send(JSON.stringify(jsonObj));
+					chatWebSocket.send(JSON.stringify(jsonObj));
 					down();
 					}, false);
 				    

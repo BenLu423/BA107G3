@@ -81,3 +81,20 @@ body{
 a{color:#2D3033;font-weight:bold; }
 a:hover{color:#1D84B5;}
 a:active{color:#94453C;}
+
+#indext-table tbody tr th{
+	width:150px;
+	background-color:red;
+	height:50px;
+	text-align:center;
+	border-color:#ddd;
+	
+}
+
+#indext-table tbody tr td{
+	background-color:#fff;
+	text-align:center;
+	font-size:20px;
+}
+
+
