@@ -46,7 +46,7 @@
 									<td>員工姓名<br> <input type="text" name="adminName" value="${admin.adm_name}"></td>
 									<td>員工帳號<br><input type="text" name="account" value="${admin.adm_acct}"></td>
 									<td>員工信箱<br> <input type="text" name="mail" value="${admin.adm_mail}"></td>
-									<td><input type="submit" value="送出">
+									<td><button type="submit" class="btn">送出</button>
 										<input type="hidden" name="adm_no" value="${admin.adm_no}">
 										<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>">
 										<input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>">

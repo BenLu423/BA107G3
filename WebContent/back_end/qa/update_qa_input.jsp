@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Insert</title>
+<title>常見問題管理</title>
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
@@ -24,7 +24,6 @@
 			
 			<table id="table-1">
 				<tr><td>
-					 <h7>update_qa_input.jsp</h7>
 					 <h4><a href="select_page1.jsp"></a></h4>
 				</td></tr>
 			</table>

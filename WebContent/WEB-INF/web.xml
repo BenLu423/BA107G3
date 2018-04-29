@@ -147,6 +147,8 @@
   <filter-mapping>
     <filter-name>BackLoginFilter</filter-name>
     <url-pattern>/back_end/admin/*</url-pattern>
+    <url-pattern>/back_end/back_page.jsp</url-pattern>
+    <url-pattern>/back_end/gift/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>

@@ -151,7 +151,7 @@
 		var nowFriNo ;
 		
 		function chatConnect() {
-			chatWebSocket = new chatWebSocket(endPointURL);
+			chatWebSocket = new WebSocket(endPointURL);
 
 			chatWebSocket.onopen = function(event) {
 				

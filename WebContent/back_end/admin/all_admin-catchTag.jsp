@@ -77,18 +77,18 @@
 										</td>
 										<td>
 										<form method="post" action="<%=request.getContextPath()%>/admin/admin.do">
-											<input type="submit" value="修改">
+											<button type="submit" class="btn">修改</button>
 											<input type="hidden" name="adm_no" value="${adminVO.adm_no}">
 											<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 											<input type="hidden" name="whichPage" value="<%=whichPage%>">
 											<input type="hidden" name="action" value="getOne_For_Update"></form>
 										</td>
-										<td><form method="post" action="<%=request.getContextPath()%>/admin/admin.do">
-											<input type="submit" value="刪除">
-											<input type="hidden" name="adm_no" value="${adminVO.adm_no}">
-											<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-											<input type="hidden" name="whichPage" value="<%=whichPage%>">
-											<input type="hidden" name="action" value="delete"></form></td>
+<%-- 										<td><form method="post" action="<%=request.getContextPath()%>/admin/admin.do"> --%>
+<!-- 											<input type="submit" value="刪除"> -->
+<%-- 											<input type="hidden" name="adm_no" value="${adminVO.adm_no}"> --%>
+<%-- 											<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"> --%>
+<%-- 											<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
+<!-- 											<input type="hidden" name="action" value="delete"></form></td> -->
 									</tr>
 									<tr>
 										<td colspan="7">
