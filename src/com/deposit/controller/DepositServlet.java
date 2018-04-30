@@ -38,15 +38,16 @@ System.out.println(action);
 			HttpSession session = req.getSession();
 			MemberService memberSvc = new MemberService();
 			MemberVO memberVO = (MemberVO) session.getAttribute("memSelf");
-			int deposit = memberVO.getMem_deposit();
+			int deposit = 0;
 			
 			String[] money = req.getParameterValues("money");
 			for(String str: money){
 				Integer oneMoney = new Integer(str);
 				deposit += oneMoney;
 			}
-			memberVO.setMem_deposit(deposit);
-			memberSvc.updateDeposit(memberVO.getMem_no(), deposit);
+			memberVO.setMem_deposit(deposit+memberVO.getMem_deposit());
+			//因為updateDeposit方法為扣除帳戶金額，故儲值時須*(-1)
+			memberSvc.updateDeposit(memberVO.getMem_no(), deposit*(-1));
 			req.setAttribute("memSelf", memberVO);
 			
 			map.put("status", "success");
