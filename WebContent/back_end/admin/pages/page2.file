@@ -1,26 +1,25 @@
 <%@ page contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 
-  <%if (rowsPerPage<rowNumber) {%>
-    <%if(pageIndex>=rowsPerPage){%>
-        <A href="<%=request.getRequestURI()%>?whichPage=1">至第一頁</A>&nbsp;
-        <A href="<%=request.getRequestURI()%>?whichPage=<%=whichPage-1%>">上一頁 </A>&nbsp;
-    <%}%>
-  
-    <%if(pageIndex<pageIndexArray[pageNumber-1]){%>
-        <A href="<%=request.getRequestURI()%>?whichPage=<%=whichPage+1%>">下一頁 </A>&nbsp;
-        <A href="<%=request.getRequestURI()%>?whichPage=<%=pageNumber%>">至最後一頁</A>&nbsp;
-    <%}%>
-  <%}%>  
 
-<br><br>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="<%=request.getRequestURI()%>?whichPage=<%=whichPage-1%>" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+    
+    <%for(int i = 1 ; i <=pageNumber ; i++){%>
+    	<li class="page-item"><a class="page-link" href="?whichPage=<%=i%>"><%=i%></a></li>
+    <%}%>
+    <li class="page-item">
+      <a class="page-link" href="<%=request.getRequestURI()%>?whichPage=<%=whichPage+1%>" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 
-  <%if (pageNumber>1) {%>
-    <FORM METHOD="post" ACTION="<%=request.getRequestURI()%>">   
-       <select size="1" name="whichPage">
-         <%for (int i=1; i<=pageNumber; i++){%>
-            <option value="<%=i%>">跳至第<%=i%>頁
-         <%}%> 
-       </select>
-       <input type="submit" value="確定" >  
-    </FORM>
-  <%}%>
+

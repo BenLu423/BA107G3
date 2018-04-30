@@ -33,7 +33,7 @@
 %>
 
 <%if (pageNumber>0){%>
-  <b><font color=red size=4px>第<%=whichPage%>/<%=pageNumber%>頁</font></b>
+  <b><font size=4px>第<%=whichPage%>/<%=pageNumber%>頁</font></b>
 <%}%>
 
-<b style="font-size:20px">●符 合 查 詢 條 件 如 下 所 示: 共<font color=red><%=rowNumber%></font>筆</b>
+<b style="font-size:20px">共<font color=#007BA7><%=rowNumber%></font>筆</b>
