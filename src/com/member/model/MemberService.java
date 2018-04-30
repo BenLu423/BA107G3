@@ -59,9 +59,8 @@ public class MemberService {
 	}
 	/*¦Û§Ú¤¶²Ð*/
 	public MemberVO updateIntro(String mem_intro, String mem_no){
-		MemberVO memvo = new MemberVO();
+		MemberVO memvo = memdao.getOne(mem_no);
 		memvo.setMem_intro(mem_intro);
-		memvo.setMem_no(mem_no);
 		memdao.memIntro(memvo);
 		return memvo; 
 	}
