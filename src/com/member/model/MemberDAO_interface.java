@@ -20,7 +20,7 @@ public interface MemberDAO_interface {
 	void memUpdatePassword(String mem_password,String mem_no);
 	Boolean memIsBan(String mem_account,String mem_password);
 	void memBan(String mem_no,String mem_prohibit);
-	
+	List<MemberVO> memPopular();
 	//紹永[禮物訂單使用]
 	void updateDeposit(String mem_no, Integer delDeposit, Connection con);
 	void updateDeposit(String mem_no, Integer delDeposit);

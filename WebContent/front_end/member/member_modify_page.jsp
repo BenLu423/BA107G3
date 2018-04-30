@@ -6,39 +6,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>Insert title here</title>
 </head>
+<style>
+.panel-warning>.set-panel{
+background: rgba(255,220,220);
+}
+</style>
 <body>
 		
-		<form action="<%=request.getContextPath()%>/member/mem.do"  method="POST" class="set-form" enctype="multipart/form-data">          
-        				 		  
-        				 		  <div class="form-group">
-		                            <label for="mem_name">暱稱:</label>
-		                            <input type="text" name="mem_name" id="mem_name" size="25" value="${memSelf.mem_name}">
-		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_name}</span></c:if> 
-		                          </div>
+		<form action="<%=request.getContextPath()%>/member/mem.do"  method="POST" class="set-form" enctype="multipart/form-data">             				 		  		 		  
+        	<div class="panel panel-warning">
+				<div class="panel-heading set-panel">
+					<h3 class="panel-title">個人資料</h3>
+				</div>
+					<table class="table table-hover">	
+						<tr>
+							<td>		
+		   				 	   <div class="form-group">
+		                         <label for="mem_name">暱稱:</label>
+		                         <input type="text" name="mem_name" id="mem_name" size="25" value="${memSelf.mem_name}">
+		                         <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_name}</span></c:if> 
+		                       </div>
+	                       </td>
+                       </tr>
 	
- 		                                 
+ 		               <tr>
+ 		               		<td>                  
 		                          <div class="form-group">
 		                            <label for="mem_phone">手機:</label>  
 		                            <input type="text" name="mem_phone" id="mem_phone" size="25" value="${memSelf.mem_phone}">
 		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_phone}</span></c:if> 
 		                          </div>
-		                          
- 		                         
+		                     </td>     
+		               </tr>          
+ 		                <tr>
+							<td>         
 		                          <div class="form-group">
 		                            <label for="mem_mail">電子郵件:</label>  
 		                            <input type="text" name="mem_mail" id="mem_mail" size="25" value="${memSelf.mem_mail}">
 		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_mail}</span></c:if> 
 		                          </div>
-		                          
-  		                          
+		                     </td>
+		                 </tr>    
+  		                 <tr>
+							<td>        
 		                          <div class="form-group">
 		                          <label for="mem_height">身高:</label> 
 		                            <select class="" name="mem_height" id="height">
 		                              <option value="${memSelf.mem_height}"selected>請選擇:</option>
 		                              <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_height}</span></c:if> 
 		                            </select>
-		                          
-		                   
+
 		                            <label for="mem_weight">體重:</label> 
 		                            <select class="" name="mem_weight" id="weight">
 		                              <option value="${memSelf.mem_weight}"selected>請選擇:</option>
@@ -46,8 +63,11 @@
 		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_height}</span></c:if> 
   		                   	  		<c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_weight}</span></c:if>
                          		 </div>
-                       		 	
-				                  <div class="form-group">
+                         	</td>
+                         </tr>		 
+                       	<tr>	 	
+				            <td>      
+				            		<div class="form-group">
 		                            <label for="mem_emotion">感情狀況:</label> 
 		                            <select class="" name="mem_emotion" id="mem_emotion">
 		                              <option value="${memSelf.mem_emotion}" selected>請選擇:</option>
@@ -60,8 +80,10 @@
 		                            </select>
 		                             <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_emotion}</span></c:if> 
 		                          </div>
-		                         
- 		                          
+		               	 </td>
+		                </tr>         
+ 		                <tr>
+							<td>          
  		                          
 		                          <div class="form-group">
 		                            <label for="mem_contact">交往關係:</label> 
@@ -75,41 +97,52 @@
 		                            </select>
 		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_contact}</span></c:if> 
 		                          </div>
-  		                          
-		                          
-  
+  		                     </td>     
+		                 </tr>     
+  						<tr>
+							<td>
 		                          <div class="form-group">                    
-										    <div>
+										     <label for="">上傳大頭貼:</label>  
+										    <input type='file' class="mem_photo" name="mem_photo">
+										      <div>
 										        <img class="preview" style="max-width: 150px; max-height: 150px;">
 										        <div class="size"></div>
 										    </div>
-										    <input type='file' class="mem_photo" name="mem_photo">
 		                          </div>
-  		                          
-		                          
-		                            <div class="form-group">
-	                                    <label for="">興趣</label>
-	                                    	<input class="" type="checkbox" name="mem_interest1" value="上網">上網
-			                         		<input class="" type="checkbox" name="mem_interest2" value="聽音樂">聽音樂
-			                         		<input class="" type="checkbox" name="mem_interest3" value="看電影">看電影
-			                         		<input class="" type="checkbox" name="mem_interest4" value="健身">健身
-			                         		<input class="" type="checkbox" name="mem_interest5" value="看書">看書
-			                         		<input class="" type="checkbox" name="mem_interest6" value="打球">打球
-			                         		<input class="" type="checkbox" name="mem_interest7" value="玩遊戲">玩遊戲
-			                         		<input class="" type="checkbox" name="mem_interest8" value="旅行">旅行
-			                         		<c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_interest}</span></c:if> 
-			                        </div>
-			                       
-								
-	                          <div>  
-	                            <input type="submit" class="btn btn-info set-login-btn" value="提交">
+  		                    </td>        
+		                  </tr>
+		                  
+		                  <tr>
+							<td>        
+                            	 <div class="form-group">
+                                   <label for="">興趣</label>
+                                   	<input class="" type="checkbox" name="mem_interest1" value="上網">上網
+	                         		<input class="" type="checkbox" name="mem_interest2" value="聽音樂">聽音樂
+	                         		<input class="" type="checkbox" name="mem_interest3" value="看電影">看電影
+	                         		<input class="" type="checkbox" name="mem_interest4" value="健身">健身
+	                         		<input class="" type="checkbox" name="mem_interest5" value="看書">看書
+	                         		<input class="" type="checkbox" name="mem_interest6" value="打球">打球
+	                         		<input class="" type="checkbox" name="mem_interest7" value="玩遊戲">玩遊戲
+	                         		<input class="" type="checkbox" name="mem_interest8" value="旅行">旅行
+	                         		<c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_interest}</span></c:if> 
+	                         </div>
+			              </td>         
+						</tr>
+						<tr>
+							<td>		
+	                          <div>
+	                           
+	                            <input type="submit" class="btn btn-default set-login-btn" value="提交">
 	                          </div>
-	                          
+	                    	 </td>     
+	                     </tr>     
 	                          <div>
 	                          	<input type="hidden" name="mem_no" value="${memSelf.mem_no}">
 	                            <input type="hidden" name="action" value = "getmodify_data_judge">
-	                          </div>          	
-        					</form>
+	                          </div> 
+	                 </table>         
+	         </div>         	
+        </form>
         				
 		
 		

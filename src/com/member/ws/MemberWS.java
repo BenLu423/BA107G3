@@ -44,7 +44,6 @@ public class MemberWS {
 
 		@OnMessage
 		public void onMessage(Session session, String message) throws JSONException {
-			System.out.println("e04");
 			JSONObject jsonObj = new JSONObject(message);
 			Session onlineSession = null;
 			String type =(String)jsonObj.get("type");

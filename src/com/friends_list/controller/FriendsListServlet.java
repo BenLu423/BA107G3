@@ -113,9 +113,32 @@ public class FriendsListServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		/**/
+		System.out.println(action);
+		if("adatabasenotice".equals(action)){
+			String memGet = req.getParameter("memGet_no");
+			String memSend = req.getParameter("memSend_no");
+			String statements = "是";
 		
+			System.out.println(memSend);
+			System.out.println(memGet);
+			FriendsService fs = new FriendsService();
+			fs.webUpdateFri(statements, memGet, memSend);
+			
+			return;
+		}
 		
-		
+		/**/
+		if("ddatabasenotice".equals(action)){
+			String memGet = req.getParameter("memGet_no");
+			String memSend = req.getParameter("memSend_no");
+			System.out.println(memSend);
+			System.out.println(memGet);
+			FriendsService fs = new FriendsService();
+			fs.webDelFri(memGet, memSend);
+			return;
+			
+		}
 		/*好友列表加入*/
 		res.setCharacterEncoding("Big5");
 			if("finaladdfri".equals(action)){
@@ -132,8 +155,21 @@ public class FriendsListServlet extends HttpServlet {
 				}
 				
 			}
-		
-		
+			
+			if("delfrilistwait".equals(action)){
+				try{
+					String self = req.getParameter("memself");
+					String other = req.getParameter("memother");
+					System.out.println(self);
+					System.out.println(other);
+					FriendsService fs = new FriendsService();
+					fs.webDelFri(self, other);
+					res.sendRedirect(req.getContextPath()+"/front_end/member/check_add_friends_list.jsp");
+					return;
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
 		
 			
 			System.out.println(action);
@@ -145,7 +181,7 @@ public class FriendsListServlet extends HttpServlet {
 				System.out.println(other);
 				FriendsService fs = new FriendsService();
 				fs.webDelFri(self, other);
-				res.sendRedirect(req.getContextPath()+"/front_end/member/check_add_friends_list.jsp");
+				res.sendRedirect(req.getContextPath()+"/front_end/member/member_manage_friendslist.jsp");
 				return;
 			}catch(Exception e){
 				e.printStackTrace();

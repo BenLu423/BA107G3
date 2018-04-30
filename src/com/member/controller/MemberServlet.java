@@ -540,6 +540,7 @@ public class MemberServlet extends HttpServlet {
 			String mem_no = req.getParameter("mem_no");
 			MemberVO memvo = new MemberVO();
 			MemberService ms = new MemberService();
+			System.out.println(mem_no);
 			
 			memvo = ms.getOneMem(mem_no);
 			req.setAttribute("memvo", memvo);
@@ -593,25 +594,38 @@ public class MemberServlet extends HttpServlet {
 		}
 		/***************¶i¶¥·j´M***************/
 			System.out.println(action);
-		if("listMems_ByCompositeQuery".equals(action)){
+if("listMems_ByCompositeQuery".equals(action)){
 				
-			try{
-				
-				Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();				
-				MemberService ms = new MemberService();
-				List<MemberVO>getallMemberData = ms.precise(map);		
-				req.setAttribute("getallMemberData1", getallMemberData);
-				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
-				rd.forward(req, res);
-				return;
-				
+				try{
+//					HttpSession session = req.getSession();
+//					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
+//					Map<String,String[]> map = (Map<String,String[]>)req.getParameterMap();
+//					if(req.getParameter("whichPage")==null){
+//						HashMap<String, String[]> map1 = new HashMap(req.getParameterMap());
+//						session.setAttribute("map", map1);
+//						map = map1;
+//						HashMap<String, String[]> map2 = new HashMap(map1);
+//						session.setAttribute("map", map2);
+//						map = (HashMap<String,String[]>)req.getParameterMap();
 
-			}catch(Exception e){
-				RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
-				rd.forward(req, res);
-				return;	
+//					}
+					Map<String, String[]> map = (Map<String, String[]>)req.getParameterMap();
+					MemberService ms = new MemberService();
+					List<MemberVO>getallMemberData = ms.precise(map);		
+					req.setAttribute("getallMemberData1", getallMemberData);
+					RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
+					rd.forward(req, res);
+					return;
+					
+
+				}catch(Exception e){
+					e.printStackTrace();
+					RequestDispatcher rd = req.getRequestDispatcher("/front_end/member/member_search_all.jsp");
+					rd.forward(req, res);
+					return;	
+				}
 			}
-		}
+		
 		
 		
 		

@@ -1,47 +1,44 @@
-<%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ page contentType="text/html; charset=Big5" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.member.model.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="">
+<html>
   <head>
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
     <title>登入頁面</title>
 
-   
+    
 
     <style type="text/css">
     .set-login{
-        background-color: #fff;
+        background-color: rgb(255,220,220);
         min-height: 650px;
-        margin-top: 10%;
+        margin-top: 6%;
         margin-bottom: 5%;
         padding-bottom: 2%;
-    
+
     }
     .set-login-btn{
       width: 100%;
-
+	  
     }
-  
+	
 
     </style>
   
   </head>
     <body>
-    
+	
 	<!-- header -->
     <jsp:include page="/front_end/header.jsp"></jsp:include>
 	<!-- //header-->
-    
 
-    <div class="container-fluid">
+        <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                <div class="col-xs-12 col-sm-6 col-sm-offset-3 set-login">
-                      <div><h3>會員註冊</h3></div>
+            <div class="col-xs-12 col-sm-1"></div>
+            <div class="col-xs-12 col-sm-10 content">
+                <div class="content-top"></div>
+               	  <div class="col-xs-12 col-sm-4 col-sm-offset-4 set-login">
+       				<div><h3>會員註冊</h3></div>
                       <form action="<%=request.getContextPath()%>/member/mem.do" method="POST" class="set-form">
            
                           <div class="form-group">
@@ -50,7 +47,7 @@
                              <p style="color:red">${errorMsgs.mem_account}</p>
                              </c:if>
                             <input type="text" name="mem_account" id="mem_account" class="form-control" value="">
- 						 </div>
+ 						              </div>
 						  
                           <div class="form-group">
                             <label for="mem_password">密碼:</label>
@@ -201,20 +198,19 @@
                           </div>
                         
                      </form>
+       
 
-                </div>
-            </div>
-   
-     </div>
-    </div>
-   
-    
-	
+  
+				</div>
+		    </div> 
+		    <div class="col-xs-12 col-sm-1"></div>		
+  			</div>
+  		</div>
+
     <!-- FOOTER -->
 	<jsp:include page="/front_end/footer.jsp"></jsp:include>
-	<!-- FOOTER END-->	
-    
-    <script type="text/javascript">
+	<!-- FOOTER END-->
+	<script type="text/javascript">
     
     window.onload = function(){
       var height = document.getElementById("height");
@@ -232,8 +228,13 @@
           weight.add(opt);
         }
     }
-    
-
     </script>    
+	
+	
+	
     </body>
 </html>
+
+
+
+

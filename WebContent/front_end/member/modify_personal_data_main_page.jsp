@@ -11,7 +11,12 @@
 
 <title>Insert title here</title>
 <style type="text/css">
-
+.set-login-btn{
+min-width: 100%;
+}
+.panel-warning>.set-panel{
+background: rgba(255,220,220);
+}
 </style>
 </head>
 <body>
@@ -22,25 +27,25 @@
 		String mem_no = (String)request.getParameter("mem_no");
 	%>
 	
-	<div class="container-fluid">
+		
+		<div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-sm-1"></div>
             <div class="col-xs-12 col-sm-10 content">
                 <div class="content-top"></div>
-            
-          
-              <div class="col-xs-12 col-sm-3">
-               <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+                
+                <div class="col-xs-12 col-sm-3">
+                    	    <div class="panel-group" id="accordion2" role="tablist">
                         <!-- 區塊1 -->
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="panel1">
+                        <div class="panel panel-warning">
+                          <div class="panel-heading set-panel" role="tab" id="panel1">
                             <h4 class="panel-title">
-                              <a href="#aaa" data-parent="#accordion2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="aaa">
+                            
                           	        修改個人資料
-                              </a>
+                          
                             </h4>
                           </div>
-                          <div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="panel1">
+                          <div id="" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="panel1">
                             <div class="panel-body">
                                 <div><a href="<%=request.getContextPath()%>/member/mem.do?action=selfpage&selfp=selfpass">修改密碼</a></div><br>
                                 <div><a href="<%=request.getContextPath()%>/member/mem.do?action=selfpage&selfp=selfdata">個人資料</a></div><br>
@@ -48,34 +53,13 @@
                             </div>
                           </div>
                         </div>
-                        <!-- 區塊2 -->
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="panel2">
-                            <h4 class="panel-title">
-                              <a href="#bbb" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="bbb">
-                             	     收合項目標題二
-                              </a>
-                            </h4>
-                          </div>
-                          <div id="bbb" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel2">
-                            <div class="panel-body">
-                              	  內容二置入在這裡
-                            </div>
-                          </div>
                         </div>
-             
-
+                
                 </div>
-                <div class="col-xs-12 col-sm-9">
-                      <div class="col-xs-12 col-sm-1"></div>
-                      
-                      	<div class="col-xs-12 col-sm-10" id="modify-area">
-                   	
-               			<%--------------------------------需要改動路徑變BA107G3時--------------------------------%>
-  
-        				 
-        				<%--chang_page = value.substring(value.indexOf("k")+1);修改value.indexOf值 --%>
- 						<% 
+            
+                <div class="col-xs-12 col-sm-7 col-sm-offset-1" id="modify-area">
+                
+            				<% 
  							String chang_page = "";
  							Map<String,String> myself_page = (Map<String,String>)session.getAttribute("myself_page");
  						
@@ -93,23 +77,32 @@
  								}
  						%>
  						<%} %>
-                     	 </div>
-                     <%---------------------------------------------------------------------------------%> 
-                      <div class="col-xs-12 col-sm-2"></div>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-9">
-              			<c:if test="${empty myself_page}">
-              			<jsp:include page="/front_end/member/member_modify_password.jsp"/>
-              			</c:if>
-              			<c:if test="${not empty myself_page}">
- 						<jsp:include page="<%=chang_page%>"/>   
- 						</c:if>           
-              </div>
-              <div class="col-xs-12 col-sm-1"></div>   
-            </div>
-        </div>  
-
+                   	
+					
+								  <div class="col-xs-12 col-sm-9">
+			              			<c:if test="${empty myself_page}">
+			              			<jsp:include page="/front_end/member/member_modify_password.jsp"/>
+			              			</c:if>
+			              			<c:if test="${not empty myself_page}">
+			 						<jsp:include page="<%=chang_page%>"/>   
+			 						</c:if>           
+           						   </div>
+								 
+					
+                 </div>
+             </div>
+           </div>
+           <div class="col-xs-12 col-sm-1"></div>   
+         </div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	
 	<!-- FOOTER -->

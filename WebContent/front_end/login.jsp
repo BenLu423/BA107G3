@@ -59,7 +59,7 @@
                              <c:if test="${not empty errorMsgs}">
                              			<p style="color:red">${errorMsgs.password}</p>	
                              </c:if>
-                            <input type="text" name="mem_password" id="mem_password" class="form-control">
+                            <input type="password" name="mem_password" id="mem_password" class="form-control">
                           </div>
 
                           <div>  

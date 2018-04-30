@@ -16,7 +16,12 @@
 .btn-group .btn{
 height: 34px;
 }
+.set-color{
+background-color: #ffdcdc;
+margin-left: 100px;
+margin-right: 100px;
 
+}
 -->
 </style>
 </head>
@@ -29,7 +34,7 @@ height: 34px;
 	
 			<%
 				request.getAttribute("getallMemberData");
-				System.out.print(request.getAttribute("getallMemberData"));
+		
 				
 				MemberService ms = new MemberService();
 				List<MemberVO> getallMember = new ArrayList<MemberVO>();
@@ -171,7 +176,7 @@ height: 34px;
 			                </div>
 			                </div>
 		               	  	
-
+				</div>
                	  </div>
                	  <br><br><br><br><br>
              	
@@ -199,13 +204,13 @@ height: 34px;
 							<%@ include file="page1.file" %>
 	       					<c:forEach var="memData" items="${getallMember}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">	
 	       						<div class="col-xs-12 col-sm-4">
-									<div class="item">
+									<div class="item set-color">
 				
 										<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
 										<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
 										</a>
 										<P>暱稱:${memData.mem_name}</P>
-										<P>感情:${memData.mem_emotion}</P>
+										<p>感情:${memData.mem_emotion}</p>	
 										<p>禮物:${memData.mem_receive_gift}</p>		
 									</div>
 								</div>
@@ -215,48 +220,54 @@ height: 34px;
 			    		  	</div>
 						</c:if>
 						
-						
-						<c:if test="${empty getallMemberData1}">
-
+						<c:if test="${not empty getallMemberData}">
+							<%	
+								System.out.println("模糊查詢");
+								System.out.println("     getallMemberData1");
+								List<MemberVO> memlist = (List<MemberVO>)request.getAttribute("getallMemberData");
+								if(memlist!=null){
+									getallMember = memlist;
+									System.out.println(memlist.size());
+								}
+// 								getallMember = (List<MemberVO>)request.getAttribute("getallMemberData"); 
+							%>
+							<%@ include file="page1.file" %>
 	       					<c:forEach var="memData" items="${getallMemberData}">	
 	       						<div class="col-xs-12 col-sm-4">
-									<div class="item">
+									<div class="item set-color">
 					
 										<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
 										<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
 										</a>
 										<P>暱稱:${memData.mem_name}</P>
-										<P>感情:${memData.mem_emotion}</P>
+										<p>感情:${memData.mem_emotion}</p>	
 										<p>禮物:${memData.mem_receive_gift}</p>		
 									</div>
 								</div>
 							</c:forEach>	
+							<%@ include file="page2.file" %>
 						</c:if>	
 					
 					
 					<c:if test="${(not empty getallMemberData1)}">
-				
+						
        					<c:forEach var="memData" items="${getallMemberData1}">	
        						<div class="col-xs-12 col-sm-4">
-								<div class="item">
+								<div class="item set-color">
 									
 									<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${memData.mem_no}">
 									<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${memData.mem_no}" width="150px" height="150px">
 									</a>
 									<P>暱稱:${memData.mem_name}</P>
-									<P>感情:${memData.mem_emotion}</P>
+									<p>感情:${memData.mem_emotion}</p>	
 									<p>禮物:${memData.mem_receive_gift}</p>		
 								</div>
 							</div>
+							
 						</c:forEach>
-					
 					</c:if>		
 					
-					
-					
-					
-       		
-    	
+			
 			</div>
 		    </div> 
 		    <div class="col-xs-12 col-sm-1"></div>		

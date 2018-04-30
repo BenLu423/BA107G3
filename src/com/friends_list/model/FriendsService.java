@@ -56,4 +56,5 @@ public class FriendsService {
 	public List<FriendsListVO> browsFriList(String modify,String self){
 		return dao.webFriendsList(modify, self);
 	}
+	
 }

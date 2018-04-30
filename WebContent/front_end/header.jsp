@@ -1,6 +1,13 @@
+<%@page import="com.member.model.MemberService"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.friends_list.model.FriendsListVO"%>
+<%@page import="java.util.List"%>
+<%@page import="com.friends_list.model.FriendsService"%>
+<%@page import="com.member.model.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <jsp:useBean id="giftSvc" scope="page" class="com.gift.model.GiftService"/>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -45,11 +52,40 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 		&& !(path.equals(request.getContextPath() + "/front_end/member/member_register.jsp")))) {
 	session.setAttribute("location", request.getRequestURI());
 }
+
+	
+
+%>
+
+<%
+		MemberVO memvohead = new MemberVO();
+		MemberService mshead = new MemberService();
+		List<FriendsListVO> frilisthead = new ArrayList<FriendsListVO>();
+		List<FriendsListVO> havebeenfrilist1 = new ArrayList<FriendsListVO>();
+		Integer waitfri = 0;
+		
+	if((MemberVO)session.getAttribute("memSelf")!= null){
+		MemberVO memhead = (MemberVO)session.getAttribute("memSelf");
+		String selfhead = memhead.getMem_no();
+		FriendsService fshead = new FriendsService();
+		frilisthead = fshead.browsFriList("待審核", selfhead);
+		request.setAttribute("frilisthead", frilisthead);
+		if(frilisthead != null){
+			waitfri = frilisthead.size();
+			request.setAttribute("waitfri", waitfri);
+		}
+		
+	if(path.equals(request.getContextPath()+"/front_end/member/member_manage_friendslist.jsp")){
+		frilisthead = (List<FriendsListVO>)request.getAttribute("frilisthead");
+		havebeenfrilist1 = fshead.browsFriList("是", selfhead);
+		request.setAttribute("havebeenfrilist1", havebeenfrilist1);
+		}
+	}
+
 %>
 
 
-
-
+	
 <!-- header -->
 <nav class="navbar navbar-default navbar-fixed-top mynavbar">
 <div class="container-fluid">      
@@ -95,7 +131,7 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
                               	<input type="hidden" name="action" value="getlinked_logon_page">
                     	 </form>  
                          </div>                           
-                                         
+                                      
                          <div class="btn-group" id="myCart">
                              <button class="btn btn-default dropdown-toggle mybutton-icon" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             	 購物車 <span class="badge" id="cartSum">${fn:length(orderDetail)}</span>
@@ -122,14 +158,37 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 								<button class="btn btn-default dropdown-toggle mybutton-icon"
 									type="button" id="dropdownMenu2" data-toggle="dropdown"
 									aria-haspopup="true" aria-expanded="true">
-									通知 <span class="badge">0</span>
+									通知 <span class="badge" id="set-notice">0</span>
+									<input type="hidden" id="frinum" value="${waitfri}">
 								</button>
-								<%--新增 id set-fri--%>
+								<%--新增 id set-fri--%> 
 								<ul
 									class="dropdown-menu agile_short_dropdown dropdown-menu-right"
 									aria-labelledby="dropdownMenu2"
 									style="text-align: left; min-width: 260px;" id="set-fri">
-	
+									<c:if test="${not empty frilisthead}">
+										
+										<%
+										int c = 0;
+										for(FriendsListVO fri : frilisthead){
+                   						memvohead = mshead.getOneMem(fri.getMem_no_other());
+                   						request.setAttribute("memvohead", memvohead);
+                   						%>
+                   						<div>
+                   						<li>
+                   						<a id = "aa<%=c%>" href="/BA107G3/front_end/member/personal_page.jsp?mem_no=<%=memvohead.getMem_no()%>">&nbsp;&nbsp;&nbsp;&nbsp;<%=memvohead.getMem_name()%>&nbsp;&nbsp;&nbsp;&nbsp;請求加為好友&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                   						<button id="addf<%=c%>" class="btn btn-default set-ajax" style="width:15%"><span class="glyphicon glyphicon-ok"></span></button>
+                   						<button id="delf<%=c%>" class="btn btn-default set-ajax-d" style="width:15%"><span class="glyphicon glyphicon-remove"></span></button>
+                   						<input type="hidden" name="memSend_no" value="<%=memvohead.getMem_no()%>" id="memSend<%=c%>">
+                   						<input type="hidden" name="memGet_no" value="${memSelf.mem_no}" id="memGet<%=c%>">
+                   						<input type="hidden" name="action" value="adatabasenotice">
+                   						</li>
+                   						</div>
+                   						<%c++;%>
+                   					<%} %>
+								
+									</c:if>
+								
 								</ul>
 							</div>
                             <div class="btn-group btn-group-menu">
@@ -259,28 +318,31 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 <script type="text/javascript">
 // $(document).ready(function() {
 	var count = 0;
-	
-	
-		var memSend_name;
-		var memSend;
-		var memGet;
-		var MyPoint = "/MemberWS/${memSelf.mem_no}";
-		var host = window.location.host;
-		var path = window.location.pathname;
-		var webCtx = path.substring(0, path.indexOf('/', 1));
-		var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
-		var addfri = document.getElementById("addfri");
-		var webSocket;		
+	var frinotice = 0;
+	var friendslistnoticenum = parseInt($("#frinum").val());
+	var friendlistsetnotice = parseInt($("#set-notice").html());
+	var memSend_name;
+	var memSend;
+	var memGet;
+	var MyPoint = "/MemberWS/${memSelf.mem_no}";
+	var host = window.location.host;
+	var path = window.location.pathname;
+	var webCtx = path.substring(0, path.indexOf('/', 1));
+	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+	var addfri = document.getElementById("addfri");
+	var webSocket;		
 		
-		function sendaddfri(){
-			var memSend = document.getElementById('self').value;
-			var memGet = document.getElementById('other').value;
-			var type = document.getElementById('type').value;
-			var jsonObj = {"type": type, "memSend": memSend, "memGet": memGet};
-			webSocket.send(JSON.stringify(jsonObj));	
-		};
+	function sendaddfri(){
+		var memSend = document.getElementById('self').value;
+		var memGet = document.getElementById('other').value;
+		var type = document.getElementById('type').value;
+		var jsonObj = {"type": type, "memSend": memSend, "memGet": memGet};
+		webSocket.send(JSON.stringify(jsonObj));	
+	};
 	function notice(){
+		console.log("friendlistsetnotice = " + friendlistsetnotice);
 		
+		$("#set-notice").html(friendlistsetnotice + friendslistnoticenum);
 		webSocket = new WebSocket(endPointURL);
 		
 		webSocket.onopen = function(event){
@@ -377,6 +439,8 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 	
 			
 			count++;
+			friendlistsetnotice++;
+			$("#set-notice").html(friendlistsetnotice + friendslistnoticenum);
 			div.appendChild(li);
 			li.appendChild(newlink);
 			li.appendChild(addfri);
@@ -385,9 +449,10 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 			li.appendChild(memGet_no);
 			li.appendChild(action);
 	
-	
+			
 			
 			$('#set-fri').prepend(div);
+			
 		
 		};
 		webSocket.onerror = function(event){
@@ -407,6 +472,7 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 	notice();
 
 	function addfriends(e){
+		$("#set-notice").html(friendlistsetnotice + friendslistnoticenum);
 		var t = e.currentTarget.id;
 		console.log("====e.target: ",e.target);
 		console.log("====e.target.id : ",e.target.id);
@@ -445,7 +511,8 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 		console.log("---------");
 		console.log($(mg).val());
 		console.log($(ms).val());	
-		
+		friendlistsetnotice--;
+		$("#set-notice").html(friendlistsetnotice + friendslistnoticenum);
 			
 			
 			$.ajax({
@@ -466,6 +533,9 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 		console.log("====e.target.id : ",e.target.id);
 		console.log("====e.currentTarget: ",e.currentTarget);
 		console.log("====e.currentTarget.id : ",e.currentTarget.id);
+		frinotice--;
+		console.log(frinotice);
+		$("#set-notice").html(frinotice);
 		
 		var tid = t.toString();
 		console.log(tid);
@@ -499,7 +569,8 @@ if (isSession == null && (!(path.equals(request.getContextPath() + "/front_end/l
 		console.log("---------");
 		console.log($(mg).val());
 		console.log($(ms).val());	
-		
+		friendlistsetnotice--;
+		$("#set-notice").html(friendlistsetnotice + friendslistnoticenum);
 			
 			
 			$.ajax({
@@ -584,6 +655,73 @@ $(window).on('beforeunload',function(){
 	console.log("disconnect ws:notice")
 	webSocket.close();	
 });
+//維持通知好友加入
+	$(document).ready(function(){
+		$(".set-ajax").click(function(e){
+			friendlistsetnotice--;
+			$("#set-notice").html(friendlistsetnotice + friendslistnoticenum);
+			var ss = e.currentTarget.id;
+			console.log(ss);
+			console.log(typeof(ss));
+			var checkadd = "";
+
+			for(var i = 0; i < ss.length; i++){
+				if(!(isNaN(ss.charAt(i)))){
+				checkadd += ss.charAt(i);
+				}
+			}
+			console.log(typeof(checkadd));
+			console.log(checkadd);
+			$("#aa"+checkadd).hide();
+			$("#addf"+checkadd).hide();
+			$("#delf"+checkadd).hide();
+			var url = "<%=request.getContextPath()%>/friends/firlist.do";
+			$.ajax({
+				url: url,
+				type: "POST",
+				data:{
+					"action": "adatabasenotice",
+					"memGet_no":$("#memGet"+checkadd).val(),
+					"memSend_no":$("#memSend"+checkadd).val()
+				}, 
+			});
+		});
+	});
+	
+	$(document).ready(function(){
+		$(".set-ajax-d").click(function(e){
+			friendlistsetnotice--;
+			$("#set-notice").html(friendlistsetnotice + friendslistnoticenum);
+			var ss = e.currentTarget.id;
+			console.log(ss);
+			console.log(typeof(ss));
+			var checkadd = "";
+			$("#aa"+checkadd).hide();
+			$("#addf"+checkadd).hide();
+			$("#delf"+checkadd).hide();
+			for(var i = 0; i < ss.length; i++){
+				if(!(isNaN(ss.charAt(i)))){
+				checkadd += ss.charAt(i);
+				}
+			}
+			console.log(typeof(checkadd));
+			console.log(checkadd);
+			$("#aa"+checkadd).hide();
+			$("#addf"+checkadd).hide();
+			$("#delf"+checkadd).hide();
+			var url = "<%=request.getContextPath()%>/friends/firlist.do";
+			$.ajax({
+				url: url,
+				type: "POST",
+				data:{
+					"action": "ddatabasenotice",
+					"memGet_no":$("#memGet"+checkadd).val(),
+					"memSend_no":$("#memSend"+checkadd).val()
+				}, 
+			});
+		});
+	});
+
 </script>
 
 

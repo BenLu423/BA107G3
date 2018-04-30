@@ -86,7 +86,7 @@
             <!-- /carousel -->
             
             <!-- friends -->
-
+ 
             <div class="col-xs-12 col-sm-6">
                 <div class="tiles row">
                     <div class="col">
@@ -238,6 +238,52 @@
         <div class="col-xs-12 col-sm-1"></div>
     </div>      
 </div>
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		var popMyPoint = "/PopularWallWS";
+		var pophost = window.location.host;
+		var poppath = window.location.pathname;
+		var popwebCtx = poppath.substring(0, poppath.indexOf('/', 1));
+		var popendPointURL = "ws://" + window.location.host + popwebCtx + popMyPoint;
+		var popwebSocket;	
+		popwebSocket = new WebSocket(popendPointURL);
+		popwebSocket.onopen = function(event){
+			console.log("popular連線成功");
+		};
+		popwebSocket.onmessage = function(event){
+			console.log("popMessage");
+			var popjson = JSON.parse(event.data);
+			console.log(popjson.mem_no0);
+			console.log(popjson.mem_no1);
+			console.log(popjson.mem_no2);
+			console.log(popjson.mem_no3);
+			console.log(popjson.mem_no4);
+			console.log(popjson.mem_no5);
+			console.log(popjson.mem_no6);
+			console.log(popjson.mem_no7);
+			console.log(popjson.mem_no8);
+			console.log(popjson.mem_no9);
+			console.log(popjson.mem_no10);
+			console.log(popjson.mem_no11);
+			
+	
+		};
+		popwebSocket.onerror = function(event){
+			
+		};
+		popwebSocket.onclose = function(event){
+			console.log("popular離線成功");
+		};
+		
+	});
+	$(window).on('beforeunload',function(){
+
+		console.log("disconnect ws:popwebSocket")
+		popwebSocket.close();	
+	});
+
+</script>
 <jsp:include page="/front_end/footer.jsp"></jsp:include>
 </body>
 </html>

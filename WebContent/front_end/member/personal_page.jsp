@@ -105,6 +105,9 @@
     body{
       font-family: "微軟正黑體";
     }
+    .btn-addfri{
+     letter-spacing: 2px;　
+    }
     
     </style>
   
@@ -183,8 +186,11 @@
 	               });
 	           });  
 		   });
-		   
-		   
+		   $(function () {
+		   	 $("#bbbfri").click(function(){
+		   		 alert("已加入好友");
+		   	 });
+		   });
 	</script>
 	
 	<%
@@ -216,7 +222,7 @@
 				judgefri = "加好友";
 			}	
 		%>
-			<%=str%>
+		
 			<%if(str.equals("true")){%>
 			<%=flvo.getFrilist_modify()%>
 			<%}%>
@@ -241,14 +247,17 @@
                                 <c:if test="${not empty memSelf}">
                                 	<%if(!(mem_no.equals(session_mem_no))) {%>
                         				<c:if test="${not empty memSelf}">
+                        					<%if((judgefri.equals("加好友"))){ %>
                         					<button data-toggle="modal" class="btn btn-default" id ="addfri" onclick="sendaddfri();">加入好友</button>
                               				<input type="hidden" id="other" name="other" value="<%=mem_no%>">
-                              			   <input type="hidden" id="self" name="self" value="${memSelf.mem_no}">
+                              			  	 <input type="hidden" id="self" name="self" value="${memSelf.mem_no}">
 			                                 <input type="hidden" id="isfri" name="self">
 			                                 <input type="hidden" id="ismemfri" name="ismemfri" value="<%=judgefri%>">
 			                          		 <input type="hidden" id="action" name="action" value="getaddfri">
 			                          		 <input type="hidden" id="type" value="sendAdd">
-	
+											<%} else{%>
+											<a class="btn btn-default btn-addfri" id="bbbfri">加入好友</a>
+											<%} %>
 			                           		<a href='#modal-id' data-toggle="modal" class="btn btn-default">檢舉會員</a>
 												<div class="modal fade" id="modal-id">
 													<div class="modal-dialog">
@@ -346,9 +355,9 @@
                               <li role="presentation">
                                   <a class="link-font-color" href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab"><p class="p-font-color">我的興趣</p></a>
                               </li>
-                              <li role="presentation">
-                                  <a class="link-font-color" href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab"><p class="p-font-color">收到禮物</p></a>
-                              </li>
+<!--                               <li role="presentation"> -->
+<!--                                   <a class="link-font-color" href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab"><p class="p-font-color">收到禮物</p></a> -->
+<!--                               </li> -->
                           </ul>
 
                           <!-- 標籤面板：內容區 -->
@@ -364,7 +373,7 @@
                             	</c:forEach>
                             	
                               </div>
-                              <div role="tabpanel" class="tab-pane" id="tab3">Lorem ipsum dolor sit amet.</div>
+<!--                               <div role="tabpanel" class="tab-pane" id="tab3">Lorem ipsum dolor sit amet.</div> -->
                                
 
                            </div>
@@ -383,36 +392,7 @@
   	</div>
     
 
-	<c:if test="${openModal!=null}">
 
-<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-				
-			<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title" id="myModalLabel">The Bootstrap modal-header</h3>
-            </div>
-			
-			<div class="modal-body">
-<!-- =========================================以下為原listOneEmp.jsp的內容========================================== -->
-               <jsp:include page="member_modify_page.jsp" />
-<!-- =========================================以上為原listOneEmp.jsp的內容========================================== -->
-			</div>
-			
-			<div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-		
-		</div>
-	</div>
-</div>
-
-        <script>
-    		 $("#basicModal").modal({show: true});
-        </script>
- </c:if>
 
 <!-- FOOTER -->
 <%-- <jsp:include page="/front_end/footer.jsp"></jsp:include> --%>

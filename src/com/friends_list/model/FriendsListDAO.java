@@ -453,4 +453,5 @@ public class FriendsListDAO implements FriendsListDAO_interface{
 		}
 		return list;
 	}
+	
 }

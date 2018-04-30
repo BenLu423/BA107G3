@@ -263,4 +263,10 @@
     <servlet-name>AndroidEvent_participantsServlet</servlet-name>
     <url-pattern>/android/AndroidEvent_participantsServlet</url-pattern>
   </servlet-mapping>
+ 
+  <listener>  
+    <listener-class>  
+        com.memberDiscount.thread.MemberDiscountListener 
+    </listener-class>  
+</listener>  
 </web-app>

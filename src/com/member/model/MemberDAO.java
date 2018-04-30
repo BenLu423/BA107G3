@@ -64,6 +64,9 @@ public class MemberDAO implements MemberDAO_interface{
 	static final String ISBAN ="SELECT MEM_PROHIBIT FROM MEMBER WHERE MEM_ACCOUNT = ? AND MEM_PASSWORD = ?";
 	/*封鎖會員*/
 	static final String BANBANBAN = "UPDATE MEMBER SET MEM_PROHIBIT = ? WHERE MEM_NO = ?";
+	/*首頁會員送禮人氣*/
+	static final String POPULAR = "SELECT * FROM (SELECT * FROM MEMBER ORDER BY MEM_RECEIVE_GIFT DESC) WHERE ROWNUM <= 12";
+	
 	
 	static final String UPDATE_DEPOSIT_STMT  = "UPDATE MEMBER SET MEM_DEPOSIT=? WHERE MEM_NO=? ";
 	static final String UPDATE_REC_GIFT_STMT = "UPDATE MEMBER SET MEM_RECEIVE_GIFT=? WHERE MEM_NO=? ";
@@ -823,6 +826,7 @@ public class MemberDAO implements MemberDAO_interface{
 				}
 				
 				if(count == 1){
+					
 					whereCondition.append(" WHERE " + aCondition);
 					if(key.startsWith("mem_emotion")){
 						judge_where_emotion_key++;	
@@ -833,10 +837,10 @@ public class MemberDAO implements MemberDAO_interface{
 						if(c == mem_emotion_count && judge_where_emotion_key == 0 && mem_emotion_count != 1){	
 							whereCondition.append("OR " + aCondition + ")");
 							c = 2;
-						}else{
+				}else{
 							whereCondition.append("OR " + aCondition);
 							c++;
-						}
+				}
 						System.out.println("c = "+c);
 				}else if(mem_contact_sum > 1){
 					if(d == mem_contact_count && judge_where_contact_key == 0){	
@@ -940,6 +944,63 @@ public class MemberDAO implements MemberDAO_interface{
 				}
 			}
 		}
+	}
+	
+	public List<MemberVO> memPopular(){
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MemberVO memvo = null;
+		List<MemberVO> poplist = new ArrayList<MemberVO>();
+		try{
+			con = ds.getConnection();
+			ps = con.prepareStatement(POPULAR);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				memvo = new MemberVO();
+				memvo.setMem_no(rs.getString("MEM_NO"));
+				memvo.setMem_account(rs.getString("MEM_ACCOUNT"));
+				memvo.setMem_password(rs.getString("MEM_PASSWORD"));
+				memvo.setMem_join_time(rs.getDate("MEM_JOIN_TIME"));
+				memvo.setMem_name(rs.getString("MEM_NAME"));
+				memvo.setMem_gender(rs.getString("MEM_GENDER"));
+				memvo.setMem_birthday(rs.getDate("MEM_BIRTHDAY"));
+				memvo.setMem_county(rs.getString("MEM_COUNTY"));
+				memvo.setMem_deposit(rs.getInt("MEM_DEPOSIT"));
+				memvo.setMem_contact(rs.getString("MEM_CONTACT"));
+				memvo.setMem_emotion(rs.getString("MEM_EMOTION"));
+				memvo.setMem_bonus(rs.getInt("MEM_BONUS"));
+				memvo.setMem_bloodtype(rs.getString("MEM_BLOODTYPE"));
+				memvo.setMem_height(rs.getInt("MEM_HEIGHT"));
+				memvo.setMem_weight(rs.getInt("MEM_WEIGHT"));
+				memvo.setMem_interest(rs.getString("MEM_INTEREST"));
+				memvo.setMem_intro(rs.getString("MEM_INTRO"));
+				memvo.setMem_online(rs.getString("MEM_ONLINE"));
+				memvo.setMem_longitude(rs.getDouble("MEM_LONGITUDE"));
+				memvo.setMem_latitude(rs.getDouble("MEM_LATITUDE"));
+				memvo.setMem_phone(rs.getString("MEM_PHONE"));
+				memvo.setMem_mail(rs.getString("MEM_MAIL"));
+				memvo.setMem_photo(rs.getBytes("MEM_PHOTO"));
+				memvo.setMem_prohibit(rs.getString("MEM_PROHIBIT"));
+				memvo.setMem_set_notify(rs.getString("MEM_SETNOTIFY"));
+				memvo.setMem_time_notify(rs.getDate("MEM_TIMENOTIFY"));
+				memvo.setMem_receive_gift(rs.getInt("MEM_RECEIVE_GIFT"));
+				poplist.add(memvo);
+			}
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			if(con != null){
+				try{
+					con.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return poplist;
 	}
 	
 	//紹永[禮物訂單使用]
