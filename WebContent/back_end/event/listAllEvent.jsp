@@ -47,21 +47,21 @@
  
     <thead>
       <tr>
-       	<th><font size="4">編號</font></th>
-		<th><font size="4">編號</font></th>
-		<th><font size="4">標題</font></th>
-		<th><font size="4">開始時間</font></th>
-		<th><font size="4">結束時間</font></th>
+       	<th style="width:150px;"><font size="4">編號</font></th>
+		<th style="width:150px;"><font size="4">編號</font></th>
+		<th style="width:150px;"><font size="4">標題</font></th>
+		<th style="width:150px;"><font size="4">開始時間</font></th>
+		<th style="width:150px;"><font size="4">結束時間</font></th>
 		
-		<th style="width:150px;"><font size="4">活動詳情</font></th>
-		<th><font size="4">活動圖片</font></th>
-		<th><font size="4">名額</font></th>
-		<th><font size="4">地點</font></th>
-		<th><font size="4">費用</font></th>
+		<th style="width:100px;"><font size="4">活動詳情</font></th>
+		<th style="width:150px;"><font size="4">活動圖片</font></th>
+		<th style="width:150px;"><font size="4">名額</font></th>
+		<th style="width:150px;"><font size="4">地點</font></th>
+		<th style="width:150px;"><font size="4">費用</font></th>
 		
-		<th><font size="4">修改</font></th>
-		<th><font size="4">上下架</font></th>
-		<th><font size="4">參加名單</font></th>
+		<th style="width:150px;"><font size="4">修改</font></th>
+		<th style="width:180px;"><font size="4">上下架</font></th>
+		<th style="width:150px;"><font size="4">參加名單</font></th>
       </tr>
     </thead>
     <tbody>
@@ -74,11 +74,11 @@
 			<td><font size="5">${eventVO.eve_start}</font></td>
 			<td><font size="5">${eventVO.eve_end}</font></td>
 			
-			<td style="width:150px;"><div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;font-size:5px">${eventVO.eve_cnt}</div></td>
+			<td><div style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;font-size:5px">${eventVO.eve_cnt}</div></td>
 			<td><img style="width:150px;" src="<%=request.getContextPath()%>/imagesServlet?action=event&no=${eventVO.eve_no}"></td>
-			<td><font size="5">${eventVO.eve_quota}</font></td>
-			<td><font size="5">${eventVO.eve_site}</font></td>
-			<td><font size="5">${eventVO.eve_regfee}</font></td>
+			<td><font size="4">${eventVO.eve_quota}</font></td>
+			<td><font size="4">${eventVO.eve_site}</font></td>
+			<td><font size="4">${eventVO.eve_regfee}</font></td>
 		
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/event/event.do" style="margin-bottom: 0px;">
@@ -86,12 +86,17 @@
 			     <input type="hidden" name="eve_no"  value="${eventVO.eve_no}">
 			     <input type="hidden" name="action"	value="getOne_For_Update2"></FORM>
 			</td>
-			<td>
+			<td style="width:80px">
 			
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back_end/event/event.do" style="margin-bottom: 0px;">
 			     <input type="submit" value=<c:if test="${eventVO.eve_sts eq '上架'}">"下架"</c:if><c:if test="${eventVO.eve_sts eq '下架'}">"上架"</c:if>>
 			     <input type="hidden" name="eve_no"  value="${eventVO.eve_no}">
 			     <input type="hidden" name="action" value=<c:if test="${eventVO.eve_sts eq '上架'}">"onToOff"</c:if><c:if test="${eventVO.eve_sts eq '下架'}">"offToOn"</c:if>></FORM>
+			</td>
+		
+			<td style="width:90px">
+			<a href="<%=request.getContextPath()%>/back_end/event/listAllEvemp.jsp"><button>瀏覽</button></a>
+			  
 			</td>
       </tr>      
      

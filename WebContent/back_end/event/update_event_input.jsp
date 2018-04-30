@@ -5,14 +5,14 @@
 <%@ page import="com.event.model.*"%>
 
 <%
-  EventVO eventVO = (EventVO) request.getAttribute("eventVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
+  EventVO eventVO = (EventVO) request.getAttribute("eventVO"); 
 %>
 
 <html>
 
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>活動資料修改 - update_event_input.jsp</title>
+<title>活動資料修改</title>
 
 <style>
   table#table-1 {

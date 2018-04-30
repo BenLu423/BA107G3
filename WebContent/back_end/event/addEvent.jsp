@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料新增 - addEvent.jsp</title>
+<title>新增活動</title>
 
 <style>
   table#table-1 {
@@ -95,12 +95,12 @@
 	<tr>
 		<td style="word-wrap:break-word;">活動分類名稱:</td>
 		<td><input type="TEXT" name="evec_no" size="45"
-			 value="<%= (eventVO==null)? "EC001" : eventVO.getEvec_no()%>" /></td>
+			 value="<%= (eventVO==null)? "" : eventVO.getEvec_no()%>" /></td>
 	</tr>
 		<tr>
 		<td style="word-wrap:break-word;">活動名稱:</td>
 		<td><input type="TEXT" name="eve_name" size="45"
-			 value="<%= (eventVO==null)? "海外主題曲" : eventVO.getEvec_no()%>" /></td>
+			 value="<%= (eventVO==null)? "" : eventVO.getEvec_no()%>" /></td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">開始報名時間:</td>
@@ -117,27 +117,26 @@
 	<tr>
 		<td style="word-wrap:break-word;">活動詳情:</td>
 		<td><input type="TEXT" name="eve_cnt" size="45"
-			 value="<%= (eventVO==null)? "有留學遊學經驗的您" : eventVO.getEve_cnt()%>" /></td>
+			 value="<%= (eventVO==null)? "" : eventVO.getEve_cnt()%>" /></td>
 	</tr>
-
 	
 	<tr>
 		<td style="word-wrap:break-word;">活動名額:</td>
 		<td><input type="TEXT" name="eve_quota" size="45" 
-			 value="<%= (eventVO==null)? "10" : eventVO.getEve_quota()%>" /></td>
+			 value="<%= (eventVO==null)? "" : eventVO.getEve_quota()%>" /></td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">活動地點:</td>
 		<td><input type="TEXT" name="eve_site" size="45"
-			 value="<%= (eventVO==null)? "桃園市中壢區合浦街113號3樓" : eventVO.getEve_site()%>" /></td>
+			 value="<%= (eventVO==null)? "" : eventVO.getEve_site()%>" /></td>
 	</tr><tr>
 		<td style="word-wrap:break-word;">活動報名費用:</td>
 		<td><input type="TEXT" name="eve_regfee" size="45" 
-			 value="<%= (eventVO==null)? "2000" : eventVO.getEve_regfee()%>" /></td>
+			 value="<%= (eventVO==null)? "" : eventVO.getEve_regfee()%>" /></td>
 	</tr>
 	<tr>
 		<td style="word-wrap:break-word;">活動狀態:</td>
-		<td><input type="TEXT" name="eve_sts" size="45" value="<%= (eventVO==null)? "下架" :eventVO.getEve_sts()%>" /></td>
+		<td><input type="TEXT" name="eve_sts" size="45" value="<%= (eventVO==null)? "" :eventVO.getEve_sts()%>" /></td>
 	</tr>
 	
 	<tr>
@@ -157,6 +156,7 @@
 
 <input type="hidden" name="action" value="insert">
 <input type="submit" value="送出新增"></FORM>
+<div id="mbutton">神奇小按鈕</div>
 </div>
 </div>
 </body>
@@ -247,6 +247,23 @@
            //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
         });
 
+        有留學遊學經驗的您.eve_quota.10.eve_site.桃園市中壢區合浦街113號3樓.eve_regfee.2000.eve_sts下架
 
+</script>
+  <script>
+							$(document).ready(function() {
+							$("#mbutton").click(function() {
+								 	$("input[name='evec_no']").val("EC003");
+									$("input[name='eve_name']").val("優質三高男");
+									$("input[name='eve_start']").val("2018-05-01");
+									$("input[name='eve_end']").val("2018-05-7");
+									$("input[name='eve_time']").val("2018-05-30");
+									$("input[name='eve_cnt']").val("給有「高學歷」、「高收入」、「高顏質」的你");
+									$("input[name='eve_quota']").val("10");
+									$("input[name='eve_site']").val("桃園市中壢區合浦街113號");
+									$("input[name='eve_regfee']").val("2000");
+									$("input[name='eve_sts']").val("下架");
+									});
+							});
 </script>
 </html>

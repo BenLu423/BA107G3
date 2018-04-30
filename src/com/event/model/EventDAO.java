@@ -270,9 +270,7 @@ public class EventDAO implements EventDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
-
 			while (rs.next()) {
-				System.out.println("=========================");
 				// empVO ¤]ºÙ¬° Domain objects
 				eventVO = new EventVO();
 				eventVO.setEve_no(rs.getString("eve_no"));
