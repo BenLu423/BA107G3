@@ -15,6 +15,12 @@
 <title>Insert title here</title>
 <style type="text/css">
 
+.panel-warning>#f1{
+background: rgba(255,220,220);
+}
+.panel-warning>#f2{
+background: rgba(255,220,220);
+}
 </style>
 </head>
 <body>
@@ -49,19 +55,19 @@
                 <div class="col-xs-12 col-sm-3">
                     	<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
                         <!-- 區塊1 -->
-                        <div class="panel panel-warning ">
-                          <div class="panel-heading" role="tab" id="panel1">
-                            <h3 class="panel-title">
-                          	   好友管理
-                            </h3>
-                          </div>
-                          <div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="panel1">
-                            <div class="panel-body">
-                                <div><a href="<%=request.getContextPath()%>/front_end/member/member_manage_friendslist.jsp">好友名單</a></div><br>
-                                <div><a href="<%=request.getContextPath()%>/front_end/member/check_add_friends_list.jsp">待審核</a></div><br>
-                               
-                            </div>
-                          </div>
+                        
+                        <div class="panel panel-warning">
+							<div class="panel-heading set-panel" id = "f1">
+								<h3 class="panel-title">好友管理</h3>
+							</div>
+						
+	                          <div id="aaa" class="panel-collapse collapse in">
+	                            <div class="panel-body">
+	                                <div><a href="<%=request.getContextPath()%>/front_end/member/member_manage_friendslist.jsp">好友名單</a></div><br>
+	                                <div><a href="<%=request.getContextPath()%>/front_end/member/check_add_friends_list.jsp">待審核</a></div><br>
+	                               
+	                            </div>
+	                          </div>
                         </div>
             	   	 </div>
                 
@@ -72,7 +78,7 @@
                 <div class="col-xs-12 col-sm-7 col-sm-offset-1">
 
 	                   		<div class="panel panel-warning">
-							<div class="panel-heading">
+							<div class="panel-heading set-panel" id="f2">
 								<h3 class="panel-title">好友名單</h3>
 							</div>
 							</div>

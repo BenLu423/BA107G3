@@ -17,19 +17,19 @@ background: rgba(255,220,220);
                            <form name = "form" action="<%=request.getContextPath()%>/member/mem.do" method="post">
 
 									<div class="panel panel-warning">
-									<div class="panel-heading set-panel">
-										<h3 class="panel-title">自我介紹</h3>
-									</div>
-									
-						        	<textarea name="mem_intro" id="content" rows="10" cols="80"></textarea>
-						     
-						            <div>
-						            <input type = 'submit' value = '提交' class="btn btn-default set-login-btn">
-									</div>
-							
-									<div>
-									<input type="hidden" name="action" value = "getintro_judge">
-									</div>
+										<div class="panel-heading set-panel">
+											<h3 class="panel-title">自我介紹</h3>
+										</div>
+										
+							        	<textarea name="mem_intro" id="content" rows="10" cols="80">${memSelf.mem_intro}</textarea>
+							     
+							            <div>
+							            <input type = 'submit' value = '提交' class="btn btn-default set-login-btn">
+										</div>
+								
+										<div>
+										<input type="hidden" name="action" value = "getintro_judge">
+										</div>
 									</div>
 <!-- 								</div> -->
 								

@@ -15,7 +15,12 @@
 
 <title>待審核名單</title>
 <style type="text/css">
-
+.panel-warning>#f3{
+background: rgba(255,220,220);
+}
+.panel-warning>#f4{
+background: rgba(255,220,220);
+}
 </style>
 </head>
 <body>
@@ -44,7 +49,7 @@
                     	<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
                         <!-- 區塊1 -->
                         <div class="panel panel-warning">
-                          <div class="panel-heading" role="tab" id="panel1">
+                          <div class="panel-heading" role="tab" id="f3">
                             <h3 class="panel-title">
                           	   好友管理
                             </h3>
@@ -62,68 +67,12 @@
                 
                 
                 </div>
-            	<%--
-                <div class="col-xs-12 col-sm-7 col-sm-offset-1">
-            			
-	                   			<table class="table table-hover">	
-									<caption>待審核</caption>
-									<c:if test="<%=frijsp != null%>">
-									<thead>
-										<tr>
-											<th>大頭貼</th>
-											<th>姓名</th>
-											<th>地區</th>
-											<th>感情</th>
-											<th>信箱</th>
-											<th> </th>
-										</tr>
-									</thead>
-									<%for(FriendsListVO fri : frijsp){
-                   						memvo = ms.getOneMem(fri.getMem_no_other());
-                   					%>
-									<tbody>
-										<tr>
-											<td><img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=<%=memvo.getMem_no()%>" height="50px" width="50px"></td>
-											<td><%=memvo.getMem_name()%></td>
-											<td><%=memvo.getMem_county()%></td>
-											<td><%=memvo.getMem_emotion()%></td>
-											<td><%=memvo.getMem_mail()%></td>
-											
-											<td>
-												<form action="<%=request.getContextPath()%>/friends/firlist.do" method="POST" class="set-form">
-												<button type="submit" class="btn btn-primary">加入好友</button>
-												<input type="hidden" name="memself" value="${memSelf.mem_no}">
-												<input type="hidden" name="memother" value="<%=memvo.getMem_no()%>">
-												<input type="hidden" name="action" value="finaladdfri">
-												</form>
-											</td>
-											
-											<td>
-												<form action="<%=request.getContextPath()%>/friends/firlist.do" method="POST" class="set-form">
-												<button type="submit" class="btn btn-primary">刪除好友</button>
-												<input type="hidden" name="memself" value="${memSelf.mem_no}">
-												<input type="hidden" name="memother" value="<%=memvo.getMem_no()%>">
-												<input type="hidden" name="action" value="delfrilist">
-												</form>
-											</td>
-											
-											
-											
-											
-										</tr>
-									</tbody>
-	
-								<%} %>
-								</c:if>
-								</table>
-							
-                    </div>
-                    --%>
+          
                        <div class="col-xs-12 col-sm-7 col-sm-offset-1">
             			
 	                   			<table class="table table-hover">	
 									<div class="panel panel-warning">
-										<div class="panel-heading">
+										<div class="panel-heading" id="f4">
 											<h3 class="panel-title">待審核</h3>
 										</div>
 									</div>

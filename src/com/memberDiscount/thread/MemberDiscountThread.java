@@ -24,7 +24,8 @@ public class MemberDiscountThread{
 			}
 		};
 		popTimer = new Timer();
-		popTimer.scheduleAtFixedRate(task, 1000, 1*5*1000);
+		popTimer.scheduleAtFixedRate(task, 1000, 1*60*1000);
+
 	}
 }
 

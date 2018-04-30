@@ -317,6 +317,7 @@ public class MemberServlet extends HttpServlet {
 				return;
 			}
 			memvo = ms.updateIntro(mem_intro, mem_no);
+			memintro.setAttribute("memSelf", memvo);
 			res.sendRedirect(req.getContextPath()+"/front_end/member/modify_personal_data_main_page.jsp");
 			return;
 				
@@ -397,7 +398,7 @@ public class MemberServlet extends HttpServlet {
 
 				for(String key : keys){
 					String value = map.get(key)[0];
-			
+		
 					if(value == null || value.trim().length() == 0){
 						switch(key){
 						case "mem_no" :
@@ -426,6 +427,12 @@ public class MemberServlet extends HttpServlet {
 							break;
 						case "mem_contact" :
 							errorMsgs.put("mem_contact", "請輸入交往關係");
+							break;
+						case "mem_county" :
+							errorMsgs.put("mem_county", "請選擇地區");
+							break;
+						case "mem_bloodtype" :
+							errorMsgs.put("mem_bloodtype","請選擇血型");
 							break;
 						default:
 							break;
@@ -490,6 +497,12 @@ public class MemberServlet extends HttpServlet {
 								errorMsgs.put("mem_interest", "興趣格式錯誤");
 							}
 							
+						}else if("mem_county".equals(key)){
+							System.out.println("mem_county = " + key);
+						}else if("mem_bloodtype".equals(key)){
+							System.out.println("mem_bloodtype = " + key);
+						}else if("mem_gender".equals(key)){
+							System.out.println("mem_gender = " + key);
 						}
 					
 					}			

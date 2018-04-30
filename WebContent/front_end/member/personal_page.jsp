@@ -106,7 +106,12 @@
       font-family: "微軟正黑體";
     }
     .btn-addfri{
-     letter-spacing: 2px;　
+     letter-spacing: 3px;
+     min-width: 150px;
+    }
+    .btn-addfor{
+     letter-spacing: 3px;
+     min-width: 150px;
     }
     
     </style>
@@ -248,7 +253,7 @@
                                 	<%if(!(mem_no.equals(session_mem_no))) {%>
                         				<c:if test="${not empty memSelf}">
                         					<%if((judgefri.equals("加好友"))){ %>
-                        					<button data-toggle="modal" class="btn btn-default" id ="addfri" onclick="sendaddfri();">加入好友</button>
+                        					<button data-toggle="modal" class="btn btn-default btn-addfri" id ="addfri" onclick="sendaddfri();">加入好友</button>
                               				<input type="hidden" id="other" name="other" value="<%=mem_no%>">
                               			  	 <input type="hidden" id="self" name="self" value="${memSelf.mem_no}">
 			                                 <input type="hidden" id="isfri" name="self">
@@ -258,7 +263,7 @@
 											<%} else{%>
 											<a class="btn btn-default btn-addfri" id="bbbfri">加入好友</a>
 											<%} %>
-			                           		<a href='#modal-id' data-toggle="modal" class="btn btn-default">檢舉會員</a>
+			                           		<a href='#modal-id' data-toggle="modal" class="btn btn-default btn-addfor">檢舉會員</a>
 												<div class="modal fade" id="modal-id">
 													<div class="modal-dialog">
 														<div class="modal-content">
@@ -290,8 +295,8 @@
                            				<%}%>
                            			</c:if>
                            		<c:if test="${empty memSelf}">
-                           		<button  class="btn btn-default">加入好友</button>
-                           		<button  class="btn btn-default">檢舉會員</button>
+                           		<button  class="btn btn-default btn-addfri">加入好友</button>
+                           		<button  class="btn btn-default btn-addfor">檢舉會員</button>
                            		</c:if>
                          
                               </div>

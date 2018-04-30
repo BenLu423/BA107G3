@@ -112,6 +112,18 @@ public class MemberService {
 						memvo.setMem_interest(sb.toString());
 						System.out.println(memvo.getMem_interest());
 						break;	
+					case "mem_county" :
+						memvo.setMem_county(value);
+						System.out.println("mem_countyVALUE = " + value);
+						break;
+					case "mem_bloodtype" :
+						memvo.setMem_bloodtype(value);
+						System.out.println("setMem_bloodtypeVALUE = " + value);
+						break;
+					case "mem_gender" :
+						memvo.setMem_gender(value);
+						System.out.println("mem_genderVALUE = " + value);
+						break;
 					default:
 						break;
 					}

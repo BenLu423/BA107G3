@@ -54,8 +54,9 @@ public class MemberDAO implements MemberDAO_interface{
 	/*修改自我介紹*/
 	static final String UPDATEINTRO ="UPDATE MEMBER SET MEM_INTRO = ? WHERE MEM_NO = ?";
 	/*修改會員資料*/
-	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ?, MEM_WEIGHT = ?, MEM_EMOTION = ?, MEM_CONTACT = ?, MEM_INTEREST = ? WHERE MEM_NO = ?";
-//	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ? WHERE MEM_NO = ?";
+//	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ?, MEM_WEIGHT = ?, MEM_EMOTION = ?, MEM_CONTACT = ?, MEM_INTEREST = ? WHERE MEM_NO = ?";
+	static final String UPDATAMEMBERDATA = "UPDATE MEMBER SET MEM_NAME = ?, MEM_PHONE = ?, MEM_MAIL = ?, MEM_HEIGHT = ?, MEM_WEIGHT = ?, MEM_EMOTION = ?, MEM_CONTACT = ?, MEM_INTEREST = ?, MEM_GENDER = ?, MEM_BLOODTYPE = ?, MEM_COUNTY = ? WHERE MEM_NO = ?";
+
 	/*新增大頭貼*/
 	static final String INSERTPHOTO = "UPDATE MEMBER SET MEM_PHOTO = ? WHERE MEM_NO = ?";
 	/*基本查詢*/
@@ -559,7 +560,10 @@ public class MemberDAO implements MemberDAO_interface{
 			ps.setString(6, member.getMem_emotion());
 			ps.setString(7, member.getMem_contact());
 			ps.setString(8, member.getMem_interest());
-			ps.setString(9, member.getMem_no());
+			ps.setString(9, member.getMem_gender());
+			ps.setString(10, member.getMem_bloodtype());
+			ps.setString(11, member.getMem_county());
+			ps.setString(12, member.getMem_no());
 			System.out.println("member.getMem_interest() =" + member.getMem_interest());
 			ps.executeUpdate();
 			System.out.println("修改成功!");

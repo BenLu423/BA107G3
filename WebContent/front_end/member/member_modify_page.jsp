@@ -1,3 +1,4 @@
+<%@page import="com.member.model.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -11,6 +12,7 @@
 background: rgba(255,220,220);
 }
 </style>
+
 <body>
 		
 		<form action="<%=request.getContextPath()%>/member/mem.do"  method="POST" class="set-form" enctype="multipart/form-data">             				 		  		 		  
@@ -46,19 +48,98 @@ background: rgba(255,220,220);
 		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_mail}</span></c:if> 
 		                          </div>
 		                     </td>
-		                 </tr>    
+		                 </tr>
+		                 
+		                 
+		                 <tr>
+		                 	<td>
+			                  <div class="form-group">
+	                           		 <label for="mem_gender">性別:</label>	 
+						                              男<input type="radio" name="mem_gender" id="mem_gender" value="男" ${memSelf.mem_gender=='男' ?'checked':''}>
+						                              女<input type="radio" name="mem_gender" id="mem_gender" value="女" ${memSelf.mem_gender=='女' ?'checked':''}>
+						             <c:if test="${not empty errorMsgs}">
+	                           		 <p style="color:red">${errorMsgs.mem_gender}</p>
+	                            	 </c:if> 
+	                            	 <input type="hidden" id="a1" value="${memSelf.mem_gender}">
+	                          </div>
+	                         </td>	
+		                 </tr>
+		                 
+		                 
+		                 <tr>
+							<td>
+			                  <div class="form-group">
+	                            <label for="mem_bloodtype">血型:</label>
+	                            <select class="" name="mem_bloodtype" id="mem_bloodtype">
+	                              <option value="">請選擇:</option>
+	                              <option value="A" ${memSelf.mem_bloodtype=='A' ?'selected':''}>A型</option>
+	                              <option value="B" ${memSelf.mem_bloodtype=='B' ?'selected':''}>B型</option>
+	                              <option value="AB" ${memSelf.mem_bloodtype=='AB' ?'selected':''}>AB型</option>
+	                              <option value="O" ${memSelf.mem_bloodtype=='O' ?'selected':''}>O型</option>
+	                            </select>
+	                             <c:if test="${not empty errorMsgs}">
+	                           	<p style="color:red">${errorMsgs.mem_bloodtype}</p>
+	                            </c:if>  
+	                            <input type="hidden" id = "a1" value="${memSelf.mem_bloodtype}">
+	                          </div>
+		                   </td>
+		                 </tr>
+		                 
+		       			<tr>	 	
+				            <td>      
+				            <div class="form-group">
+                            <label for="mem_county">地區:</label>
+              
+                            <select class="" name="mem_county" id="mem_county">
+                              <option value="${memSelf.mem_county}" selected>請選擇:</option>
+                              <option value="基隆市" ${memSelf.mem_county=='基隆市' ?'selected':''}>基隆市</option>
+                              <option value="台北市" ${memSelf.mem_county=='台北市' ?'selected':''}>台北市</option>
+                              <option value="新北市" ${memSelf.mem_county=='新北市' ?'selected':''}>新北市</option>
+                              <option value="桃園市" ${memSelf.mem_county=='桃園市' ?'selected':''}>桃園市</option>
+                              <option value="新竹市" ${memSelf.mem_county=='新竹市' ?'selected':''}>新竹市</option>
+                              <option value="新竹縣" ${memSelf.mem_county=='新竹縣' ?'selected':''}>新竹縣</option>
+                              <option value="苗栗縣" ${memSelf.mem_county=='苗栗縣' ?'selected':''}>苗栗縣</option>
+                              <option value="台中市" ${memSelf.mem_county=='台中市' ?'selected':''}>台中市</option>
+                              <option value="彰化縣" ${memSelf.mem_county=='彰化縣' ?'selected':''}>彰化縣</option>
+                              <option value="南投縣" ${memSelf.mem_county=='南投縣' ?'selected':''}>南投縣</option>
+                              <option value="雲林縣" ${memSelf.mem_county=='雲林縣' ?'selected':''} >雲林縣</option>
+                              <option value="嘉義市" ${memSelf.mem_county=='嘉義市' ?'selected':''}>嘉義市</option>
+                              <option value="嘉義縣" ${memSelf.mem_county=='嘉義縣' ?'selected':''}>嘉義縣</option>
+                              <option value="台南市" ${memSelf.mem_county=='台南市' ?'selected':''}>台南市</option>
+                              <option value="高雄市" ${memSelf.mem_county=='高雄市' ?'selected':''}>高雄市</option>
+                              <option value="屏東縣" ${memSelf.mem_county=='屏東縣' ?'selected':''}>屏東縣</option>
+                              <option value="台東縣" ${memSelf.mem_county=='台東縣' ?'selected':''}>台東縣</option>
+                              <option value="花蓮市" ${memSelf.mem_county=='花蓮市' ?'selected':''}>花蓮市</option>
+                              <option value="宜蘭市" ${memSelf.mem_county=='宜蘭市' ?'selected':''}>宜蘭市</option>
+                            </select>
+            
+                             <c:if test="${not empty errorMsgs}">
+                           	<p style="color:red">${errorMsgs.mem_county}</p>
+                            </c:if>  
+                          </div>
+		               		 </td>
+		                </tr>         
+		       			
+		       			
+	  
   		                 <tr>
 							<td>        
 		                          <div class="form-group">
 		                          <label for="mem_height">身高:</label> 
+<%-- 		                              <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_height}</span></c:if>  --%>
 		                            <select class="" name="mem_height" id="height">
-		                              <option value="${memSelf.mem_height}"selected>請選擇:</option>
-		                              <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_height}</span></c:if> 
+			                          <option value="" selected>請選擇:</option>
+		                              <c:forEach var="height" begin="120" end="220" step="1">
+			                              <option value="${height}" ${(memSelf.mem_height==height) ? 'selected' : ''}>${height}公分</option>
+		                              </c:forEach>
 		                            </select>
 
 		                            <label for="mem_weight">體重:</label> 
 		                            <select class="" name="mem_weight" id="weight">
-		                              <option value="${memSelf.mem_weight}"selected>請選擇:</option>
+		                              <option value="" selected>請選擇:</option>
+		                              <c:forEach var="weight" begin="30" end="220" step="1">
+			                              <option value="${weight}" ${(memSelf.mem_weight==weight) ? 'selected' : ''}>${weight}公斤</option>
+		                              </c:forEach>
 		                            </select>
 		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_height}</span></c:if> 
   		                   	  		<c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_weight}</span></c:if>
@@ -71,16 +152,16 @@ background: rgba(255,220,220);
 		                            <label for="mem_emotion">感情狀況:</label> 
 		                            <select class="" name="mem_emotion" id="mem_emotion">
 		                              <option value="${memSelf.mem_emotion}" selected>請選擇:</option>
-		                              <option value="單身">單身</option>
-		                              <option value="穩定交往中">穩定交往中</option>
-		                              <option value="已婚">已婚</option>
-		                              <option value="離婚">離婚</option>
-		                              <option value="一言難盡">一言難盡</option>
-		                              <option value="保密">保密</option>
+		                              <option value="單身" ${memSelf.mem_emotion=='單身' ?'selected':''}>單身</option>
+		                              <option value="穩定交往中" ${memSelf.mem_emotion=='穩定交往中' ?'selected':''}>穩定交往中</option>
+		                              <option value="已婚" ${memSelf.mem_emotion=='已婚' ?'selected':''}>已婚</option>
+		                              <option value="離婚" ${memSelf.mem_emotion=='離婚' ?'selected':''}>離婚</option>
+		                              <option value="一言難盡" ${memSelf.mem_emotion=='一言難盡' ?'selected':''}>一言難盡</option>
+		                              <option value="保密" ${memSelf.mem_emotion=='保密' ?'selected':''}>保密</option>
 		                            </select>
 		                             <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_emotion}</span></c:if> 
 		                          </div>
-		               	 </td>
+		               		 </td>
 		                </tr>         
  		                <tr>
 							<td>          
@@ -89,11 +170,11 @@ background: rgba(255,220,220);
 		                            <label for="mem_contact">交往關係:</label> 
 		                            <select class="" name="mem_contact" id="mem_contact">
 		                              <option value="${memSelf.mem_contact}" selected>請選擇:</option>
-		                              <option value="其他友誼">其他友誼</option>
-		                              <option value="談心好友">談心好友</option>
-		                              <option value="男女朋友">男女朋友</option>
-		                              <option value="結婚對象">結婚對象</option>
-		                              <option value="網路情人">網路情人</option>
+		                              <option value="其他友誼" ${memSelf.mem_contact=='其他友誼' ?'selected':''}>其他友誼</option>
+		                              <option value="談心好友" ${memSelf.mem_contact=='談心好友' ?'selected':''}>談心好友</option>
+		                              <option value="男女朋友" ${memSelf.mem_contact=='男女朋友' ?'selected':''}>男女朋友</option>
+		                              <option value="結婚對象" ${memSelf.mem_contact=='結婚對象' ?'selected':''}>結婚對象</option>
+		                              <option value="網路情人" ${memSelf.mem_contact=='網路情人' ?'selected':''}>網路情人</option>
 		                            </select>
 		                            <c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_contact}</span></c:if> 
 		                          </div>
@@ -113,19 +194,27 @@ background: rgba(255,220,220);
 		                  </tr>
 		                  
 		                  <tr>
-							<td>        
-                            	 <div class="form-group">
-                                   <label for="">興趣</label>
-                                   	<input class="" type="checkbox" name="mem_interest1" value="上網">上網
-	                         		<input class="" type="checkbox" name="mem_interest2" value="聽音樂">聽音樂
-	                         		<input class="" type="checkbox" name="mem_interest3" value="看電影">看電影
-	                         		<input class="" type="checkbox" name="mem_interest4" value="健身">健身
-	                         		<input class="" type="checkbox" name="mem_interest5" value="看書">看書
-	                         		<input class="" type="checkbox" name="mem_interest6" value="打球">打球
-	                         		<input class="" type="checkbox" name="mem_interest7" value="玩遊戲">玩遊戲
-	                         		<input class="" type="checkbox" name="mem_interest8" value="旅行">旅行
-	                         		<c:if test="${not empty errorMsgs}"><span style="color:red">${errorMsgs.mem_interest}</span></c:if> 
-	                         </div>
+							<td>  
+							<c:set var="interestList" value="上網,聽音樂,看電影,健身,看書,打球,玩遊戲,旅行"/>
+							<div class="form-group">
+                            	<label for="">興趣</label>
+								<c:forTokens var="interest" items="${interestList}" delims="," varStatus="status">
+									<c:set var="isExists" value="false"/>
+									<c:forTokens var="oriInterest" items="${memSelf.mem_interest}" delims=",">
+										<c:if test="${oriInterest == interest}">
+											<c:set var="isExists" value="true"/>
+										</c:if>
+									</c:forTokens>
+									<c:choose>
+										<c:when test="${isExists == 'true'}">
+											<input class="" type="checkbox" name="mem_interest${status.count}" value="${interest}" checked>${interest}
+										</c:when>
+										<c:otherwise>
+											<input class="" type="checkbox" name="mem_interest${status.count}" value="${interest}">${interest}
+										</c:otherwise>
+									</c:choose>
+								</c:forTokens>
+							</div>
 			              </td>         
 						</tr>
 						<tr>
@@ -143,14 +232,14 @@ background: rgba(255,220,220);
 	                 </table>         
 	         </div>         	
         </form>
-        				
+<script type="text/javascript">
+	$(document).ready(function(){
+		var bloodtype = $("")
 		
-		
-		
-		
-		
-		
-		
-		
+	});
+
+
+</script>
+ 
 </body>
 </html>

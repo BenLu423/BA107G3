@@ -190,7 +190,7 @@
                           </div>
 
                           <div>  
-                            <input type="submit" name="send" id="send" class="btn btn-info set-login-btn" value="提交">
+                            <input type="submit" name="send" id="send" class="btn btn-default set-login-btn" value="提交">
                           </div>
                           
                           <div>
