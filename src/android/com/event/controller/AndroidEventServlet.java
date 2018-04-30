@@ -34,7 +34,7 @@ public class AndroidEventServlet extends HttpServlet {
 		if ("getAll".equals(action)) {
 			allEve = eSvc.getAll();
 			for(EventVO eventVO : allEve){
-				eventVO.setEve_pic(ImageUtil.shrink(eventVO.getEve_pic(), 200));
+				eventVO.setEve_pic(ImageUtil.shrink(eventVO.getEve_pic(), 150));
 			}
 			outStr = gson.toJson(allEve);
 		} 
