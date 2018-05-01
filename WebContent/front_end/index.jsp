@@ -133,7 +133,7 @@
                         <div class="row">
                             <ul class="event-list">
                                 <li>
-                                    <img src="res/img/index-diary-1.jpg">
+                                    <img src="res/img/index/index-diary-1.jpg">
                                     <div class="info">
                                         <h2 class="title">我愛西門町</h2>
                                         <p class="desc">　　其實除了看電影以外我真的不喜歡去西門町但，發現西門町有個世外桃源紅樓後方有ㄧ片酒吧可以悠閒的聚聚聊天，啜小酒我對他們的水煙還蠻感興趣的改天來去......</p>
@@ -146,7 +146,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <img src="res/img/index-diary-2.jpg">
+                                    <img src="res/img/index/index-diary-2.jpg">
                                     <div class="info">
                                         <h2 class="title">心好累</h2>
                                         <p class="desc">　　我想要好好過日子我想將你遺忘但為何你跟小三卻要出現在我夢裡好真實好清楚的夢境心好痛好痛我已經退讓了還要我怎樣可不可以不要再來打擾我的生活，你說......</p>
@@ -159,7 +159,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <img src="res/img/index-diary-3.jpg">
+                                    <img src="res/img/index/index-diary-3.jpg">
                                     <div class="info">
                                         <h2 class="title">這是食物</h2>
                                         <p class="desc">　　Wow~~看得出這像鏡面一樣被雕琢光滑璀璨的</p>
@@ -172,7 +172,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <img src="res/img/index-diary-4.jpg">
+                                    <img src="res/img/index/index-diary-4.jpg">
                                     <div class="info">
                                         <h2 class="title">空虛寂寞覺得冷</h2>
                                         <p class="desc">　　空虛寂寞覺得冷作雞都會！ ... 是它說座機太苦悶，做的沒興趣，我只是安慰她而已，妳也是雞，還是隻老母雞，你有沒有曾幾何時覺得空虛寂寞，覺得冷？</p>
@@ -185,7 +185,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <img src="res/img/index-diary-5.jpg">
+                                    <img src="res/img/index/index-diary-5.jpg">
                                     <div class="info">
                                         <h2 class="title">好消息真開心</h2>
                                         <p class="desc">　　最近與許多久未見的朋友見面，都異口同聲的說，我變瘦了， 其實，是生病了，是壓力大導致的!還好經醫生的治療， 只是，短暫的新陳代謝出問題，所幸無大礙!</p>
