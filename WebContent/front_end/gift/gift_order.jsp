@@ -119,6 +119,9 @@
 					<a id="ckeckoutText" href="javascript: ckeckout(); return false;">
 						<img src="<%=request.getContextPath()%>/front_end/res/img/gift/ckeckout_ok.jpg" style="height:60px;">結帳
 					</a>
+				</div>
+				<div class="col-xs-12 col-sm-12">
+					<button type="button" id="magicButton" class="btn btn-block" style="margin-top:30px;width:auto;">magic</button>
 				</div>         
 			</div>   
 	    </div> 
@@ -164,6 +167,13 @@ ul {
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	$('#magicButton').click(function(){
+		var message = $('.giftr_message');
+		message[3].innerText = '小吳老師好帥';
+		message[4].innerText = '我最愛小吳老師了喔';
+	});
+	
+	
 	//gs : giftSatus
     connectgs();
     
@@ -369,8 +379,6 @@ $('body').on('change', 'input[name=giftr_amount],textarea[name=giftr_message]',f
 				alert("已超過可贈送的禮物數量");
 				giftr_amount.value = json.oriAmount;
 			}
-		  
-//			  window.location = contextPath + '/gift/gift.do?action=serachFrontGifts&tabWho='+tabWho+'&requestURL='+servletPath+'&whichPage='+whichPage;
 	  }),
 	  error:(function() { alert("已超過可贈送的禮物數量"); })
 	});

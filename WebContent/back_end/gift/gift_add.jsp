@@ -86,6 +86,9 @@
 						</div>
 					</div>
 				</div>
+				<div>
+					<button type="button" id="magicButton" class="btn btn-block" style="width:auto;">magic</button>
+				</div>
 			</div>
 			</form>
 		</div>
@@ -103,4 +106,14 @@
 	</div>
 </div>
 </body>
+<script type="text/javascript">
+$(document).ready( function() {
+	$('#magicButton').click(function(){
+		var add = $('.gift-add-body').find('input');
+		add[0].value = '小吳獨家限量照';
+		add[2].value = '6666';
+		$('#gift_cnt')[0].innerText = 'JAVA啟蒙先師，無私奉獻的陪我們燃燒生命，但最愛的結衣不拍續集了';
+	});
+});
+</script>
 </html>

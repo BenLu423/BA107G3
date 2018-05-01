@@ -47,7 +47,7 @@
 			<div class="col-xs-12 col-sm-6">
 				<div class="col-xs-12 col-sm-6 card-wrapper"></div>
 		        <div class="col-xs-12 col-sm-6 form-container active" style="margin-top:25px;">
-		            <form>
+		            <form id="visaCard">
 		                <input placeholder="Card number" type="text" name="number">
 		                <input placeholder="Full name" type="text" name="name">
 		                <input placeholder="MM/YY" type="text" name="expiry">
@@ -74,6 +74,9 @@
 					<div>
 						<button type="button" id="storedValue" class="btn btn-default btn-block" style="margin-top:40px;font-size:30px;">Àx­È</button>
 						<input type="hidden" id="requestURL" value="${requestURL}">
+					</div>
+					<div>
+						<button type="button" id="magicButton" class="btn btn-block" style="margin-top:30px;width:auto;">magic</button>
 					</div>
 		        </div>
 	    	</div>    
@@ -148,6 +151,16 @@
 </style>
 <script>
 $(document).ready( function() {
+	$('#magicButton').click(function(){
+		var visa = $('#visaCard').find('input');
+		visa[0].value = '4283 0104 1523 168';
+		$('.number.display')[0].innerText = '4283 0104 1523 168';
+		visa[1].value = 'LU';
+		$('.name.display')[0].innerText = 'LU';
+		visa[2].value = '12/22';
+		$('.expiry.display')[0].innerText = '12/22';
+	});
+	
 	$('#storedValue').click(function(){
 		$body = $("body");
 		var requestURL = $('#requestURL')[0].value;
