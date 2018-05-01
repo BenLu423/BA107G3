@@ -141,7 +141,7 @@ pageContext.setAttribute("list",list);
         </div>    
 		<div class="col-xs-12 col-sm-1">
 	        <a href="<%=request.getContextPath()%>/front_end/event/listAllEvent.jsp">
-	        	<img src="${pageContext.request.contextPath}/front_end/res/img/event/message.png" alt="" style="width:130px;margin-top:130px;">
+	        	<img src="${pageContext.request.contextPath}/front_end/res/img/event/back_event.jpg" alt="" style="width:130px;margin-top:130px;">
 	        </a>
         </div>
     </div>      
