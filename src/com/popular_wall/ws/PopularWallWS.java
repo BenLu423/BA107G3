@@ -15,6 +15,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,6 +47,7 @@ public class PopularWallWS {
 	}
 	public void popReference(){
 		JSONObject popjson = new JSONObject();
+		JSONArray  popjsonarray = new JSONArray();
 		MemberService ms = null;
 		int c = 0;
 		try{
@@ -53,16 +55,19 @@ public class PopularWallWS {
 			ms = new MemberService();
 			poplist = ms.pop();
 			for(MemberVO pop : poplist){
-				System.out.println(pop.getMem_name());
-				popjson.append("mem_no"+c, pop.getMem_no());
-				popjson.append("mem_receice_gift"+c, pop.getMem_receive_gift());
-				c++;
-			}
 			
+				System.out.println(pop.getMem_name());
+				popjsonarray.put(pop.getMem_no());
+//				popjson.append("mem_receice_gift"+c, pop.getMem_receive_gift());
+//				c++;
+			}
+			popjson.append("mem_no", popjsonarray);
+
 			for(Session session : PopallSessions){
 				if(session.isOpen()){
 					System.out.println("popReference2");
 					session.getBasicRemote().sendText(popjson.toString());
+					
 				}
 			}
 		}catch(IOException e){

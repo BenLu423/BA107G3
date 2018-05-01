@@ -21,12 +21,12 @@ background: rgba(255,220,220);
 											<h3 class="panel-title">自我介紹</h3>
 										</div>
 										
-							        	<textarea name="mem_intro" id="content" rows="10" cols="80">${memSelf.mem_intro}</textarea>
+							        	<textarea name="mem_intro" id="content" class="print" rows="10" cols="80">${memSelf.mem_intro}</textarea>
 							     
 							            <div>
 							            <input type = 'submit' value = '提交' class="btn btn-default set-login-btn">
 										</div>
-								
+		
 										<div>
 										<input type="hidden" name="action" value = "getintro_judge">
 										</div>
@@ -34,9 +34,21 @@ background: rgba(255,220,220);
 <!-- 								</div> -->
 								
 					        </form>
+<!-- 					        <button type="button" id="vvv">神奇小按鈕</button> -->
                           </div>
+  
 				      <script>
-						CKEDITOR.replace( 'content', {});
+						
+				      CKEDITOR.replace( 'content', {});
+// 						$(document).ready(function(){
+// 							console.log("test2222");
+// 							$("#vvv").click(function(){
+// 								console.log("test");
+// 								$("body p").html("8787");
+// 							});	
+// 						});
+						
+						
 					</script>
 </body>
 </html>

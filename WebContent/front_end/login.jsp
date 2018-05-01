@@ -88,19 +88,40 @@
 		                       	  <input type="hidden" name="getlinked_member_registerpath" value ="<%=request.getServletPath()%>">
 		                          </div>
 	                  	   </form>
-	  
+	  					
 	                  	  	  
                   	   </div>
                   	   <br>
        
 
-  
+  	<button type="button" id="aaa">正男</button>
+    <button type="button" id="bbb">廣志</button>
+    <button type="button" id="ccc">結衣</button>
 				</div>
 		    </div> 
 		    <div class="col-xs-12 col-sm-1"></div>		
   			</div>
   		</div>
-
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#aaa").click(function(){
+				$("#mem_account").val("wawa");
+				$("#mem_password").val("wawa");
+			});
+			
+			$("#bbb").click(function(){
+				$("#mem_account").val("123456");
+				$("#mem_password").val("123456");
+			});
+			
+			$("#ccc").click(function(){
+				$("#mem_account").val("helloworld");
+				$("#mem_password").val("helloworld");
+			});
+		});
+		
+		
+	</script>
 	
    
 

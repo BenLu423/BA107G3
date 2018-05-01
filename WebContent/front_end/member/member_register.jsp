@@ -54,7 +54,7 @@
                              <c:if test="${not empty errorMsgs}">
                              <p style="color:red">${errorMsgs.mem_password}</p>
                              </c:if>  
-                            <input type="text" name="mem_password" id="mem_password" class="form-control" value="">
+                            <input type="password" name="mem_password" id="mem_password" class="form-control" value="">
                           </div>
 
                           <div class="form-group">
@@ -62,7 +62,7 @@
                              <c:if test="${not empty errorMsgs}">
                              <p style="color:red">${errorMsgs.doublecheck}</p>
                              </c:if>     
-                            <input type="text" name="doublecheck" id="" class="form-control" value="">
+                            <input type="password" name="doublecheck" id="mem_password1" class="form-control" value="">
                           </div>
                           
                           <div class="form-group">
@@ -87,8 +87,8 @@
                            		 <c:if test="${not empty errorMsgs}">
                            		 <p style="color:red">${errorMsgs.mem_gender}</p>
                             	 </c:if> 
-					                              男<input type="radio" name="mem_gender" id="mem_gender" value="男">
-					                              女<input type="radio" name="mem_gender" id="mem_gender" value="女">
+					                              男<input type="radio" name="mem_gender" id="mem_gender1" value="男">
+					                              女<input type="radio" name="mem_gender" id="mem_gender2" value="女">
                          </div>	
                         	
                         	
@@ -200,13 +200,16 @@
                      </form>
        
 
-  
+  				  <button type="button" id="aaa">新增帳號</button>	
 				</div>
+			
 		    </div> 
-		    <div class="col-xs-12 col-sm-1"></div>		
+		    <div class="col-xs-12 col-sm-1"></div>
+		  	
   			</div>
+  				
   		</div>
-
+		
     <!-- FOOTER -->
 	<jsp:include page="/front_end/footer.jsp"></jsp:include>
 	<!-- FOOTER END-->
@@ -228,6 +231,24 @@
           weight.add(opt);
         }
     }
+    
+    $(document).ready(function(){
+    	$("#aaa").click(function(){
+    		$("#mem_account").val("helloworld");
+    		$("#mem_password").val("helloworld");
+    		$("#mem_password1").val("helloworld");
+    		$("#mem_name").val("結衣");
+    		$("#mem_birthday").val("1988-06-11");
+    		$("#mem_gender2").attr("checked", "checked");
+    		$('#mem_bloodtype option[value="A"]').attr("selected",true);
+    		$('#mem_county option[value="新北市"]').attr("selected",true);
+    		$('#height option[value="169"]').attr("selected",true);
+    		$('#weight option[value="48"]').attr("selected",true);
+    		$('#mem_emotion option[value="單身"]').attr("selected",true);
+    		$('#mem_contact option[value="男女朋友"]').attr("selected",true);
+    	});	p
+    });
+    
     </script>    
 	
 	

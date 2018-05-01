@@ -1,4 +1,9 @@
+<%@page import="com.member.model.MemberService"%>
+<%@page import="com.member.model.MemberVO"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,6 +12,11 @@
 </head>
 <body>
 <jsp:include page="/front_end/header.jsp"></jsp:include>
+<style>
+.dynamicwall{
+	margin: 10px;
+}
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 col-sm-1"></div>
@@ -86,69 +96,30 @@
             <!-- /carousel -->
             
             <!-- friends -->
- 
+ 			<%
+ 				MemberService ms = new MemberService();
+ 				List<MemberVO> popularList = new ArrayList<MemberVO>();
+ 				popularList = ms.pop();
+ 				pageContext.setAttribute("popularList", popularList);
+ 			%>
             <div class="col-xs-12 col-sm-6">
+            <%int addidc = 0; %>
                 <div class="tiles row">
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="personal_page.html"></a>
-                        <a href="personal_page.html"></a>
-                        <a href="personal_page.html"></a>
-                        <a href="personal_page.html"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
-                    <div class="col">
-                        <a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a>
-                        <div class="box"></div>
-                    </div>
+                	<c:forEach var="pop" items="${popularList}">
+                	<a href="<%=request.getContextPath()%>/front_end/member/personal_page.jsp?mem_no=${pop.mem_no}" id="p<%=addidc%>">
+					<img src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${pop.mem_no}" width="160px" height="160px" class="dynamicwall">
+					</a>
+					<%addidc++;%>
+					</c:forEach> 
                 </div>    
-
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="index-friend-text row">
-                    <img src="<%=request.getContextPath()%>/front_end/res/img/index/index-friend.jpg">
+                   <img src="<%=request.getContextPath()%>/front_end/res/img/index/index-friend.jpg">
                 </div>
             </div>
             <!-- //friends -->
+            
 
             <!-- diary -->
             <div class="col-xs-12 col-sm-12">
@@ -233,7 +204,6 @@
                 </div>
             </div>
             <!-- //diary -->
-            
         </div>    
         <div class="col-xs-12 col-sm-1"></div>
     </div>      
@@ -254,18 +224,44 @@
 		popwebSocket.onmessage = function(event){
 			console.log("popMessage");
 			var popjson = JSON.parse(event.data);
-			console.log(popjson.mem_no0);
-			console.log(popjson.mem_no1);
-			console.log(popjson.mem_no2);
-			console.log(popjson.mem_no3);
-			console.log(popjson.mem_no4);
-			console.log(popjson.mem_no5);
-			console.log(popjson.mem_no6);
-			console.log(popjson.mem_no7);
-			console.log(popjson.mem_no8);
-			console.log(popjson.mem_no9);
-			console.log(popjson.mem_no10);
-			console.log(popjson.mem_no11);
+			console.log(typeof(popjson.mem_no[0]));
+			console.log(popjson.mem_no[0][0]);
+			
+			$("#p0").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][0]);
+			$("#p0 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][0]);
+			
+			$("#p1").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][1]);
+			$("#p1 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][1]);
+			
+			$("#p2").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][2]);
+			$("#p2 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][2]);
+			
+			$("#p3").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][3]);
+			$("#p3 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][3]);
+			
+			$("#p4").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][4]);
+			$("#p4 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][4]);
+			
+			$("#p5").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][5]);
+			$("#p5 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][5]);
+			
+			$("#p6").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][6]);
+			$("#p6 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][6]);
+			
+			$("#p7").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][7]);
+			$("#p7 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][7]);
+			
+			$("#p8").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][8]);
+			$("#p8 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][8]);
+			
+			$("#p9").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][9]);
+			$("#p9 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][9]);
+			
+			$("#p10").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][10]);
+			$("#p10 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][10]);
+			
+			$("#p11").attr("href","/BA107G3/front_end/member/personal_page.jsp?mem_no="+popjson.mem_no[0][11]);
+			$("#p11 img").attr("src","/BA107G3/memgetpic/mem.do?mem_no="+popjson.mem_no[0][11]);
 			
 	
 		};

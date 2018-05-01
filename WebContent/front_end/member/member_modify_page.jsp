@@ -230,12 +230,16 @@ background: rgba(255,220,220);
 	                            <input type="hidden" name="action" value = "getmodify_data_judge">
 	                          </div> 
 	                 </table>         
-	         </div>         	
+	         </div>
+	         <button type="button" id="ggg">¯«©_¤p«ö¶s</button>
         </form>
 <script type="text/javascript">
 	$(document).ready(function(){
-		var bloodtype = $("")
-		
+		$("#ggg").click(function(){
+			$("#mem_phone").val("0923655512");
+			$("#mem_mail").val("q000116000@gmail.com");
+			
+		});
 	});
 
 
