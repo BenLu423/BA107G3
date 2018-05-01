@@ -19,7 +19,7 @@ public class EvemDAO implements EvemDAO_interface {
 		}
 	}
 	private static final String INSERT_STMT = 
-			"INSERT INTO event_message (evemes_no , eve_no , mem_no , evemes_time , evemes_cnt , evemes_restime , evemes_rescnt) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO event_message (evemes_no , eve_no , mem_no , evemes_cnt) VALUES ('EM'||LPAD(to_char(EVENT_MESSAGE_SEQ.NEXTVAL),3,'0'), ?, ?,?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT evemes_no,eve_no,mem_no,evemes_time,evemes_cnt,evemes_restime,evemes_rescnt FROM event_message order by evemes_no";
 		private static final String GET_ONE_STMT = 
@@ -27,7 +27,7 @@ public class EvemDAO implements EvemDAO_interface {
 		private static final String DELETE = 
 			"DELETE FROM event_message where evemes_no = ?";
 		private static final String UPDATE = 
-			"UPDATE event_message set evemes_rescnt=?,evemes_restime=?,evemes_cnt=?,evemes_time=? where evemes_no = ?";
+			"UPDATE event_message set evemes_rescnt=? where evemes_no = ?";
 
 		@Override
 		public void insert(EvemVO evemVO) {
@@ -40,13 +40,13 @@ public class EvemDAO implements EvemDAO_interface {
 				con = ds.getConnection();
 				pstmt = con.prepareStatement(INSERT_STMT);
 				
-				pstmt.setString(1, evemVO.getEvemes_no());
-				pstmt.setString(2, evemVO.getEve_no());
-				pstmt.setString(3, evemVO.getMem_no());
-				pstmt.setTimestamp(4, evemVO.getEvemes_time());
-				pstmt.setString(5, evemVO.getEvemes_cnt());
-				pstmt.setTimestamp(6, evemVO.getEvemes_restime());
-				pstmt.setString(7, evemVO.getEvemes_rescnt());
+				
+				pstmt.setString(1, evemVO.getEve_no());
+				pstmt.setString(2, evemVO.getMem_no());
+//				pstmt.setTimestamp(3, evemVO.getEvemes_time());
+				pstmt.setString(3, evemVO.getEvemes_cnt());
+//				pstmt.setTimestamp(5, evemVO.getEvemes_restime());
+//				pstmt.setString(6, evemVO.getEvemes_rescnt());
 				
 				
 				pstmt.executeUpdate();
@@ -88,10 +88,7 @@ public class EvemDAO implements EvemDAO_interface {
 
 			
 				pstmt.setString(1, evemVO.getEvemes_rescnt());
-				pstmt.setTimestamp(2, evemVO.getEvemes_restime());
-				pstmt.setString(3, evemVO.getEvemes_cnt());
-				pstmt.setTimestamp(4, evemVO.getEvemes_time());
-				pstmt.setString(5, evemVO.getEvemes_no());
+				pstmt.setString(2, evemVO.getEvemes_no());
 				
 				pstmt.executeUpdate();
 

@@ -9,31 +9,17 @@ public class EvemService {
 	public EvemService(){
 		dao = new EvemDAO();
 	}
-	public EvemVO addEvem(String evemes_no, String eve_no , String mem_no , java.sql.Timestamp evemes_time , String evemes_cnt , java.sql.Timestamp evemes_restime,String evemes_rescnt){
-		EvemVO evemVO = new EvemVO();
-		evemVO.setEvemes_no(evemes_no);
-		evemVO.setEve_no(eve_no);
-		evemVO.setMem_no(mem_no);
-		evemVO.setEvemes_time(evemes_time);
-		evemVO.setEvemes_cnt(evemes_cnt);
-		evemVO.setEvemes_restime(evemes_restime);
-		evemVO.setEvemes_rescnt(evemes_rescnt);
-		
-		return evemVO;
+	public void addEvem(EvemVO evemvo){
+		try{
+		dao.insert(evemvo);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	
 	}
-	public EvemVO updateEvem(String evemes_no, String eve_no , String mem_no , java.sql.Timestamp evemes_time , String evemes_cnt , java.sql.Timestamp evemes_restime,String evemes_rescnt){
+	public void updateEvem(EvemVO evemVO){
 	
-	EvemVO evemVO= new EvemVO();
-	evemVO.setEvemes_no(evemes_no);
-	evemVO.setEve_no(eve_no);
-	evemVO.setMem_no(mem_no);
-	evemVO.setEvemes_time(evemes_time);
-	evemVO.setEvemes_cnt(evemes_cnt);
-	evemVO.setEvemes_restime(evemes_restime);
-	evemVO.setEvemes_rescnt(evemes_rescnt);
-
-	return evemVO;
+	dao.update(evemVO);
 
 	}
 	public EvemVO getOneEvem(String evemes_no){
@@ -41,6 +27,10 @@ public class EvemService {
 	}
 	public List<EvemVO> getAll(){
 		return dao.getAll();	
+	}
+	public void deleteEvem(String evemes_no) {
+		dao.delete(evemes_no);
+		
 	}
 	
 	

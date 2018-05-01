@@ -192,6 +192,16 @@
     <url-pattern>/evep/evep.do</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>EvemServlet</servlet-name>
+    <servlet-class>com.evem.controller.EvemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EvemServlet</servlet-name>
+    <url-pattern>/evem/evem.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
     <servlet-name>Android.MemberServlet</servlet-name>
     <servlet-class>android.com.member.controller.MemberServlet</servlet-class>
   </servlet>

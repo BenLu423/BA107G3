@@ -63,7 +63,11 @@ pageContext.setAttribute("list",list);
         </div>
         </div>
    
-        <div class="col-xs-12 col-sm-1"></div>
+        <div class="col-xs-12 col-sm-1">
+        <a href="<%=request.getContextPath()%>/front_end/evem/listAllEvem.jsp">
+	        	<img src="${pageContext.request.contextPath}/front_end/res/img/event/message.png" alt="" style="width:130px;margin-top:130px;">
+	        </a>
+        </div>
     </div>      
 </div>
 
