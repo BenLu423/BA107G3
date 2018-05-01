@@ -228,9 +228,7 @@
 			}	
 		%>
 		
-			<%if(str.equals("true")){%>
-			<%=flvo.getFrilist_modify()%>
-			<%}%>
+		
 			
 	</c:if>
 
