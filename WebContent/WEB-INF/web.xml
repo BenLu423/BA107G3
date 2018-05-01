@@ -175,6 +175,18 @@
     <servlet-name>EventServlet</servlet-name>
     <url-pattern>/back_end/event/event.do</url-pattern>
   </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>Image_Evep_Servlet</servlet-name>
+    <servlet-class>com.evep.controller.Image_Evep_Servlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Image_Evep_Servlet</servlet-name>
+    <url-pattern>/evep/image_Evep_Servlet.do</url-pattern>
+  </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>EventFrontServlet</servlet-name>
     <servlet-class>com.event.controller.EventFrontServlet</servlet-class>

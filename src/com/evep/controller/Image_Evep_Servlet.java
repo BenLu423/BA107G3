@@ -21,9 +21,10 @@ public void doGet(HttpServletRequest req, HttpServletResponse res)
 	res.setContentType("image/gif");
 	ServletOutputStream out = res.getOutputStream();
 	String mem_no=req.getParameter("mem_no");
-	//System.out.println(no);
+//	System.out.println("mem_no:"+mem_no);
 	
 		String eve_no =req.getParameter("eve_no");
+//		System.out.println("eve_no"+eve_no);
 		EvepService evep_sts =new EvepService();
 		byte[] result=evep_sts.getEVEP_Pic(mem_no, eve_no);
 		try{

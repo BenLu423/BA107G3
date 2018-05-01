@@ -35,7 +35,7 @@
 <div style=border-style:double;background:rgba(255,220,220,1);width:900px>
 	
 		
-		<a href="select_page3.jsp">回首頁</a>
+		<a href="event_title.jsp">回首頁</a>
 
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -62,7 +62,7 @@
 			<td>${evenp.eve_no}</td>
 			<td>${evenp.mem_no}</td>
 			<td>${evenp.evep_sts}</td>
-			<td><img  style="width:150px;" src="<%=request.getContextPath()%>/Image_Evep_Servlet?mem_no=${evenp.mem_no}&eve_no=${evenp.eve_no}"></td>
+			<td><img  style="width:150px;" src="<%=request.getContextPath()%>/evep/image_Evep_Servlet.do?mem_no=${evenp.mem_no}&eve_no=${evenp.eve_no}"></td>
 <%-- 		</tr><img style="width:150px;" src="<%=request.getContextPath()%>/imagesServlet?action=event&no=${eventVO.eve_no}"> --%>
 			</c:forEach>
 	
