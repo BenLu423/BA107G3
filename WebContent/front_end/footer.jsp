@@ -71,6 +71,7 @@
 
 					<c:forEach var="friends" items="${friends}">
 						<div id="${friends.mem_no}" style="margin:5px">
+							<img id="index-photo-stick" src="<%=request.getContextPath()%>/memgetpic/mem.do?mem_no=${friends.mem_no}">
 							<img src="<%=request.getContextPath()%>/front_end/res/img/footer/close.jpg"> 
 							<a href="#" onclick="getTalk('${friends.mem_no}')">${friends.mem_name}</a>
 							
@@ -169,17 +170,17 @@
 			/**********************上下線處理************************/
 			if (jsonObj.type == 'sendEveryFri') { //接收好友上線通知
 				var friId = jsonObj.memberNO;
-				$("#" + friId + ">img").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/online.jpg");
+				$("#" + friId + " img:nth-child(2)").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/online.jpg");
             } 
 			if (jsonObj.type == 'leave') { //接收好友離線通知
 				var friId = jsonObj.memberNO;
-				$("#"+friId+">img").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/close.jpg");
+				$("#" + friId + " img:nth-child(2)").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/close.jpg");
             } 
 			if (jsonObj.type == 'sendSelf') { //上線接收在線好友清單
 				var onlineFri = jsonObj.onlineFri;
 				if(onlineFri!=null && onlineFri[0].length!=0){
 					onlineFri.forEach(function(fri){
-						$("#"+fri+">img").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/online.jpg");
+						$("#" + fri + " img:nth-child(2)").attr("src","<%=request.getContextPath()%>/front_end/res/img/footer/online.jpg");
 								});
 				}
 				
