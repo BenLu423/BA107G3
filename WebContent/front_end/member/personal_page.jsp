@@ -400,7 +400,7 @@
 
 
 <!-- FOOTER -->
-<%-- <jsp:include page="/front_end/footer.jsp"></jsp:include> --%>
+<jsp:include page="/front_end/footer.jsp"></jsp:include>
 <!-- FOOTER END-->
 	</body>
 </html>
