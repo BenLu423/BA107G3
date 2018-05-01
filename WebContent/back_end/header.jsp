@@ -133,6 +133,9 @@
 						<tr>
 							<td><a href="<%=request.getContextPath()%>/back_end/event/event_title.jsp">活動內容管理</a></td>
 						</tr>
+						<tr>
+							<td><a href="<%=request.getContextPath()%>/back_end/evem/listAllEvem.jsp">活動留言回覆</a></td>
+						</tr>
 					</tbody>
 					</tbody>
 				</table>

@@ -11,13 +11,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Insert</title>
+<title>回覆留言</title>
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
 
 	
-	<script>console.log(qaVO)</script>
 	
 	   		<div class="col-xs-12 col-sm-10 cont">
 	   		
@@ -25,7 +24,6 @@
 			
 			<table id="table-1">
 				<tr><td>
-					 <h7>update_evem_input.jsp</h7>
 					
 				</td></tr>
 			</table>
@@ -68,7 +66,7 @@
 				
 				<tr>
 					<td><font size="14"><span style="font-family:Microsoft JhengHei;">回覆留言內容:</span></font></td>
-					<td><font size="6"><input type="text" name="evemes_rescnt" value="<%=evemVO.getEvemes_rescnt()%>" /></font></td>
+					<td><font size="6"><input type="text" name="evemes_rescnt" value="${evemVO.evemes_rescnt}" /></font></td>
 				</tr>
 			</table>
 							</tbody>

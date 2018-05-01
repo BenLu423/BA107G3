@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Insert</title>
+<title>活動留言回覆</title>
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
