@@ -82,7 +82,7 @@
 		
 		<script>
 			$('#insertNewAdmin').click(function(){
-				$('#adminName').val("¦Ë¦Ë");
+				$('#adminName').val("David");
 				$('#account').val("QQQ");
 				$('#mail').val("jwes4421@gmail.com");
 				
