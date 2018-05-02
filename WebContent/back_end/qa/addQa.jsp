@@ -9,8 +9,9 @@
 
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>新增常見問題</title>
+<title>Insert-addQa.jsp</title>
 </head>
 <body>
 	<jsp:include page="/back_end/header.jsp"></jsp:include>
@@ -37,7 +38,8 @@
                         	<div class="form-top">
                         		<div class="form-top-left">
                         			<h2>新增常見問題</h2>	
-                        			 <h4><a href="select_page1.jsp">回首頁</a></h4>
+                        			<h4><a href="select_page1.jsp">回首頁</a></h4>
+                        			
                         		</div>
 	                        		<div class="form-top-right">
 	                        			<i class="fa fa-envelope"></i>
@@ -63,21 +65,21 @@
 			                        <div class="form-group"><p class="lead">常見問題標題</p>
 			                        	<label class="sr-only" for="contact-subject"></label>
 			                        	<input type="text" name="qa_title"  class="contact-subject form-control"
-			                        	 value="<%= (qaVO==null)? "帳號登不進去怎麼辦？" : qaVO.getQa_title()%>" >
+			                        	 value="<%= (qaVO==null)? "" : qaVO.getQa_title()%>" >
 			                        </div>
 			                        <div class="form-group"><p class="lead">常見問題內容</p>
 			                        	<label class="sr-only" for="contact-message"></label>
 			                        	<input name="qa_cnt"  class="contact-message form-control"
-			                        	 value="<%= (qaVO==null)? "可能是帳號被檢舉封鎖 ,請與本網頁人員聯絡。" : qaVO.getQa_cnt()%>">
+			                        	 value="<%= (qaVO==null)? "" : qaVO.getQa_cnt()%>">
 			                        </div>
 			                        <input type="hidden" name="action" value="insert">
 			                         <input type="submit" value="送出新增">
 			                   		</FORM>
 			                   
-			             
+			           
 							</div>
                         </div>
-                    </div>
+                    </div>  <div id="mbutton">神奇小按鈕</div>
                 </div>
             </div>
         	
@@ -121,5 +123,12 @@
 							        });
 							        
 							 </script>
-  
+							  <script>
+							$(document).ready(function() {
+							$("#mbutton").click(function() {
+								 	$("input[name='qa_title']").val("帳號登不進去怎麼辦？");
+									$("input[name='qa_cnt']").val("您好，我們為了秉持完善的交友環境，設有檢舉制度，如果您無法在本交友網站上登入使用，可能是帳號被檢舉封鎖或盜用，為確保每位會員享有的權益，欲取得登入協助，請與本網頁人員聯絡。");
+									});
+							});
+							</script>
 </html>
